@@ -17,10 +17,9 @@ build.py                   Rebuild both sections and verify local navigation
 learning/                  Episode pages, course data, generator, previews and ZIP
 mock-exams/
   ccar-p/                  Timed exam, question data, code, tests and research
-ep01-...html … ep11-...html  Redirects preserving the original episode URLs
 ```
 
-The root `index.html` now opens the study home. The original course index is in `learning/`. Downloads, data files and previews have moved into their section folders. The original root episode URLs redirect to their corresponding learning pages.
+The root `index.html` opens the study home. The course index and all eleven episode pages live only in `learning/`. Downloads, data files and previews live in their section folders. Use the new `learning/ep01-...html` through `learning/ep11-...html` paths; the former root episode URLs have been removed.
 
 ## Learning pages
 

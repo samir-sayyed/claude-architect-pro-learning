@@ -43,25 +43,14 @@ def verify():
             if url.fragment and target in parsed:
                 assert unquote(url.fragment) in parsed[target].ids, ('Missing fragment', path, href)
     assert len(list((ROOT / 'learning').glob('ep*.html'))) == 11
-    assert len(list(ROOT.glob('ep*.html'))) == 11
-    assert len(parsed) == 30
+    assert not list(ROOT.glob('ep*.html')), 'Episode pages belong only in learning/'
+    assert len(parsed) == 19
     assert not list(ROOT.rglob('*.pdf')), 'The official PDF must not be distributed'
     assert not (ROOT / 'raw').exists() and not (ROOT / 'wiki').exists()
-    print('PASS: 29 rendered HTML pages plus exam template, local assets, section links, legacy redirects and public artifact boundaries.')
+    print('PASS: 18 rendered HTML pages plus exam template, local assets, section links and public artifact boundaries; no root episode files.')
 
 
 if __name__ == '__main__':
     for section in ('learning', 'mock-exams/ccar-p'):
         subprocess.run([sys.executable, str(ROOT / section / 'build.py')], check=True)
-    for page in sorted((ROOT / 'learning').glob('ep*.html')):
-        target = 'learning/' + page.name
-        (ROOT / page.name).write_text(
-            '<!doctype html><html lang="en"><head><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<title>Episode moved · Claude Architect Professional</title>'
-            f'<meta http-equiv="refresh" content="0;url={target}"></head><body>'
-            f'<p>This episode has moved to <a href="{target}">the learning folder</a>.</p>'
-            f'<script>location.replace("{target}"+location.search+location.hash);</script>'
-            '</body></html>'
-        )
     verify()
