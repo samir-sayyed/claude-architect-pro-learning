@@ -1,50 +1,67 @@
-# Claude Architect Professional — Visual Learning Pages
+# Claude Architect Professional — Learning & Practice
 
-An independent learning companion to Peace Of Code’s Claude Architect Professional course. Each of the eleven episodes has a separate, self-contained HTML page with an interactive concept map, decision table, process flow, worked example, and application checklist.
+Independent visual learning pages and an original, timed CCAR-P mock exam.
 
-The collection includes 55 core takeaways and 39 additional source-linked detail cards. Episode 11 also includes an editable cost calculator using illustrative rates.
+**[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP; extract it and open its `index.html` in a modern browser.
 
-## Open the course
+| Section | Open | Offline download |
+|---|---|---|
+| Eleven episode learning pages | [Course index](learning/index.html) | [Learning ZIP](learning/claude-architect-pro-learning-pages.zip) |
+| 63-question, 120-minute mock exam | [Start the mock](mock-exams/ccar-p/index.html) | [Exam ZIP](mock-exams/ccar-p/ccarp-professional-mock.zip) |
 
-[Download the complete HTML ZIP](claude-architect-pro-learning-pages.zip), extract it, and open `index.html` in a browser. Keep all twelve HTML files together for episode navigation. You can also clone this repository and open `index.html` directly.
+## Repository layout
 
-Notes, diagrams, and the calculator work offline. Video and repository source links require internet. Each page offers Download HTML and Share controls; browser support determines whether sharing uses a link, a file, or a downloaded file with a suggested caption.
+```text
+index.html                 Home page linking both sections
+build.py                   Rebuild both sections and verify local navigation
+learning/                  Episode pages, course data, generator, previews and ZIP
+mock-exams/
+  ccar-p/                  Timed exam, question data, code, tests and research
+ep01-...html … ep11-...html  Redirects preserving the original episode URLs
+```
 
-![Learning-page preview](slide-details-preview.jpg)
+The root `index.html` now opens the study home. The original course index is in `learning/`. Downloads, data files and previews have moved into their section folders. The original root episode URLs redirect to their corresponding learning pages.
 
-## Episodes
+## Learning pages
 
-| Episode | Topic |
-|---|---|
-| 01 | Solution design and architecture |
-| 02 | Architecture patterns |
-| 03 | Decomposition and business value |
-| 04 | Model selection and system prompts |
-| 05 | Prompt engineering, context, and caching |
-| 06 | RAG pipelines, chunking, and retrieval |
-| 07 | MCP, authentication, and capability scope |
-| 08 | Observability, monitoring, and latency |
-| 09 | Evaluation metrics and frameworks |
-| 10 | A/B testing and failure diagnosis |
-| 11 | Cost optimization and monitoring |
+Each episode includes a concept map, process flow, decision table, worked example and checklist. The collection has 55 core takeaways and 39 source-linked slide detail cards. Episode 11 includes an editable cost calculator with illustrative rates. See [course details and attribution](learning/README.md).
 
-## Sources and coverage
+Source credits: [Peace Of Code's supplied playlist](https://youtube.com/playlist?list=PLPsBalbS2-zs) and [aakash1999's companion decks/code](https://github.com/aakash1999/claude-certified-architect-professional/tree/f710b2975e297b12f839dda071231448523e43a3). The notes synthesize selected material; original decks and full transcripts are not included.
 
-- [Peace Of Code’s supplied YouTube playlist](https://youtube.com/playlist?list=PLPsBalbS2-zs). The pages synthesize available auto-generated transcripts for Episodes 01–11; the introductory video is excluded.
-- [Companion slide decks and code by aakash1999](https://github.com/aakash1999/claude-certified-architect-professional/tree/f710b2975e297b12f839dda071231448523e43a3), pinned to commit `f710b2975e297b12f839dda071231448523e43a3`. The supplement reviews 146 slides across nine decks covering Episodes 01–08 and 10, plus Episode 06/09 companion files.
+## Mock exam
 
-Episode 09 has walkthrough, dataset, and runner files but no deck in that snapshot. Episode 11 has no folder, so its additional detail cards explicitly connect earlier material. Every detail card links to its supporting file, with slide numbers where applicable. Original decks and full transcripts are not redistributed in this repository.
+The original mock covers all 38 objectives in the supplied official CCAR-P guide v1.0, effective July 2026. It allocates 63 scored questions across seven domains, with single-answer and multiple-response items, saved progress, a continuous 120-minute clock, flags, domain diagnostics and explanations for every option. Candidate-reported Yes/No and matching formats are supplemental, unscored drills.
 
-These are selected, original learning notes, not exhaustive video transcriptions or official certification guidance. Scenario numbers and calculator rates are illustrative. Model/API behavior, pricing, protocol details, and exam requirements need current official verification. Companion scripts were inspected, not run against provider APIs. This project is not affiliated with or endorsed by Anthropic.
+- [Objective coverage](mock-exams/ccar-p/blueprint.html)
+- [Research, credits and limitations](mock-exams/ccar-p/research.html)
+- [Printable questions](mock-exams/ccar-p/questions.html)
+- [Complete answer key — spoilers](mock-exams/ccar-p/answer-key.html)
+- [Exam instructions and scoring conventions](mock-exams/ccar-p/README.md)
 
-## Rebuild
+Research includes ten public candidate accounts across six platforms, the user's two sample references and primary technical documentation. Questions and explanations are original; no leaked or reconstructed live exam questions are included. The supplied official PDF and personal knowledge-vault files are not published here.
 
-Requires Python 3; no third-party packages or frontend build step.
+Difficulty is intentionally demanding but has not been calibrated against the live exam. Exact-match raw scoring is a mock convention; no official pass prediction or raw-to-scaled conversion is provided. Retakes reuse the same form.
+
+## Rebuild and check
+
+Python 3 is sufficient to rebuild both sections; no third-party packages are needed.
 
 ```sh
 python3 build.py
 ```
 
-Edit `course-data.json` for the core lessons and `slide-details.json` for the sourced additions. The generator rebuilds the twelve HTML files and ZIP, and checks episode coverage, unique IDs, local navigation, source references, diagram edges, and illustrative cost arithmetic.
+Run the mock's logic checks with Node.js:
 
-The public repository contains only the learning-page artifact and its generator, data, and previews. It does not include the personal knowledge vault or its Git history.
+```sh
+node mock-exams/ccar-p/test.js
+```
+
+To serve the full collection locally:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:8000/`. The learning pages and exam also run from local files. Source links require internet; browser-local saved progress depends on browser storage availability. No login, analytics or provider API calls are required.
+
+Independent educational material, unaffiliated with Anthropic or the credited sources. Attribution establishes provenance and does not imply endorsement or blanket reuse permission. Current product behavior and exam policies should be checked against official sources.
