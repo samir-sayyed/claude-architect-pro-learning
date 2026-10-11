@@ -1,0 +1,751 @@
+{
+  "1": [
+    {
+      "title": "Translate the whole support loop",
+      "body": "A support request is more than text generation. The deck separates ticket text and CRM context, classification and routing, a resolver with backend or knowledge tools, the customer response and database update, and feedback from resolution and satisfaction. Give every stage an input and an observable result; a well-written reply alone cannot prove that the case was resolved.",
+      "source_episode": 1,
+      "slides": [
+        4,
+        6,
+        13
+      ],
+      "steps": [
+        "Ticket + customer context",
+        "Classify → choose resolution path",
+        "Resolve with authorized tools → validate response and update",
+        "Track resolution, reopenings, satisfaction, and cost per resolution"
+      ]
+    },
+    {
+      "title": "Reject an architecture when a hard constraint rules it out",
+      "body": "The financial-classification scenario combines a sub-50 ms deadline with zero data egress. Those requirements can rule out a remote model before prompt design begins. Exact rules or a local component may fit better. Treat latency and correctness as properties to verify; neither an LLM nor ordinary code earns a guarantee merely from its category.",
+      "source_episode": 1,
+      "slides": [
+        3,
+        7
+      ]
+    },
+    {
+      "title": "Tie the business pillar to a tradeoff and a feedback signal",
+      "body": "The slides compare efficiency, transformation, productivity, cost, and performance. These are competing priorities rather than a universal ranking. A legal-drafting assistant may reduce review time, while an autonomous research agent creates a new capability at a higher coordination cost. Preserve mandatory safety and quality limits even when another pillar drives the design.",
+      "source_episode": 1,
+      "slides": [
+        9,
+        10,
+        11,
+        13
+      ],
+      "table": [
+        [
+          "Priority",
+          "Tradeoff to expose",
+          "Feedback to collect"
+        ],
+        [
+          "Efficiency",
+          "Speed versus difficult-case quality",
+          "End-to-end time including corrections"
+        ],
+        [
+          "Transformation",
+          "New capability versus complexity",
+          "Useful new outcomes actually achieved"
+        ],
+        [
+          "Productivity",
+          "More drafts versus human review bottleneck",
+          "Accepted work per reviewer"
+        ],
+        [
+          "Cost",
+          "Cheaper calls versus retries and rework",
+          "Total cost per resolved case"
+        ],
+        [
+          "Performance",
+          "Simpler path versus richer reasoning",
+          "Tail latency plus the quality floor"
+        ]
+      ]
+    }
+  ],
+  "2": [
+    {
+      "title": "A branching pattern selector",
+      "body": "The deck distinguishes a known process from a process discovered while working. Use this as a starting hypothesis, then test it against latency, auditability, cost, and task uncertainty. A deterministic step that always happens can remain ordinary code even inside an agentic system.",
+      "source_episode": 2,
+      "slides": [
+        4,
+        7,
+        10
+      ],
+      "steps": [
+        "Are the required steps known?",
+        "Yes → Can one enriched model interaction do the bounded job? Yes: augmented LLM. No: workflow.",
+        "No → Let findings select the next action: a bounded agent loop.",
+        "Separate agents only when distinct roles, tools, context, or independent work justify coordination."
+      ]
+    },
+    {
+      "title": "Four workflow patterns, four different reasons",
+      "body": "A workflow can contain model calls without letting the model invent the entire control flow. Choose the smallest structure that matches dependencies. Orchestrator–worker designs can be a controlled workflow or a more dynamic agent architecture; the actual decision authority matters more than the label.",
+      "source_episode": 2,
+      "slides": [
+        4,
+        8,
+        9,
+        10
+      ],
+      "table": [
+        [
+          "Pattern",
+          "Use when",
+          "Boundary to check"
+        ],
+        [
+          "Prompt chaining",
+          "One stage needs the previous result",
+          "Validate the intermediate contract"
+        ],
+        [
+          "Routing",
+          "Input classes need different handlers",
+          "Evaluate the classifier and fallback"
+        ],
+        [
+          "Parallel work",
+          "Subtasks do not depend on each other",
+          "Bound fan-out and define aggregation"
+        ],
+        [
+          "Orchestrator–workers",
+          "A coordinator divides and combines work",
+          "Account for dispatch, synthesis, and retries"
+        ]
+      ]
+    },
+    {
+      "title": "Optimize the critical path, not the number of boxes",
+      "body": "Parallel specialists only save elapsed time when their work is independent. Serial time includes each dependency; parallel time still includes dispatch, the slowest worker, and synthesis. The claims-processing scenario favors a known, auditable workflow and different model capabilities at different stages. A narrow classifier need not use the same tier as the quality-critical assessment.",
+      "source_episode": 2,
+      "slides": [
+        9,
+        12,
+        13
+      ]
+    }
+  ],
+  "3": [
+    {
+      "title": "Combine decomposition lenses without multiplying agents",
+      "body": "Temporal decomposition follows stages; functional decomposition separates responsibilities; data decomposition partitions documents or records. They can coexist: a staged pipeline may contain independent document work and a specialized validation step. The legal example consolidates five agents into three when coordination dominates. Agent count is an outcome of useful boundaries, not a target.",
+      "source_episode": 3,
+      "slides": [
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "title": "A boundary needs an interface and a reason",
+      "body": "The deck gives three practical reasons to split: a different model capability, a different tool set, or a different context requirement. Write the data passed across that boundary and who owns validation. If two stages need the same context and tools and mostly exchange explanations, merging them may reduce cost and failure opportunities.",
+      "source_episode": 3,
+      "slides": [
+        5,
+        6,
+        7
+      ],
+      "table": [
+        [
+          "Boundary reason",
+          "Example",
+          "Cost to include"
+        ],
+        [
+          "Different capability",
+          "Simple extraction before complex analysis",
+          "Routing and an extra model call"
+        ],
+        [
+          "Different tools or authority",
+          "Research versus an authorized write",
+          "Permission checks and handoff"
+        ],
+        [
+          "Different context",
+          "Independent document sections",
+          "Lost context and final synthesis"
+        ]
+      ]
+    },
+    {
+      "title": "Turn an SLA into an operating contract",
+      "body": "The slides use population accuracy, tail latency, and confidence-based escalation rather than promising perfect outputs. Define the workload, evaluation window, critical slices, and what counts as success. A confidence score needs calibration before it can control routing. A cached fallback must still be valid; queueing is acceptable only when the deadline allows it.",
+      "source_episode": 3,
+      "slides": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "code": "Illustrative contract — choose and validate your own targets\nQuality: overall target + minimum on critical slices\nLatency: percentile + start/end events + measurement window\nEscalation: calibrated criterion + review capacity + deadline\nFallback: valid cached result, bounded retry, or explicit handoff"
+    }
+  ],
+  "4": [
+    {
+      "title": "Count the router when calculating blended cost",
+      "body": "Tiering buys expensive reasoning only on the slice that needs it. Evaluate whether difficult requests can be identified reliably, and include the cost and latency of classification itself. The deck’s traffic percentages and per-call figures are teaching scenarios, not measured model benchmarks. An average cost below the ceiling also does not prove a tail-latency SLA.",
+      "source_episode": 4,
+      "slides": [
+        5,
+        6,
+        7,
+        14
+      ],
+      "code": "Blended cost per request\n= routing cost\n+ Σ(route share × expected cost of that route)\n+ expected retry, tool, and review costs\n\nCheck quality and latency separately for every important route."
+    },
+    {
+      "title": "Make a system prompt a testable job description",
+      "body": "The slides replace vague adjectives with observable instructions and six explicit sections. The outline below is an original template inspired by those sections, not an API payload. Test ambiguous requests, missing evidence, and attempted boundary violations as well as ordinary examples.",
+      "source_episode": 4,
+      "slides": [
+        10,
+        11,
+        12
+      ],
+      "code": "ROLE: Billing support assistant with defined responsibilities.\nBEHAVIOR: Ask for clarification when intent is ambiguous.\nFORMAT: State the result and next action concisely.\nTOOLS: Look up the order before proposing a change.\nESCALATION: Hand off missing authority or unresolved evidence.\nPROHIBITIONS: Never disclose internal pricing formulas."
+    },
+    {
+      "title": "Pair instructions with enforcement and migration checks",
+      "body": "Prompt rules guide behavior; runtime permissions, input checks, and output validators enforce boundaries the application owns. Code can still have bugs, so test the controls. The deck also warns about model upgrades changing supported controls. Before migrating, verify the selected model’s parameters and response format in current official documentation and rerun quality, latency, and cost evaluations. Version-specific deck claims are not reproduced as current API rules.",
+      "source_episode": 4,
+      "slides": [
+        8,
+        9,
+        13
+      ]
+    }
+  ],
+  "5": [
+    {
+      "title": "Design examples and context as a shared budget",
+      "body": "Few-shot examples should teach the desired format and difficult judgments, especially ambiguous or absent-evidence cases. Stable examples can sit with reusable instructions. Budget system instructions, examples, retrieved material, the request, and space for the answer. Test whether important evidence is actually used; context placement is a hypothesis to evaluate, not a guarantee about every model.",
+      "source_episode": 5,
+      "slides": [
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "title": "Arrange layers by how often they change",
+      "body": "Put reusable material before request-specific content when the provider’s caching mechanism permits it. The deck orders tools, instructions and examples, background material, then the user request. Background documents are reusable only while the exact relevant prefix remains stable. Compare serialized prefixes when reads disappear; timestamps, tool order, configuration changes, and expiry are useful suspects.",
+      "source_episode": 5,
+      "slides": [
+        8,
+        9,
+        10
+      ],
+      "table": [
+        [
+          "Layer",
+          "Typical change pattern",
+          "Check"
+        ],
+        [
+          "Tool definitions",
+          "Rare changes",
+          "Stable serialization and ordering"
+        ],
+        [
+          "Instructions + examples",
+          "Versioned changes",
+          "Keep dynamic greetings and timestamps out"
+        ],
+        [
+          "Background documents",
+          "Changes with corpus or task",
+          "Do not assume every request shares these"
+        ],
+        [
+          "User request",
+          "Usually every request",
+          "Keep outside the reusable prefix"
+        ]
+      ]
+    },
+    {
+      "title": "Work through the cache arithmetic",
+      "body": "Use the episode’s 5,800-token example: 2,800 stable tokens and 3,000 fresh tokens. At an illustrative cache-read multiplier of 0.1, a warm hit costs the equivalent of 2,800 × 0.1 + 3,000 = 3,280 fresh input tokens. The input-only saving is 2,520 ÷ 5,800 ≈ 43.4%. This excludes writes, misses, output, tools, and infrastructure; it does not establish the deck’s monthly bill or a 43.4% total saving.",
+      "source_episode": 5,
+      "slides": [
+        7,
+        12,
+        13
+      ],
+      "code": "Warm-hit input cost ratio = (2800 × 0.1 + 3000) / 5800\n                         ≈ 0.566\nInput saving             ≈ 43.4%\n\nReal average: include cache creation, hit rate, expiry, and output."
+    },
+    {
+      "title": "Separate reuse of instructions from reuse of computation",
+      "body": "An on-demand skill controls which task instructions enter context. Always-loaded project rules serve common obligations. Prompt caching prices repeated eligible input differently; it does not make the instruction relevant or replace an authorization check. Keep shared policy concise and load specialized procedures when needed. Exact skill frontmatter and cache thresholds are product-specific.",
+      "source_episode": 5,
+      "slides": [
+        10,
+        11
+      ]
+    }
+  ],
+  "6": [
+    {
+      "title": "Keep the offline and online halves distinct",
+      "body": "The deck’s baseline has seven stages. Reranking is an optional additional online stage, which the interactive map calls out separately. Indexing quality limits what can be retrieved; generation cannot reliably reconstruct evidence that never reaches it.",
+      "source_episode": 6,
+      "slides": [
+        4,
+        9,
+        12,
+        14
+      ],
+      "steps": [
+        "Offline: ingest → chunk → embed → index",
+        "Online: process query → retrieve → generate",
+        "Optional online refinement: retrieve candidates → rerank → select context → generate",
+        "Preserve source identity and access metadata across both halves."
+      ]
+    },
+    {
+      "title": "Make an isolated chunk understandable",
+      "body": "A fragment saying “revenue grew by 3%” loses company and period. Preserve headings, document identity, and a concise context prefix where appropriate. Dense retrieval helps meaning, sparse retrieval helps exact identifiers, hybrid combines their signals, and metadata scopes documents by tenant, date, or type. Benchmark the combination on your queries; no strategy wins universally.",
+      "source_episode": 6,
+      "slides": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "table": [
+        [
+          "Need",
+          "Technique to evaluate"
+        ],
+        [
+          "Long prose with topic changes",
+          "Semantic boundaries"
+        ],
+        [
+          "Contracts, headings, tables",
+          "Structure-aware chunks"
+        ],
+        [
+          "Error code or exact name",
+          "Sparse retrieval alongside semantic search"
+        ],
+        [
+          "Tenant or policy-version scope",
+          "Enforced metadata filtering"
+        ],
+        [
+          "Many plausible candidates",
+          "Reranking before final context selection"
+        ]
+      ]
+    },
+    {
+      "title": "Understand what the teaching demo actually implements",
+      "body": "The repository uses three policy documents, a fixed-size character chunker with overlap, TF-IDF vectors, cosine similarity, and source-labeled context for generation. Fit TF-IDF on the corpus and transform queries with the same vocabulary. The sample uses 200-character chunks and 50-character overlap, so successive starts are 150 characters apart. Characters are not tokens, and overlap alone does not guarantee intact sentences. This is a small retrieval demonstration, not a production dense-vector service.",
+      "source_episode": 6,
+      "slides": [
+        12,
+        13,
+        14
+      ],
+      "file": "episode 6/rag_pipeline.py"
+    },
+    {
+      "title": "After a refresh, inspect the evidence path",
+      "body": "Hold a failing query fixed and compare the retrieved chunks and versions with the last good run. A correct query embedding cannot compensate for obsolete records, broken boundaries, or incompatible index updates. Repair and re-evaluate the failing stage before changing the generator.",
+      "source_episode": 6,
+      "slides": [
+        15
+      ],
+      "table": [
+        [
+          "Symptom mechanism",
+          "Evidence to inspect"
+        ],
+        [
+          "Old and new versions compete",
+          "Document IDs, version metadata, deletion/update behavior"
+        ],
+        [
+          "Chunk loses identity",
+          "Actual parsed text, headings, contextual prefix"
+        ],
+        [
+          "Dense and sparse paths disagree",
+          "Corpus/index versions and update completeness"
+        ],
+        [
+          "New document format breaks splitting",
+          "Parsed structure and chunk boundaries"
+        ]
+      ]
+    }
+  ],
+  "7": [
+    {
+      "title": "Separate connection, identity, and authority",
+      "body": "Choose how systems connect, establish whom the request represents, and enforce what that identity may do. The deck favors MCP for a shared capability across several clients, a direct API for a narrow integration, a CLI where a mature shell interface fits, and an agent handoff when independent judgment is part of the task. A step that always runs can simply be application code.",
+      "source_episode": 7,
+      "slides": [
+        3,
+        5,
+        6
+      ]
+    },
+    {
+      "title": "A tool call crosses several permission boundaries",
+      "body": "A shared administrator credential can turn an ordinary user request into an unauthorized privileged action: the confused-deputy problem. Validate the user, action, and resource at the server, constrain the backing credential, and expose only the tools the role needs. Keep secrets out of model context. Token audience and downstream credentials need explicit checks; verify current protocol requirements before implementation.",
+      "source_episode": 7,
+      "slides": [
+        8,
+        9,
+        10
+      ],
+      "steps": [
+        "Tool configuration: is this capability part of the role?",
+        "Credential scope: can the backing identity do more than the job requires?",
+        "Server authorization: may this user perform this action on this resource?",
+        "For consequential authorized work: enforce the required human approval."
+      ]
+    },
+    {
+      "title": "Audit capabilities using five questions",
+      "body": "The support scenario has unused refund and account-deletion tools. Remove them from that role when they are not part of its job, and route legitimate work to the owner workflow. Logging or a prompt warning does not reduce the credential’s authority. Lack of recent use is evidence to investigate; an emergency capability may still be justified by an explicit role.",
+      "source_episode": 7,
+      "slides": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "table": [
+        [
+          "Question",
+          "Decision it supports"
+        ],
+        [
+          "Was it used?",
+          "Remove unnecessary exposure after checking legitimate rare use"
+        ],
+        [
+          "Does it fit this role?",
+          "Move it to the agent or workflow that owns the task"
+        ],
+        [
+          "What is the blast radius?",
+          "Add a gate or redesign consequential actions"
+        ],
+        [
+          "Is the credential overprivileged?",
+          "Down-scope authority"
+        ],
+        [
+          "Does another tool overlap?",
+          "Consolidate redundant capabilities"
+        ]
+      ]
+    },
+    {
+      "title": "Distinguish a broad useful catalog from bloat",
+      "body": "The 120-tool IT-operations scenario says the tools are genuinely used, while each request needs only a few. Discovery can reduce context load when extra lookup latency is acceptable and descriptions make capabilities findable. It does not revoke access. The unused support delete button is a different problem: remove authority rather than merely hiding its description until discovery.",
+      "source_episode": 7,
+      "slides": [
+        15,
+        16,
+        17
+      ]
+    }
+  ],
+  "8": [
+    {
+      "title": "Keep a trace record that can explain a change",
+      "body": "One user request can include retrieval, several model calls, tools, validation, and retries. Correlate the spans with a trace ID, retain provider request IDs per call, and record model and prompt/config versions. For retrieval, record document IDs, scores, and index version. Capture raw sensitive content only through deliberate sampling, access control, and retention rules.",
+      "source_episode": 8,
+      "slides": [
+        4,
+        5,
+        6
+      ],
+      "code": "Trace → retrieval span → model span → tool span → validation span\nRecord: IDs, versions, outcomes, durations, retries\nModel: input/output + cache-read/cache-write usage, stop reason\nLatency: first token AND usable completion\nQuality: sampled grading, escalations, and user feedback"
+    },
+    {
+      "title": "A latency budget must name its endpoint",
+      "body": "Time to first token measures how soon a chat starts responding; completion measures when the full result is usable. Streaming can improve perceived waiting without making a workflow finish earlier. Start from the SLA and measure per-step timing. Independent lookups, stable-prefix caching, and routing proven easy tasks may reduce delay, but each still needs measurement and quality checks.",
+      "source_episode": 8,
+      "slides": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "title": "Choose discovery from usage, not catalog size alone",
+      "body": "The voice-ordering drill has nine tools, at least six used on nearly every call, an already cached stable prefix, and tight latency. It leans toward loading the small catalog together. A large growing catalog with a rarely used long tail may justify on-demand discovery. Keep discovery itself observable so a failure to find a tool is distinguishable from failure to use it.",
+      "source_episode": 8,
+      "slides": [
+        14,
+        15,
+        16
+      ],
+      "table": [
+        [
+          "Question",
+          "Leans toward loading together",
+          "Leans toward discovery"
+        ],
+        [
+          "Catalog",
+          "Small and stable",
+          "Large and growing"
+        ],
+        [
+          "Usage",
+          "Most tools needed most requests",
+          "A few tools per request"
+        ],
+        [
+          "Latency",
+          "Every extra round trip hurts",
+          "Discovery round trip fits"
+        ],
+        [
+          "Context",
+          "Comfortable headroom",
+          "Definitions crowd out the task"
+        ],
+        [
+          "Reviewability",
+          "Fixed available context is valuable",
+          "Discovery steps can be traced"
+        ]
+      ]
+    },
+    {
+      "title": "Preserve verification when the workload can wait",
+      "body": "The overnight-brief scenario takes 90 seconds with reranking and figure verification, while users read the result the next morning. Removing those checks to reach 25 seconds spends quality on a deadline that was already satisfied. In the live claims example, trace first and preserve coverage-decision quality while fixing repeated input and independent lookups. Both are illustrative scenarios, not performance benchmarks.",
+      "source_episode": 8,
+      "slides": [
+        11,
+        12,
+        13
+      ]
+    }
+  ],
+  "9": [
+    {
+      "title": "The actual demo contract: three required nullable fields",
+      "body": "The repository has no Episode 09 slide deck in the reviewed snapshot. Its walkthrough, dataset, and runner provide the concrete details instead. Each document is extracted into vendor, invoice_number, and total. Missing evidence must remain null. Matching the JSON shape proves structure; matching the reference values is a separate grading task.",
+      "source_episode": 9,
+      "file": "episode 9/WALKTHROUGH.md",
+      "code": "Illustrative output shape — not an API request\n{\n  \"vendor\": \"Granite Supply Co\",\n  \"invoice_number\": \"99127\",\n  \"total\": 4102.75\n}\nAll three keys are required; each value can be null."
+    },
+    {
+      "title": "Read the rule grader precisely",
+      "body": "The runner requires all three fields to pass for a row to pass. String normalization trims outer whitespace and lowercases; it does not remove internal whitespace or repair OCR. An LLM judge sees the document, extraction, and reference with a rubric. Review disagreements against the evidence and reference; agreement alone does not establish correctness.",
+      "source_episode": 9,
+      "file": "episode 9/run_eval.py",
+      "table": [
+        [
+          "Field condition",
+          "Rule in the demonstration"
+        ],
+        [
+          "Reference value is null",
+          "Prediction must also be null"
+        ],
+        [
+          "Vendor or invoice number",
+          "Compare after outer trim and case normalization"
+        ],
+        [
+          "Total is present",
+          "Absolute numeric difference ≤ 0.01"
+        ],
+        [
+          "Whole document",
+          "All three field checks pass"
+        ]
+      ]
+    },
+    {
+      "title": "The golden set contains deliberate traps",
+      "body": "There are ten documents: five emails, three invoices, and two faxes. The absent-invoice email should produce three nulls; the discounted email totals 800 after subtracting 90 from 890; the credit-note invoice totals 1,000 after a 200 credit; the OCR invoice combines a distorted vendor name with a decimal comma; a fax compresses the total into “TL 995 50.” These are test cases, not actual billing data.",
+      "source_episode": 9,
+      "file": "episode 9/golden.jsonl",
+      "table": [
+        [
+          "Case",
+          "What it probes"
+        ],
+        [
+          "em-04",
+          "Abstention when there is no invoice"
+        ],
+        [
+          "em-05 / inv-02",
+          "Final amount after discount or credit"
+        ],
+        [
+          "inv-03",
+          "OCR normalization and numeric interpretation"
+        ],
+        [
+          "fx-01",
+          "Low-quality formatting in a minority slice"
+        ]
+      ]
+    },
+    {
+      "title": "Follow the evaluation pipeline and its limits",
+      "body": "The runner extracts and judges each row, records results, and reports overall pass rates, document-type slices, grader agreement, tokens, and estimated combined cost. Two faxes are not enough to establish a stable fax accuracy rate: one changed result moves that slice by 50 percentage points. This is an evaluation-mechanics demonstration, not release evidence. The script was inspected, not executed against an API.",
+      "source_episode": 9,
+      "file": "episode 9/run_eval.py",
+      "steps": [
+        "Load and version the document/reference set",
+        "Extract fields → run deterministic field checks",
+        "Judge with document + extraction + reference → record disagreement reasons",
+        "Report overall AND slices → inspect failures → account for extraction and grading cost"
+      ]
+    }
+  ],
+  "10": [
+    {
+      "title": "Freeze the components outside the experiment",
+      "body": "The deck identifies six things that can be tested: prompt version, examples, retrieval strategy, chunking, model/effort, and validation. For an interpretable first experiment, vary one and pin the rest. Declare metrics, slice limits, effect size, and stopping criteria before seeing results. Use comparable traffic and time windows; a temporary lead is not a reason to stop.",
+      "source_episode": 10,
+      "slides": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "table": [
+        [
+          "Change being tested",
+          "Hold fixed"
+        ],
+        [
+          "Prompt or examples",
+          "Model, retrieval, corpus, grader"
+        ],
+        [
+          "Dense versus hybrid retrieval",
+          "Corpus, chunking, prompt, model"
+        ],
+        [
+          "Chunking strategy",
+          "Corpus, retrieval settings, prompt, model"
+        ],
+        [
+          "Model tier or effort",
+          "Prompt, evidence, evaluation set"
+        ],
+        [
+          "Validation step",
+          "All other processing and grading rules"
+        ]
+      ]
+    },
+    {
+      "title": "Attach evidence to each failure hypothesis",
+      "body": "The four families guide investigation; they are not mutually exclusive or exhaustive diagnoses. Define a numerical symptom, inspect the least expensive discriminating evidence, isolate the suspected change, and rerun the original metric after the fix. A model change remains a hypothesis when prompt and evidence checks do not explain the failure.",
+      "source_episode": 10,
+      "slides": [
+        8,
+        9,
+        10,
+        12
+      ],
+      "table": [
+        [
+          "Hypothesis",
+          "Useful evidence"
+        ],
+        [
+          "Prompt failure",
+          "Diff against the last-good instructions; inspect ignored context"
+        ],
+        [
+          "Integration failure",
+          "Retrieved IDs, index version, tool outcomes, malformed input"
+        ],
+        [
+          "Unsupported claims",
+          "Claim-to-source checks on the frozen evaluation set"
+        ],
+        [
+          "Capability mismatch",
+          "Repeated failure on hard cases with manually verified context"
+        ]
+      ]
+    },
+    {
+      "title": "Interpret the isolation grid carefully",
+      "body": "In the coding-assistant scenario, acceptance falls from an illustrative 34% to 27% while the model, prompt, and chunker all change. New-model/old-prompt/old-chunks and new-model/new-prompt/old-chunks comparisons recover the baseline; old-model/old-prompt/new-chunks fails. That implicates chunking in the example. It does not rule out every interaction, so confirm the repaired configuration as a whole.",
+      "source_episode": 10,
+      "slides": [
+        11,
+        15
+      ],
+      "code": "Illustrative comparisons\nNew model + old prompt + old chunks → baseline recovered\nNew model + new prompt + old chunks → baseline recovered\nOld model + old prompt + new chunks → regression persists\n\nRepair the chunker → rerun → expand traffic with rollback gates."
+    },
+    {
+      "title": "Do not let an aggregate hide the hard slice",
+      "body": "Another scenario reports 91% overall accuracy while the hardest tenth of requests achieves only 58%. With a firm cost ceiling and latency headroom, test targeted routing or decomposition for that class rather than upgrading every request. The migration example instead points to superseded-policy metadata: verify version/date filtering and index updates before adding a larger model.",
+      "source_episode": 10,
+      "slides": [
+        13,
+        14
+      ]
+    }
+  ],
+  "11": [
+    {
+      "title": "Extend the calculator with realistic cache economics",
+      "body": "There is no Episode 11 folder or deck in the reviewed repository. This related detail comes from Episode 05: a cheap warm cache read is only one part of the average. Include cache creation, misses, expiry, output, and non-model work when estimating cost per successful outcome. Use actual usage buckets and current provider rates rather than the deck’s monthly-bill illustration.",
+      "source_episode": 5,
+      "slides": [
+        7,
+        8,
+        9,
+        10,
+        12
+      ],
+      "code": "Expected model cost\n= fresh-input cost + output cost\n+ cache-creation cost + cache-read cost\n\nTotal outcome cost also includes tools, infrastructure, retries,\nand review, divided by successful outcomes over the same window."
+    },
+    {
+      "title": "Use trace metadata to explain an economic regression",
+      "body": "Episode 08’s logging checklist adds prompt/config and index versions, per-step durations, token buckets, tool outcomes, and retries. When cost rises, separate request volume, workload mix, route selection, output length, and cache behavior. A drop in reads suggests inspecting prefix and reuse conditions; stable cache usage with longer outputs suggests a different cause. Keep quality and tail latency beside the cost graph.",
+      "source_episode": 8,
+      "slides": [
+        4,
+        5,
+        6,
+        10
+      ]
+    },
+    {
+      "title": "Include the cost of evaluating the system",
+      "body": "The Episode 09 runner counts extraction and judge usage together in its estimate. Keep operational inference cost and evaluation cost visible as separate categories so sampled judging does not look like unexplained application inflation. Its embedded rate table is a snapshot, not a current price source. The HTML calculator remains an editable illustration, and the runner has not been executed.",
+      "source_episode": 9,
+      "file": "episode 9/run_eval.py"
+    }
+  ]
+}
