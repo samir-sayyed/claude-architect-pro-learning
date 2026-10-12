@@ -2,8 +2,12 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const data=JSON.parse(fs.readFileSync(__dirname+'/exam-data.json','utf8'));
 const core=require('./exam.js');
+const paths=['exam-data.json',...Array.from({length:5},(_,i)=>`sets/set-${String(i+2).padStart(2,'0')}/exam-data.json`)];
+const forms=paths.map(path=>JSON.parse(fs.readFileSync(__dirname+'/'+path,'utf8')));
+assert.equal(new Set(forms.map(d=>d.version)).size,6);
+const storageKeys=new Set();
+for (const data of forms) {
 const perfect=Object.fromEntries(data.questions.map(q=>[q.id,q.options.flatMap((o,i)=>o.correct?[i]:[])]));
 assert.equal(core.grade(data.questions,perfect).filter(g=>g.correct).length,63);
 assert.equal(core.grade(data.questions,{}).filter(g=>g.correct).length,0);
@@ -34,7 +38,7 @@ function el(id){if(!elements.has(id))elements.set(id,{id,hidden:false,textConten
 el('exam-data').textContent=JSON.stringify(data);
 const screens=['welcome','sitting','overview','results'].map(el);
 let saved=JSON.stringify({...attempt,answers:{},deadline:attempt.deadline});
-const context={document:{getElementById:el,querySelectorAll:s=>s==='[data-screen]'?screens:[]},localStorage:{getItem:()=>saved,setItem:(_,v)=>saved=v},window:{scrollTo(){}},Date:class extends Date{static now(){return attempt.deadline+1000;}},setInterval(){},setTimeout(){},console};
+const context={document:{getElementById:el,querySelectorAll:s=>s==='[data-screen]'?screens:[]},localStorage:{getItem:key=>{storageKeys.add(key);return saved;},setItem:(_,v)=>saved=v},window:{scrollTo(){}},Date:class extends Date{static now(){return attempt.deadline+1000;}},setInterval(){},setTimeout(){},console};
 vm.runInNewContext(fs.readFileSync(__dirname+'/exam.js','utf8'),context);
 assert.equal(JSON.parse(saved).submitted,attempt.deadline+1000);
 assert.equal(el('results').hidden,false);
@@ -42,4 +46,7 @@ assert.equal(el('sitting').hidden,true);
 assert.equal(el('raw-score').textContent,'0 / 63');
 assert.match(el('result-note').textContent,/Time expired/);
 assert.equal(el('top-submit').hidden,true);
-console.log('PASS: exact-set scoring, selection limits, corrupt-state rejection, deadline arithmetic and expired-session auto-submission.');
+for(const other of forms.filter(d=>d.version!==data.version)) assert.equal(core.validate(attempt,other),false);
+}
+assert.equal(storageKeys.size,6);
+console.log('PASS: all 6 forms: 378 perfect/empty scoring cases, exact sets, selection limits, invalid/cross-form states, isolated storage and expiry auto-submission.');

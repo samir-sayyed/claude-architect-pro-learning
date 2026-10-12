@@ -8,7 +8,9 @@ from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 
-ROOT=Path(__file__).resolve().parent
+BASE=Path(__file__).resolve().parent
+ROOT=BASE
+LABEL='Set 01'
 D=json.loads((ROOT/'exam-data.json').read_text())
 CSS=(ROOT/'exam.css').read_text()
 e=html.escape
@@ -18,7 +20,9 @@ def table(headers,rows):
     return '<div class="table-wrap"><table><thead><tr>'+''.join(f'<th scope="col">{e(str(x))}</th>' for x in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join(f'<td>{x}</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table></div>'
 
 def frame(title,body):
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title><style>{CSS}</style></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="index.html">The Architect’s Practice</a><nav aria-label="Reference pages"><a href="index.html">Take exam</a><a href="blueprint.html">Coverage</a><a href="research.html">Research</a></nav></header><main id="main" class="page document">{body}<footer class="footer">Independent original practice · CCAR-P · researched 11 October 2026 · no live exam questions used.<br><a href="index.html">Return to the timed exam</a></footer></main></body></html>'
+    catalogue='<a href="../../sets.html">All six sets</a>' if ROOT!=BASE else ''
+    date='11 October 2026' if LABEL=='Set 01' else '12 October 2026'
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · {LABEL}</title><style>{CSS}</style></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="index.html">The Architect’s Practice</a><nav aria-label="Reference pages">{catalogue}<a href="index.html">Take exam</a><a href="blueprint.html">Coverage</a><a href="research.html">Research</a></nav></header><main id="main" class="page document">{body}<footer class="footer">Independent original practice · CCAR-P · {LABEL} · researched {date} · no live exam questions used.<br><a href="index.html">Return to the timed exam</a></footer></main></body></html>'
 
 def sources(q):
     return ' · '.join(f'<a href="{e(D["sources"][s]["url"])}" target="_blank" rel="noopener">{e(D["sources"][s]["title"])}</a>' for s in q['sources'])
@@ -42,7 +46,7 @@ def blueprint():
     return frame('CCAR-P mock · objective coverage',body)
 
 def questions_page():
-    body='<p class="eyebrow">FORM A · QUESTIONS ONLY</p><h1>Printable mock exam.</h1><p>63 original questions · 120 minutes. Use this page with a separate timer. Mark exactly the required number of responses. Domain and topic labels are withheld here. Answers and rationales are in <a href="answer-key.html">the separate answer key (spoilers)</a>. Use your browser’s Print command to save a PDF or print paper.</p>'
+    body=f'<p class="eyebrow">{LABEL.upper()} · QUESTIONS ONLY</p><h1>Printable mock exam.</h1><p>63 original questions · 120 minutes. Use this page with a separate timer. Mark exactly the required number of responses. Domain and topic labels are withheld here. Answers and rationales are in <a href="answer-key.html">the separate answer key (spoilers)</a>. Use your browser’s Print command to save a PDF or print paper.</p>'
     for i,q in enumerate(QUESTIONS,1):
         body+=f'<article class="doc-question" id="question-{i}"><p class="eyebrow">QUESTION {i:02d} / 63 · SELECT {q["select"]}</p><p class="stem">{e(q["stem"])}</p>{exhibit(q)}<ol type="A">'+''.join(f'<li>{e(o["text"])}</li>' for o in q['options'])+'</ol></article>'
     return frame('CCAR-P mock · printable questions',body)
@@ -62,6 +66,12 @@ def answer_key():
     return frame('CCAR-P mock · complete answer explanations',body)
 
 def research():
+    if ROOT!=BASE:
+        body=f'<p class="eyebrow">RECHECKED 12 OCTOBER 2026 · {LABEL.upper()}</p><h1>Evidence behind<br>the decisions.</h1><p>The supplied official CCAR-P guide v1.0 (July 2026) was reread in full. It controls the 63-question, 120-minute scope and seven-domain blueprint; all 38 objective bullets are mapped in <a href="blueprint.html">this set’s coverage page</a>. Multiple-choice and multiple-response are the official item formats. The response-count mix is a practice design choice.</p><h2>Refreshed candidate evidence</h2><p>Read the <a href="../../research-refresh-2026-10-12.md">dated cross-platform research refresh</a> and <a href="research-addendum.md">this set’s research and design notes</a>. New October accounts conflict on difficulty. Reports favor enterprise trade-offs, lifecycle decisions and close alternatives; this is testimony, not an authenticated sample or difficulty calibration. Promotional sources and claims of live-item overlap are identified or excluded. No live questions were used.</p><h2>How this set uses the evidence</h2><p>Each question requires choosing between competing plans under stated constraints. Exhibits, calculations, diagnostic evidence, release gates and handoff decisions exercise application rather than product trivia. Every option has a rationale and primary-source references. Two independent Yes/No matrices and repeatable-option matching are supplemental, unscored formats reported by candidates; the guide does not guarantee them.</p><h2>Primary references used by this form</h2>'
+        used={s for q in QUESTIONS for s in q['sources']}
+        body+=''.join(f'<p><a href="{e(s["url"])}">{e(s["title"])}</a></p>' for key,s in D['sources'].items() if key in used)
+        body+='<h2>Limits and attribution</h2><p>Independent original educational material, unaffiliated with Anthropic or reference providers. The supplied official PDF, original decks, transcripts and live exam content are not distributed. Scenario figures and rates are fictional. Exact-set scoring is a mock convention; no raw-to-scaled conversion, official pass prediction or psychometric equivalence is claimed. Retakes reuse the same questions.</p>'
+        return frame('CCAR-P mock · research and attribution',body)
     feedback=[
 ('Reddit · Tecr','Date not independently confirmed','https://www.reddit.com/r/ClaudeAI/comments/1vrl9ng/passed_the_claude_certified_architect/','Production practitioner: trade-offs and lifecycle wording; felt easier than Foundations.'),
 ('Reddit · cs135dev','Date not independently confirmed','https://www.reddit.com/r/ClaudeCertified/comments/1vo909f/passed_ccarp_exam_harder_than_expected/','Real sitting felt more complex than a mock; more multiple-answer items.'),
@@ -107,29 +117,85 @@ def verify_data():
         assert len({o['text'] for o in q['options']})==len(q['options'])
         if q.get('exhibit'):assert all(len(r)==len(q['exhibit']['headers']) for r in q['exhibit']['rows'])
     assert len(D['drills'])==3
+    assert [d['type'] for d in D['drills']].count('matrix')==2
+    assert [d['type'] for d in D['drills']].count('matching')==1
+    for drill in D['drills']:
+        assert len(drill['rows'])==5
+        choices=('Yes','No') if drill['type']=='matrix' else drill['choices']
+        assert all(r['answer'] in choices and r['text'] and r['why'] for r in drill['rows'])
+    if ROOT!=BASE:
+        assert sum(q['select']==3 for q in QUESTIONS)==4
+        assert sum(bool(q.get('exhibit')) for q in QUESTIONS)>=5
+        assert all(len(q['options'])==(4 if q['select']==1 else 5) for q in QUESTIONS)
+        assert all(q['decision'] and 'guide' in q['sources'] for q in QUESTIONS)
+        assert all(len(q['sources'])>=2 for q in QUESTIONS if q['domain'] in (2,3,4,5,7))
 
-if __name__=='__main__':
+def build_form(root,label):
+    global ROOT,D,QUESTIONS,LABEL
+    ROOT,LABEL=root,label
+    D=json.loads((ROOT/'exam-data.json').read_text())
+    QUESTIONS=[D['questions'][i] for i in D['order']]
     verify_data()
     bars=''.join(f'<div class="blueprint-row"><div><span>{d["id"]}. {e(d["name"])}</span><strong>{d["weight"]}%</strong></div><div class="bar" aria-hidden="true"><span style="width:{d["weight"]*5}%"></span></div></div>' for d in D['domains'])
-    page=(ROOT/'template.html').read_text().replace('__CSS__',CSS).replace('__DOMAIN_BARS__',bars).replace('__DATA__',json.dumps(D,ensure_ascii=False).replace('</','<\\/')).replace('__JS__',(ROOT/'exam.js').read_text())
+    template=(BASE/'template.html').read_text().replace('FORM A',LABEL.upper()).replace('Form A',LABEL)
+    if ROOT!=BASE:
+        template=template.replace('<title>CCAR-P · Professional Mock Exam</title>',f'<title>CCAR-P · {LABEL} · Professional Mock Exam</title>').replace('<nav aria-label="Reference pages">','<nav aria-label="Reference pages"><a href="../../sets.html">All six sets</a>').replace('href="ccarp-professional-mock.zip"','href="../../ccarp-professional-all-sets.zip"').replace('Download offline pack','Download all six sets').replace('ten public candidate reports across six platforms','public candidate reports with a dated evidence refresh').replace('11 October 2026','12 October 2026')
+    page=template.replace('__CSS__',CSS).replace('__DOMAIN_BARS__',bars).replace('__DATA__',json.dumps(D,ensure_ascii=False).replace('</','<\\/')).replace('__JS__',(BASE/'exam.js').read_text())
     assert not any(marker in page for marker in ('__CSS__','__DATA__','__JS__','__DOMAIN_BARS__'))
     files={'index.html':page,'blueprint.html':blueprint(),'questions.html':questions_page(),'answer-key.html':answer_key(),'research.html':research()}
     for name,body in files.items():(ROOT/name).write_text(body)
-    pack=list(files)+['research-feedback.md','research-notes.md','README.md','exam-data.json']
-    with zipfile.ZipFile(ROOT/'ccarp-professional-mock.zip','w',zipfile.ZIP_DEFLATED) as z:
-        for name in pack:z.write(ROOT/name,name)
+    return [ROOT/name for name in files]+[ROOT/'exam-data.json']
+
+def verify_pages(paths):
     parsed={}
-    for name,body in files.items():
-        c=CheckHTML();c.feed(body);parsed[name]=c
-        assert len(c.ids)==len(set(c.ids)),(name,'duplicate ID')
-        assert not c.external_assets,(name,'external dependency')
-    for name,c in parsed.items():
+    for path in paths:
+        c=CheckHTML();c.feed(path.read_text());parsed[path.resolve()]=c
+        assert len(c.ids)==len(set(c.ids)),(path,'duplicate ID')
+        assert not c.external_assets,(path,'external dependency')
+    for path,c in parsed.items():
         for href in c.links:
             if href.startswith(('https:','http:','mailto:')):continue
-            path,_,fragment=href.partition('#');path=path or name
-            assert (ROOT/path).is_file(),(name,href)
-            if fragment and path in parsed:assert fragment in parsed[path].ids,(name,href)
-    with zipfile.ZipFile(ROOT/'ccarp-professional-mock.zip') as z:
-        assert z.namelist()==pack
-        for name in pack:assert z.read(name)==(ROOT/name).read_bytes()
-    print('PASS: 63 questions, all 38 objectives, exact domain allocation, 5 standalone HTML pages, valid local links and ZIP byte matches.')
+            name,_,fragment=href.partition('#')
+            target=(path.parent/name).resolve() if name else path
+            assert target.is_relative_to(BASE) and target.is_file(),(path,href)
+            if fragment and target in parsed:assert fragment in parsed[target].ids,(path,href)
+
+def archive(name,paths):
+    # Stable timestamps keep identical rebuilds from creating binary-only diffs.
+    with zipfile.ZipFile(BASE/name,'w',zipfile.ZIP_DEFLATED) as z:
+        for path in paths:
+            entry=zipfile.ZipInfo(path.relative_to(BASE).as_posix(),date_time=(2026,10,12,0,0,0))
+            entry.compress_type=zipfile.ZIP_DEFLATED
+            z.writestr(entry,path.read_bytes())
+    with zipfile.ZipFile(BASE/name) as z:
+        assert z.namelist()==[p.relative_to(BASE).as_posix() for p in paths]
+        for path in paths:assert z.read(path.relative_to(BASE).as_posix())==path.read_bytes()
+
+if __name__=='__main__':
+    roots=[BASE]+sorted((BASE/'sets').glob('set-*'))
+    assert [p.name for p in roots[1:]]==[f'set-{n:02d}' for n in range(2,7)]
+    all_files=[]
+    versions=[]
+    stems=[]
+    for n,root in enumerate(roots,1):
+        files=build_form(root,f'Set {n:02d}')
+        versions.append(D['version'])
+        stems.extend(re.sub(r'\W+',' ',q['stem']).strip().lower() for q in QUESTIONS)
+        all_files.extend(files)
+        if n==1:
+            original=files[:5]+[BASE/p for p in ('research-feedback.md','research-notes.md','research-refresh-2026-10-12.md','README.md','exam-data.json')]
+            archive('ccarp-professional-mock.zip',original)
+        else:all_files.append(root/'research-addendum.md')
+    assert len(set(versions))==6,'Saved sittings need distinct form versions'
+    assert len(stems)==len(set(stems))==378,'Duplicate question stem across forms'
+    ROOT,LABEL=BASE,'Six full-length sets'
+    cards=''
+    for n,root in enumerate(roots,1):
+        prefix='' if n==1 else root.relative_to(BASE).as_posix()+'/'
+        cards+=f'<article class="objective"><p class="eyebrow">SET {n:02d} · {"ORIGINAL" if n==1 else "NEW"}</p><h2>63 decisions. Two hours.</h2><p>All 38 objectives · 38 single-answer · 25 multiple-response · full option rationales.</p><div class="actions"><a class="btn primary" href="{prefix}index.html">Start Set {n:02d} →</a><a class="btn" href="{prefix}blueprint.html">Coverage</a><a class="btn" href="{prefix}questions.html">Print questions</a><a class="btn" href="{prefix}answer-key.html">Answer key · spoilers</a><a class="btn" href="{prefix}research.html">Research</a></div></article>'
+    body='<p class="eyebrow">CCAR-P · INDEPENDENT ORIGINAL PRACTICE</p><h1>Six sittings.<br>Fresh decisions each time.</h1><p class="lead">378 original questions across the collection, including five additional full-length forms. Each follows the supplied July 2026 v1.0 guide: 63 questions, 120 minutes and all 38 objectives. Set 01 is the original form.</p><div class="actions"><a class="btn primary" href="ccarp-professional-all-sets.zip" download>Download all six sets</a><a class="btn" href="research-refresh-2026-10-12.md">Research refresh · 12 October 2026</a></div><p class="note">Choose a set you have not attempted. Saved progress and the continuous timer are separate for each form; starting another set does not pause a sitting. Use one tab per sitting. The forms share principles, but no question stems are reused. Retakes of a form can reflect memory.</p>'+cards+'<h2>The quality contract</h2><p>Every set uses the same domain allocation: 11 / 8 / 12 / 10 / 9 / 9 / 4. Multiple-response items state the exact response count. The five new sets include numerical exhibits, operational diagnostics, competing release gates, lifecycle decisions and original supplemental format drills. Correct answers and every distractor are explained after submission.</p><p class="note">Demanding architectural practice, without a claim of exact live-exam equivalence. Candidate feedback is mixed and self-reported; forms have not been psychometrically calibrated. Exact-set raw scoring is a mock convention, not a conversion to the official 720 scaled pass standard. Independent and unaffiliated with Anthropic. No live questions, original decks or official PDF are included.</p>'
+    (BASE/'sets.html').write_text(frame('CCAR-P · six mock exam sets',body))
+    all_files.extend([BASE/p for p in ('sets.html','README.md','research-refresh-2026-10-12.md','research-feedback.md','research-notes.md')])
+    archive('ccarp-professional-all-sets.zip',all_files)
+    verify_pages([p for p in all_files if p.suffix=='.html'])
+    print('PASS: 6 forms / 378 unique stems, all 38 objectives per form, exact domain allocations, isolated saved versions, 31 standalone pages and ZIP byte matches.')

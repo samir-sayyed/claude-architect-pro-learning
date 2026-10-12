@@ -1,13 +1,13 @@
 # Claude Architect Professional — Learning & Practice
 
-Independent visual learning pages and an original, timed CCAR-P mock exam.
+Independent visual learning pages and six original, timed CCAR-P mock exams.
 
-**[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP; extract it and open its `index.html` in a modern browser.
+**[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP. After extraction, open `index.html` for the learning pages or `sets.html` for the mock collection in a modern browser.
 
 | Section | Open | Offline download |
 |---|---|---|
 | Eleven episode learning pages | [Course index](learning/index.html) | [Learning ZIP](learning/claude-architect-pro-learning-pages.zip) |
-| 63-question, 120-minute mock exam | [Start the mock](mock-exams/ccar-p/index.html) | [Exam ZIP](mock-exams/ccar-p/ccarp-professional-mock.zip) |
+| Six mock sets, 63 questions / 120 minutes each | [Choose a set](mock-exams/ccar-p/sets.html) | [All-sets ZIP](mock-exams/ccar-p/ccarp-professional-all-sets.zip) |
 
 ## Repository layout
 
@@ -16,7 +16,8 @@ index.html                 Home page linking both sections
 build.py                   Rebuild both sections and verify local navigation
 learning/                  Episode pages, course data, generator, previews and ZIP
 mock-exams/
-  ccar-p/                  Timed exam, question data, code, tests and research
+  ccar-p/                  Set 01, shared generator/runtime, research and set catalogue
+    sets/set-02/ ... set-06/  Each: question data, timed HTML, coverage, print/key, research
 ```
 
 The root `index.html` opens the study home. The course index and all eleven episode pages live only in `learning/`. Downloads, data files and previews live in their section folders. Use the new `learning/ep01-...html` through `learning/ep11-...html` paths; the former root episode URLs have been removed.
@@ -29,7 +30,7 @@ Source credits: [Peace Of Code's supplied playlist](https://youtube.com/playlist
 
 ## Mock exam
 
-The original mock covers all 38 objectives in the supplied official CCAR-P guide v1.0, effective July 2026. It allocates 63 scored questions across seven domains, with single-answer and multiple-response items, saved progress, a continuous 120-minute clock, flags, domain diagnostics and explanations for every option. Candidate-reported Yes/No and matching formats are supplemental, unscored drills.
+The six forms contain **378 original questions**, including 315 added across Sets 02–06. [Choose a set](mock-exams/ccar-p/sets.html). Set 01 retains the original question bank. Each mock covers all 38 objectives in the supplied official CCAR-P guide v1.0, effective July 2026. Each allocates 63 scored questions across seven domains, with single-answer and multiple-response items, saved progress, a continuous 120-minute clock, flags, domain diagnostics and explanations for every option. Candidate-reported Yes/No and matching formats are supplemental, unscored drills.
 
 - [Objective coverage](mock-exams/ccar-p/blueprint.html)
 - [Research, credits and limitations](mock-exams/ccar-p/research.html)
@@ -37,9 +38,9 @@ The original mock covers all 38 objectives in the supplied official CCAR-P guide
 - [Complete answer key — spoilers](mock-exams/ccar-p/answer-key.html)
 - [Exam instructions and scoring conventions](mock-exams/ccar-p/README.md)
 
-Research includes ten public candidate accounts across six platforms, the user's two sample references and primary technical documentation. Questions and explanations are original; no leaked or reconstructed live exam questions are included. The supplied official PDF and personal knowledge-vault files are not published here.
+The [12 October research refresh](mock-exams/ccar-p/research-refresh-2026-10-12.md) rechecks public candidate accounts and newer October feedback, separating promotional and excluded sources. Each new set has its own research addendum and primary-source citations. The original research includes ten public accounts across six platforms and the user's two sample references. Questions and explanations are original; no leaked or reconstructed live exam questions are included. The supplied official PDF and personal knowledge-vault files are not published here.
 
-Difficulty is intentionally demanding but has not been calibrated against the live exam. Exact-match raw scoring is a mock convention; no official pass prediction or raw-to-scaled conversion is provided. Retakes reuse the same form.
+Difficulty is intentionally demanding but has not been calibrated against the live exam. Exact-match raw scoring is a mock convention; no official pass prediction or raw-to-scaled conversion is provided. Each form has separate saved progress and timer state. Retakes reuse that form.
 
 ## Rebuild and check
 

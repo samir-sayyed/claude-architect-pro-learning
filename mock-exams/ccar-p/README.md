@@ -1,6 +1,8 @@
-# Claude Architect Professional — Original Mock Exam
+# Claude Architect Professional — Mock Exam Collection
 
-Open **index.html** in a modern browser. The full exam runs offline with no API, sign-in, analytics or external assets. Keep the companion files together for navigation. The ZIP is a portable study pack.
+Open **index.html** for Set 01 in a modern browser. The full exam runs offline with no API, sign-in, analytics or external assets. Keep the companion files together for navigation. The original `ccarp-professional-mock.zip` is a standalone Set 01 study pack.
+
+In the full repository or `ccarp-professional-all-sets.zip`, open **[sets.html](sets.html)** to choose from six forms (378 original questions). Sets 02–06 live in `sets/set-02/` through `sets/set-06/`. Shared templates, styling, runtime and build code remain here. The Set 01-only ZIP does not contain the catalogue or additional forms.
 
 - 63 scored questions, 120 uninterrupted minutes.
 - 38 single-answer and 25 multiple-response questions, including select-two and select-three.
@@ -20,11 +22,13 @@ Open **index.html** in a modern browser. The full exam runs offline with no API,
 - `research-notes.md`: official mechanics, source hierarchy and design decisions.
 - `exam-data.json`: editable original question bank, option rationales and mapping.
 
+The [12 October research refresh](research-refresh-2026-10-12.md) distinguishes newly inspected October accounts, rechecked earlier testimony, promotional interests and exclusions. Each new set includes its own `research-addendum.md`, five HTML pages and `exam-data.json`. New forms each contain at least five exhibits, checked calculations and unique supplemental drills.
+
 ## Scoring and timing
 
 Exact correct response sets earn one point. No partial credit or negative marking in this mock. Unanswered/incomplete items earn zero. This is a practice convention: the guide does not disclose the live exam’s partial-credit policy or raw-to-scaled conversion. **720/1,000 is a scaled passing standard, not a raw 72% cutoff.** No official pass/fail prediction is provided.
 
-The timer uses an absolute browser deadline and continues while the tab is closed. If the browser suspends the page, expiry is enforced on the next timer tick or when reopened. Saved progress is validated before loading. Local-file storage behavior varies by browser; if unavailable, keep the tab open. Use one tab for a sitting. Reset is available after submission and requires an explicit UI confirmation. Retakes use the same form, so familiarity may raise scores.
+The timer uses an absolute browser deadline and continues while the tab is closed. If the browser suspends the page, expiry is enforced on the next timer tick or when reopened. Saved progress is validated before loading. Each form has a distinct version and storage key, so responses and results cannot load into another form. Starting another form does not pause a running clock. Local-file storage behavior varies by browser; if unavailable, keep the tab open. Use one tab for a sitting. Reset is available after submission and requires an explicit UI confirmation. Retakes use the same form, so familiarity may raise scores.
 
 ## Sources and independence
 
@@ -36,7 +40,7 @@ Public feedback spans Reddit, LinkedIn, Qiita, Zenn, DEV and GitHub; full attrib
 
 Questions and explanations are original practice material. Independent and unaffiliated with Anthropic or the source providers. No leaked/reconstructed live questions, original decks, videos, full transcripts or official PDF are distributed in the pack. Scenario numbers, model labels and exercise rates are fictional and supplied in the stems.
 
-**Difficulty is deliberately demanding but not calibrated against live items.** Public candidate reports conflict and do not establish exact equivalence, a pass prediction or a universal item-format mix. Research date: 2026-10-11. Scope is pinned to guide v1.0; changing product specs need re-verification.
+**Difficulty is deliberately demanding but not calibrated against live items.** Public candidate reports conflict and do not establish exact equivalence, a pass prediction or a universal item-format mix. Original research date: 2026-10-11; refresh and new forms: 2026-10-12. Scope is pinned to guide v1.0; changing product specs need re-verification.
 
 ## Rebuild and checks
 
@@ -47,4 +51,4 @@ python3 build.py
 node test.js
 ```
 
-Edit `exam-data.json` for content; `template.html`, `exam.css` and `exam.js` for the experience. Build checks cover counts, allocation, objective coverage, required selections, citations, IDs, local links, standalone dependencies and ZIP byte matches. Node assertions cover exact scoring, invalid saved state, selection limits and expiry arithmetic. Browser verification covers the interactive flow and responsive layout.
+Edit the relevant `exam-data.json` for content (root is Set 01, new sets are under `sets/`); `template.html`, `exam.css` and `exam.js` for the experience. Build checks cover counts, allocation, objective coverage, required selections, citations, IDs, local links, standalone dependencies and ZIP byte matches. Node assertions cover all six forms: exact scoring, invalid and cross-form saved states, separate storage keys, selection limits and expiry auto-submission. Browser verification covers the catalogue, selection limits, save/resume isolation, submission, explanations and supplemental matching.

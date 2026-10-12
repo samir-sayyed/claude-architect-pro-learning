@@ -1,0 +1,3091 @@
+{
+  "version": "2026-10-12-set-03",
+  "minutes": 120,
+  "domains": [
+    {
+      "id": 1,
+      "name": "Solution Design & Architecture",
+      "weight": 17,
+      "objectives": [
+        {
+          "id": "1.1",
+          "name": "Translate business problems into Claude-based AI solutions"
+        },
+        {
+          "id": "1.2",
+          "name": "Design end-to-end architectures"
+        },
+        {
+          "id": "1.3",
+          "name": "Select architectural patterns"
+        },
+        {
+          "id": "1.4",
+          "name": "Design multi-agent systems and orchestration"
+        },
+        {
+          "id": "1.5",
+          "name": "Apply decomposition techniques"
+        },
+        {
+          "id": "1.6",
+          "name": "Align solutions to business value pillars"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Claude Models, Prompting & Context Engineering",
+      "weight": 13,
+      "objectives": [
+        {
+          "id": "2.1",
+          "name": "Select models based on trade-offs"
+        },
+        {
+          "id": "2.2",
+          "name": "Design system prompts, templates and guardrails"
+        },
+        {
+          "id": "2.3",
+          "name": "Apply zero-shot, few-shot and reasoning techniques"
+        },
+        {
+          "id": "2.4",
+          "name": "Optimize context windows and token usage"
+        },
+        {
+          "id": "2.5",
+          "name": "Implement caching, modular prompts and Skills"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Integration",
+      "weight": 19,
+      "objectives": [
+        {
+          "id": "3.1",
+          "name": "Evaluate capability bloat"
+        },
+        {
+          "id": "3.2",
+          "name": "Analyze authentication and authorization"
+        },
+        {
+          "id": "3.3",
+          "name": "Evaluate accuracy-latency trade-offs"
+        },
+        {
+          "id": "3.4",
+          "name": "Select observability strategies at scale"
+        },
+        {
+          "id": "3.5",
+          "name": "Design RAG chunking and indexing"
+        },
+        {
+          "id": "3.6",
+          "name": "Match retrieval to data shape and queries"
+        },
+        {
+          "id": "3.7",
+          "name": "Select MCP, API/CLI or agent-to-agent mechanisms"
+        },
+        {
+          "id": "3.8",
+          "name": "Evaluate progressive discovery versus monolithic context"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Evaluation, Testing & Optimization",
+      "weight": 16,
+      "objectives": [
+        {
+          "id": "4.1",
+          "name": "Define accuracy, latency, cost, safety and security metrics"
+        },
+        {
+          "id": "4.2",
+          "name": "Design datasets and mixed-method test frameworks"
+        },
+        {
+          "id": "4.3",
+          "name": "Conduct A/B tests and iterative improvements"
+        },
+        {
+          "id": "4.4",
+          "name": "Diagnose prompt failure, hallucinations and model mismatch"
+        },
+        {
+          "id": "4.5",
+          "name": "Optimize tokens, latency and cost-performance"
+        },
+        {
+          "id": "4.6",
+          "name": "Monitor performance with logs and observability"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Governance, Safety & Risk Management",
+      "weight": 14,
+      "objectives": [
+        {
+          "id": "5.1",
+          "name": "Implement guardrails and safety controls"
+        },
+        {
+          "id": "5.2",
+          "name": "Identify risks, limitations and failure modes"
+        },
+        {
+          "id": "5.3",
+          "name": "Apply human-in-the-loop validation"
+        },
+        {
+          "id": "5.4",
+          "name": "Ensure regulatory compliance"
+        },
+        {
+          "id": "5.5",
+          "name": "Address bias, fairness and transparency"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Stakeholder Communication & Lifecycle Management",
+      "weight": 14,
+      "objectives": [
+        {
+          "id": "6.1",
+          "name": "Conduct discovery and requirement gathering"
+        },
+        {
+          "id": "6.2",
+          "name": "Communicate decisions and trade-offs"
+        },
+        {
+          "id": "6.3",
+          "name": "Manage feedback, expectations and SLAs"
+        },
+        {
+          "id": "6.4",
+          "name": "Document architectures and implementation guidance"
+        },
+        {
+          "id": "6.5",
+          "name": "Support discovery, design, handoff, monitoring and iteration"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Developer Productivity & Operational Enablement",
+      "weight": 7,
+      "objectives": [
+        {
+          "id": "7.1",
+          "name": "Configure Claude tools and environments for teams"
+        },
+        {
+          "id": "7.2",
+          "name": "Improve AI-assisted developer workflows"
+        },
+        {
+          "id": "7.3",
+          "name": "Support debugging and operational resolution"
+        }
+      ]
+    }
+  ],
+  "sources": {
+    "guide": {
+      "title": "Official CCAR-P Exam Guide v1.0 (attached; July 2026)",
+      "url": "https://anthropic-partners.skilljar.com/page/partner-certifications",
+      "note": "Blueprint and illustrative item style: attached PDF pages 3–7. Link opens the official guide directory, not a hosted copy of the attachment."
+    },
+    "agents": {
+      "title": "Anthropic: Building effective agents",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents"
+    },
+    "cache": {
+      "title": "Claude Platform: Prompt caching",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+    },
+    "skills": {
+      "title": "Claude Platform: Agent Skills",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview"
+    },
+    "context": {
+      "title": "Claude Platform: Context windows",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+    },
+    "retrieval": {
+      "title": "Anthropic: Contextual Retrieval",
+      "url": "https://www.anthropic.com/engineering/contextual-retrieval"
+    },
+    "auth": {
+      "title": "MCP: Authorization (2026-07-28)",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization"
+    },
+    "mcp-security": {
+      "title": "MCP: Security best practices",
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices"
+    },
+    "discovery": {
+      "title": "Claude Platform: Tool search",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool"
+    },
+    "evals": {
+      "title": "Claude Platform: Define success and build evaluations",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+    },
+    "agent-evals": {
+      "title": "Anthropic: Demystifying evals for AI agents",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+    },
+    "injection": {
+      "title": "Claude Platform: Mitigate prompt injections",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+    },
+    "hallucinations": {
+      "title": "Claude Platform: Reduce hallucinations",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+    },
+    "permissions": {
+      "title": "Claude Code: Configure permissions",
+      "url": "https://code.claude.com/docs/en/permissions"
+    },
+    "memory": {
+      "title": "Claude Code: Project instructions and memory",
+      "url": "https://code.claude.com/docs/en/memory"
+    },
+    "hooks": {
+      "title": "Claude Code: Hooks reference",
+      "url": "https://code.claude.com/docs/en/hooks"
+    },
+    "monitoring": {
+      "title": "Claude Code: Monitoring",
+      "url": "https://code.claude.com/docs/en/monitoring-usage"
+    },
+    "hipaa": {
+      "title": "HHS: HIPAA and cloud computing",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/special-topics/health-information-technology/cloud-computing/index.html"
+    },
+    "gdpr": {
+      "title": "EUR-Lex: GDPR, Articles 5, 17, 25 and 28",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng"
+    },
+    "fedramp": {
+      "title": "FedRAMP: Using a certified cloud service",
+      "url": "https://www.fedramp.gov/2026/agencies/use/"
+    },
+    "prompting": {
+      "title": "Claude Platform: Prompting best practices",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+    },
+    "thinking": {
+      "title": "Claude Platform: Extended thinking",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+    },
+    "stop": {
+      "title": "Claude Platform: Stop reasons and fallback",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+    }
+  },
+  "questions": [
+    {
+      "id": "S03Q01",
+      "domain": 1,
+      "objectives": [
+        "1.1",
+        "1.6"
+      ],
+      "title": "An AI proposal with a non-AI dependency",
+      "stem": "A public library proposes an AI adviser to reduce unmet book requests. Discovery shows patrons already identify the correct titles, but requests fail because catalog availability updates only weekly. The library can fund either live inventory integration or a recommendation assistant this quarter. Success means fewer trips for unavailable books, and no evidence suggests title discovery is limiting demand. Which initial scope BEST follows the stated business need?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Implement current availability integration and measure unsuccessful visits first, deferring AI recommendations until a separate discovery need is demonstrated.",
+          "correct": true,
+          "why": "It addresses the measured failure rather than assuming AI is necessary."
+        },
+        {
+          "text": "Launch recommendations only for popular titles, preserving the weekly inventory feed and measuring the volume of recommended books borrowed.",
+          "correct": false,
+          "why": "Borrow volume is not the stated unavailable-trip outcome."
+        },
+        {
+          "text": "Use Claude to explain the weekly catalog more clearly and show confidence labels beside recommendations for unavailable titles.",
+          "correct": false,
+          "why": "Clearer language does not make availability current."
+        },
+        {
+          "text": "Deploy recommendations over the weekly catalog and measure unsuccessful visits, retaining staff escalation for unavailable recommended titles.",
+          "correct": false,
+          "why": "Staff escalation cannot repair the known freshness bottleneck before a visit."
+        }
+      ],
+      "decision": "Business translation can identify a prerequisite data integration as the first useful solution; AI is not itself the objective.",
+      "sources": [
+        "guide"
+      ]
+    },
+    {
+      "id": "S03Q02",
+      "domain": 1,
+      "objectives": [
+        "1.2",
+        "1.6"
+      ],
+      "title": "Separating generated output from completed work",
+      "stem": "A grant-writing assistant drafts applications from approved project records. The pilot counts documents generated, but teams discard many drafts because required partner signatures arrive late. Sponsors want improved on-time submission rather than more drafts. Signature collection is handled by an existing workflow service, and the assistant must not fabricate missing approvals. Which TWO changes most directly connect the architecture to the actual outcome?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Link draft versions to accepted submissions and rejection reasons, assigning an owner to investigate deadline misses and test workflow changes.",
+          "correct": true,
+          "why": "This measures and closes the business feedback loop."
+        },
+        {
+          "text": "Integrate application readiness with the signature workflow, representing missing approvals as explicit blocking states rather than filled narrative placeholders.",
+          "correct": true,
+          "why": "Readiness must include non-generation prerequisites."
+        },
+        {
+          "text": "Count applications with plausible signature text as complete while the official approval collection continues in the separate workflow service.",
+          "correct": false,
+          "why": "Plausible text cannot substitute for required approvals."
+        },
+        {
+          "text": "Increase draft-generation capacity and retain the same disconnected signature process, estimating success from maximum theoretical document throughput.",
+          "correct": false,
+          "why": "Generation capacity is not completed-submission capacity."
+        },
+        {
+          "text": "Add a second model to polish every draft before signatures arrive, measuring increased linguistic quality as the primary completion indicator.",
+          "correct": false,
+          "why": "Polish does not remove the documented submission blocker."
+        }
+      ],
+      "decision": "Represent the prerequisites of the business outcome and observe actual completion, not just the model's intermediate artifact.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q03",
+      "domain": 1,
+      "objectives": [
+        "1.3"
+      ],
+      "title": "A hybrid boundary rather than one control pattern",
+      "stem": "A water utility has a documented outage-response process with mandatory permit and notification steps. Within the diagnosis step, anomaly investigation requires choosing telemetry sources from intermediate observations; no fixed diagnostic tree is adequate. Operators authorize all control changes. The team wants predictable compliance steps without querying every diagnostic source on every incident. Which control pattern BEST fits these different kinds of work?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Use one fixed sequence querying every telemetry source before permits and notifications, retaining operator authorization for any control changes.",
+          "correct": false,
+          "why": "It wastes diagnosis effort and postpones required process obligations."
+        },
+        {
+          "text": "Use an explicit outer workflow with a bounded investigative agent inside diagnosis, retaining operator authorization for control changes.",
+          "correct": true,
+          "why": "Stable obligations and dynamic evidence paths need different controls."
+        },
+        {
+          "text": "Use one free-planning agent for permits, notifications and diagnosis, giving it the same operator-approval tool for every consequential action.",
+          "correct": false,
+          "why": "This adds unnecessary variability to known mandatory steps."
+        },
+        {
+          "text": "Use a separate agent for each mandatory step and accept their completion summaries as the sole evidence that the process advanced correctly.",
+          "correct": false,
+          "why": "Independent summaries do not enforce the stable cross-step contract."
+        }
+      ],
+      "decision": "Combine control patterns at justified boundaries instead of forcing every subtask into either fixed sequencing or dynamic planning.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q04",
+      "domain": 1,
+      "objectives": [
+        "1.4"
+      ],
+      "title": "Multi-agent evidence disagreement",
+      "stem": "A pharmaceutical literature assistant delegates studies to independent reviewers. Two reviewers report opposite conclusions because one includes a retracted paper and the other excludes it. The coordinator currently averages their confidence scores and emits one recommendation. The task requires traceable inclusion criteria and explicitly allows unresolved disagreement. Which TWO orchestration changes BEST handle this conflict without hiding material uncertainty?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Use a third reviewer to vote on the preferred prose conclusion without showing the disputed source identities or inclusion criteria.",
+          "correct": false,
+          "why": "Voting without evidence does not resolve the underlying conflict."
+        },
+        {
+          "text": "Require each reviewer to return source identities, eligibility decisions and supporting claims under the same versioned inclusion criteria.",
+          "correct": true,
+          "why": "This makes the reason for disagreement inspectable."
+        },
+        {
+          "text": "Merge every cited paper into the final context and require one definitive recommendation so the output remains operationally simple.",
+          "correct": false,
+          "why": "The task permits uncertainty and requires inclusion discipline."
+        },
+        {
+          "text": "Have the coordinator reconcile source eligibility before synthesis and preserve unresolved evidence conflicts for domain-expert review.",
+          "correct": true,
+          "why": "Reconciliation and escalation respect the allowed uncertainty."
+        },
+        {
+          "text": "Weight reviewers by response speed so efficient agents dominate when evidence conclusions disagree within the allotted time budget.",
+          "correct": false,
+          "why": "Speed does not determine source eligibility."
+        }
+      ],
+      "decision": "Reconcile evidence and criteria, not merely confidence or votes; legitimate uncertainty can be an explicit output.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q05",
+      "domain": 1,
+      "objectives": [
+        "1.5"
+      ],
+      "title": "Decomposition that duplicates the hard part",
+      "stem": "A manufacturer splits defect investigation by factory to reduce context size. Most incidents actually span a shared upstream supplier, and each factory agent independently reconstructs the same supplier history with different assumptions. The final report contains incompatible timelines and more total retrieval calls than the original system. Which decomposition revision BEST addresses the common dependency while retaining local analysis where it adds value?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Split factories into smaller production-line agents and ask the final synthesizer to average their supplier-event timestamps.",
+          "correct": false,
+          "why": "Smaller partitions do not resolve shared factual inconsistency."
+        },
+        {
+          "text": "Keep factory boundaries and increase every agent's retrieval budget so each can independently reconstruct a more complete supplier history.",
+          "correct": false,
+          "why": "This duplicates the same hard dependency and can preserve conflicts."
+        },
+        {
+          "text": "Build one authoritative supplier timeline with provenance, then delegate factory-specific impact analysis against that shared versioned evidence contract.",
+          "correct": true,
+          "why": "It extracts the shared dependency before parallel local work."
+        },
+        {
+          "text": "Assign the largest model to final synthesis and leave factory evidence assumptions implicit to reduce the delegation contract size.",
+          "correct": false,
+          "why": "A stronger synthesizer cannot reliably infer missing assumptions."
+        }
+      ],
+      "decision": "Choose a boundary that isolates shared truth from local consequences; smaller contexts do not automatically yield better decomposition.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q06",
+      "domain": 1,
+      "objectives": [
+        "1.6"
+      ],
+      "title": "Expected processing cost including escalation",
+      "stem": "A records office compares two fictional extraction configurations on 10,000 documents. Configuration A costs $0.04 per document and sends 8% to a $1.20 manual exception process. Configuration B costs $0.07 per document and sends 3% to that same process. All non-escalated outputs and reviewed exceptions meet required quality; capacity is available and fixed costs are equal. Which economic conclusion is supported for this workload?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Choose A at $400 total versus B at $700, saving $300 because both configurations meet the same final quality requirement.",
+          "correct": false,
+          "why": "This excludes different required exception costs."
+        },
+        {
+          "text": "Choose B at $1,060 total versus A at $1,000, accepting $60 additional cost for reduced manual exception volume.",
+          "correct": false,
+          "why": "A's exception cost is $960, not $600."
+        },
+        {
+          "text": "Choose B at $1,060 total versus A at $1,360, saving $300 when manual exception handling is included.",
+          "correct": true,
+          "why": "B=700+300×1.20; A=400+800×1.20."
+        },
+        {
+          "text": "Treat both as economically equal because B's three-cent model premium exactly offsets its five-percentage-point reduction in escalations.",
+          "correct": false,
+          "why": "Five percent × $1.20 is six cents, not three."
+        }
+      ],
+      "decision": "Compare delivered-case economics including mandatory recovery work; nominal model-call cost can reverse the actual ranking.",
+      "sources": [
+        "guide",
+        "evals"
+      ],
+      "exhibit": {
+        "headers": [
+          "Configuration",
+          "Model charge / doc",
+          "Exception rate",
+          "Manual charge / exception"
+        ],
+        "rows": [
+          [
+            "A",
+            "$0.04",
+            "8%",
+            "$1.20"
+          ],
+          [
+            "B",
+            "$0.07",
+            "3%",
+            "$1.20"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S03Q07",
+      "domain": 1,
+      "objectives": [
+        "1.3",
+        "1.4",
+        "1.6"
+      ],
+      "title": "A shared budget across delegated searches",
+      "stem": "A due-diligence coordinator delegates ten research tasks. Each worker has a ten-call limit, but retries and newly spawned workers make total expenditure unpredictable. The customer authorizes a fixed investigation budget and accepts a partial report with explicit gaps. The team wants useful concurrency without overrunning that authorization. Which THREE controls BEST implement a coherent budget boundary for the whole investigation?",
+      "select": 3,
+      "options": [
+        {
+          "text": "Track a shared task-level budget covering worker calls, retries and further delegation, with an atomic reservation mechanism for concurrent work.",
+          "correct": true,
+          "why": "Local limits do not cap aggregate concurrent expenditure."
+        },
+        {
+          "text": "Keep independent per-worker limits and spawn replacement workers whenever one reaches its cap before returning a complete answer.",
+          "correct": false,
+          "why": "Replacement workers bypass the global spending boundary."
+        },
+        {
+          "text": "Measure total expenditure only after synthesis and offer the customer an explanation if independent worker limits produced an overrun.",
+          "correct": false,
+          "why": "Post-hoc accounting cannot enforce prior authorization."
+        },
+        {
+          "text": "Propagate remaining-budget and stopping rules into delegation contracts and cancel or reconcile in-flight work through a defined termination policy.",
+          "correct": true,
+          "why": "Workers must respect and finish under shared stopping semantics."
+        },
+        {
+          "text": "Prioritize research obligations by consequence and expected value, returning unresolved gaps when the authorized remaining budget is exhausted.",
+          "correct": true,
+          "why": "The customer permits a bounded partial outcome."
+        }
+      ],
+      "decision": "A system-level authorization needs a system-level budget; local worker caps and after-the-fact accounting are insufficient.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q08",
+      "domain": 1,
+      "objectives": [
+        "1.1",
+        "1.3"
+      ],
+      "title": "A stable ruleset around ambiguous text",
+      "stem": "A university routes reimbursement requests to one of twelve published policy categories. Category eligibility rules and approval paths are stable, but employees describe purchases in free text and occasionally omit key facts. The system must preserve the official rules while reducing staff reading time. Which division of responsibility BEST fits the problem without moving established policy into an opaque decision process?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Train the prompt on historical approved requests and let similarity to prior outcomes replace the published category rules.",
+          "correct": false,
+          "why": "Historical outcomes may not capture the current rule boundary."
+        },
+        {
+          "text": "Use Claude to extract candidate facts and request missing details, then apply versioned category rules and preserve the required approval path.",
+          "correct": true,
+          "why": "Language understanding augments rather than replaces authoritative policy."
+        },
+        {
+          "text": "Route every request to staff untouched until free-text inputs can be converted into fully structured forms without AI assistance.",
+          "correct": false,
+          "why": "This forgoes useful extraction within the existing policy boundary."
+        },
+        {
+          "text": "Ask Claude to propose a new category taxonomy per request and map it back to the twelve categories during final reporting.",
+          "correct": false,
+          "why": "A changing taxonomy adds unnecessary ambiguity."
+        }
+      ],
+      "decision": "Separate uncertain interpretation from stable policy execution; the appropriate AI scope need not own the final classification rule.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q09",
+      "domain": 1,
+      "objectives": [
+        "1.4",
+        "1.5"
+      ],
+      "title": "A subtask that needs shared context",
+      "stem": "A security review agent delegates code files independently. A credential-flow defect spans three modules, and each worker sees only one file, reporting no issue. The team cannot place the whole repository into every worker context. The coordinator knows the relevant call graph and can retrieve bounded dependencies. Which delegation strategy BEST targets the failure while preserving manageable context?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Repeat file-local reviews with more independent workers and use majority agreement to reduce the chance of a missed defect.",
+          "correct": false,
+          "why": "All workers still lack the needed cross-module context."
+        },
+        {
+          "text": "Delegate along the credential-flow boundary, supplying the relevant call graph, dependency snippets and invariant to test across the three modules.",
+          "correct": true,
+          "why": "This aligns subtask context with the cross-module property."
+        },
+        {
+          "text": "Move all review to one model call over truncated repository text, favoring recently changed files and omitting the older credential modules.",
+          "correct": false,
+          "why": "Truncation can discard the exact dependency being tested."
+        },
+        {
+          "text": "Supply only file names and ask each worker to infer unseen callers so every delegation remains small and uniform.",
+          "correct": false,
+          "why": "Unseen dependencies cannot be reliably inferred."
+        }
+      ],
+      "decision": "A useful decomposition must preserve the information necessary to test the delegated invariant, even when that crosses file boundaries.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q10",
+      "domain": 1,
+      "objectives": [
+        "1.2",
+        "1.6"
+      ],
+      "title": "Evidence freshness as part of delivery",
+      "stem": "A market briefing assistant generates accurate summaries from yesterday's approved feed. Analysts sometimes edit the briefing after a late correction arrives, but the distributed PDF still links to the superseded facts. The business needs recipients to recognize corrected briefings and avoid acting on withdrawn figures. Which TWO additions most directly complete the end-to-end delivery architecture?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Track briefing versions and source validity, with a defined correction or withdrawal channel reaching recipients of materially superseded outputs.",
+          "correct": true,
+          "why": "This handles changes after initial generation and distribution."
+        },
+        {
+          "text": "Increase the model's factuality score on the original feed, treating post-publication source changes as outside the assistant's product boundary.",
+          "correct": false,
+          "why": "The stated product obligation includes later correction visibility."
+        },
+        {
+          "text": "Record recipient delivery and correction status under the retention policy, assigning an owner for unresolved material correction failures.",
+          "correct": true,
+          "why": "This makes the downstream obligation observable and owned."
+        },
+        {
+          "text": "Regenerate tomorrow's briefing with the corrected facts, relying on normal publication to overwrite recipients' memory of yesterday's PDF.",
+          "correct": false,
+          "why": "It does not reach the already distributed superseded artifact."
+        },
+        {
+          "text": "Keep an internal corrected draft but retain the original public file name and all existing source links to avoid confusing recipients.",
+          "correct": false,
+          "why": "Unsignaled replacement does not establish who received the correction."
+        }
+      ],
+      "decision": "An output architecture must include the lifecycle of delivered artifacts when source changes can invalidate user decisions.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q11",
+      "domain": 1,
+      "objectives": [
+        "1.3",
+        "1.5"
+      ],
+      "title": "A critic that cannot repair missing evidence",
+      "stem": "A financial research agent drafts an investment memo, then an identical critic agent rewrites weak sections. Both receive the same incomplete evidence bundle. The critic improves style but repeats unsupported revenue figures, and extra iterations add latency. The team wants better factual coverage within the existing budget. Which architectural adjustment BEST addresses the observed limitation rather than repeating an ineffective refinement loop?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Add more identical critic passes over the same evidence bundle, accepting the draft when consecutive prose versions converge.",
+          "correct": false,
+          "why": "Convergence on prose does not establish factual support."
+        },
+        {
+          "text": "Make critique identify unsupported claims and trigger targeted evidence retrieval or explicit gaps before revision, with a bounded stopping criterion.",
+          "correct": true,
+          "why": "The repair introduces missing evidence rather than stylistic iteration alone."
+        },
+        {
+          "text": "Run the critic before the initial draft and retain the same closed evidence bundle for all subsequent revisions.",
+          "correct": false,
+          "why": "Reordering does not address the missing evidence."
+        },
+        {
+          "text": "Increase the critic's writing temperature while keeping evidence fixed so it can discover alternative plausible revenue explanations.",
+          "correct": false,
+          "why": "Plausible alternatives do not supply authoritative data."
+        }
+      ],
+      "decision": "A refinement loop helps only when its feedback can change the cause of failure; missing evidence needs retrieval or abstention.",
+      "sources": [
+        "guide",
+        "agents",
+        "hallucinations"
+      ]
+    },
+    {
+      "id": "S03Q12",
+      "domain": 2,
+      "objectives": [
+        "2.1"
+      ],
+      "title": "Choosing a specialist route with calibrated evidence",
+      "stem": "A multilingual service can use one general model or route a known language to a specialist configuration. The specialist is faster on that language but has only been tested on clean typed text; production includes scans and code-switching. The current general model passes all required slices within budget. Which model-selection action BEST respects the evidence gap before introducing a specialist route?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Randomly route all production scans to the specialist and count complaints after launch as its initial quality validation.",
+          "correct": false,
+          "why": "This exposes an unvalidated critical slice."
+        },
+        {
+          "text": "Route the entire language immediately because the specialist's faster clean-text benchmark establishes sufficient task-specific superiority.",
+          "correct": false,
+          "why": "The benchmark omits important production input forms."
+        },
+        {
+          "text": "Choose the specialist only when it declares high confidence, treating that declaration as proof of accuracy on code-switched scans.",
+          "correct": false,
+          "why": "Uncalibrated confidence does not fill the evidence gap."
+        },
+        {
+          "text": "Validate specialist and router on representative scans and code-switching, retaining the general path until combined quality and latency gates pass.",
+          "correct": true,
+          "why": "Both specialist fit and routing need representative evidence."
+        }
+      ],
+      "decision": "A specialist label and benchmark advantage do not replace representative system-level validation of its assigned route.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q13",
+      "domain": 2,
+      "objectives": [
+        "2.2",
+        "2.3"
+      ],
+      "title": "A prompt that confuses quoted examples with instructions",
+      "stem": "A policy assistant receives a user question plus quoted correspondence. In tests it sometimes follows an employee's quoted request to waive a fee, though the authorized user asked only whether the policy allows a waiver. The approved system policy remains unchanged, and retrieval contains the correct rule. Which TWO prompt changes BEST target this instruction-versus-evidence confusion while preserving the correspondence for analysis?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Increase the fee-waiver tool's permissions so a mistaken interpretation can complete the employee's request without generating an execution error.",
+          "correct": false,
+          "why": "More capability worsens the confusion's consequence."
+        },
+        {
+          "text": "Append quoted correspondence after the system policy and tell the model to prefer the most recent instruction when wording conflicts.",
+          "correct": false,
+          "why": "That gives lower-trust content an incorrect authority rule."
+        },
+        {
+          "text": "Explicitly delimit correspondence as untrusted evidence and state that embedded requests are to be analyzed rather than executed as user instructions.",
+          "correct": true,
+          "why": "This clarifies the role and authority of quoted material."
+        },
+        {
+          "text": "Remove all correspondence from every request so the model can never encounter a quoted employee instruction during policy analysis.",
+          "correct": false,
+          "why": "This loses facts required for the intended analysis."
+        },
+        {
+          "text": "Add contrastive reviewed examples where the same waiver wording is a quoted case fact versus an authorized request, and evaluate both slices.",
+          "correct": true,
+          "why": "Examples isolate the failing distinction."
+        }
+      ],
+      "decision": "Teach and test the evidence-authority distinction; prompt boundaries complement rather than replace execution authorization.",
+      "sources": [
+        "guide",
+        "prompting",
+        "injection"
+      ]
+    },
+    {
+      "id": "S03Q14",
+      "domain": 2,
+      "objectives": [
+        "2.3"
+      ],
+      "title": "Few-shot coverage without invented certainty",
+      "stem": "A document assistant handles clear dates correctly but invents dates when a scanned field is illegible. The required output allows an unknown value and a follow-up request. Existing examples all contain readable dates, and the evaluation includes independently labeled ambiguous scans. Which prompt intervention BEST tests the relevant behavior without teaching the model to treat all low-quality scans as unusable?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Add a rule to choose the most common date in the document whenever the target field is unreadable, retaining full answer coverage.",
+          "correct": false,
+          "why": "A plausible date is not supported evidence."
+        },
+        {
+          "text": "Add reviewed examples contrasting recoverable and genuinely illegible dates, showing the required unknown-and-follow-up behavior only when evidence is insufficient.",
+          "correct": true,
+          "why": "This teaches the boundary rather than a blanket refusal."
+        },
+        {
+          "text": "Add only more clear-date examples from different document layouts, keeping the output schema restricted to definite dates.",
+          "correct": false,
+          "why": "Those examples and schema do not teach the allowed unknown path."
+        },
+        {
+          "text": "Reject every scanned document before extraction, even when the target date is readable, so no incorrect date can be returned.",
+          "correct": false,
+          "why": "It sacrifices useful supported extraction unnecessarily."
+        }
+      ],
+      "decision": "Examples and schema should make uncertainty an intentional supported outcome, with a discriminating boundary rather than broad abstention.",
+      "sources": [
+        "guide",
+        "prompting",
+        "hallucinations"
+      ]
+    },
+    {
+      "id": "S03Q15",
+      "domain": 2,
+      "objectives": [
+        "2.4"
+      ],
+      "title": "A context budget with reserved output",
+      "stem": "A service has a fictional usable context budget of 32,000 tokens for this exercise. System instructions and tool schemas use 6,000, the current question uses 2,000, and the team reserves 4,000 for the response. Retrieved evidence totals 25,000 tokens, including duplicates. The assistant must retain essential instructions and relevant evidence. Which context-allocation change BEST fits the explicit budget without relying on output truncation?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Deduplicate and rank evidence into at most 20,000 tokens, preserving source identifiers and the stated 4,000-token response reserve.",
+          "correct": true,
+          "why": "32000−6000−2000−4000=20000 evidence tokens."
+        },
+        {
+          "text": "Keep all 25,000 evidence tokens and reduce the response reserve to 1,000, because evidence should dominate the allocation.",
+          "correct": false,
+          "why": "6000+2000+25000+1000 still exceeds 32000."
+        },
+        {
+          "text": "Keep the complete evidence bundle and let the service truncate whichever messages are oldest when generation begins.",
+          "correct": false,
+          "why": "Uncontrolled truncation may remove essential instructions or evidence."
+        },
+        {
+          "text": "Keep 24,000 evidence tokens and preserve the 4,000-token response reserve by excluding the current question from the context accounting.",
+          "correct": false,
+          "why": "The question still consumes the usable budget."
+        }
+      ],
+      "decision": "Budget all input components and intended output; remove redundant low-value evidence deliberately rather than depending on accidental truncation.",
+      "sources": [
+        "guide",
+        "context"
+      ],
+      "exhibit": {
+        "headers": [
+          "Component",
+          "Tokens"
+        ],
+        "rows": [
+          [
+            "Usable total",
+            "32,000"
+          ],
+          [
+            "Instructions/tools",
+            "6,000"
+          ],
+          [
+            "Question",
+            "2,000"
+          ],
+          [
+            "Reserved response",
+            "4,000"
+          ],
+          [
+            "Candidate evidence",
+            "25,000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S03Q16",
+      "domain": 2,
+      "objectives": [
+        "2.5"
+      ],
+      "title": "Cache reuse with a freshness obligation",
+      "stem": "A legal-research assistant reuses a static procedural prompt, but case-specific retrieved opinions can be corrected during the day. The team proposes caching the entire assembled request and treating cached answers as valid until tomorrow. Counsel requires current source validity at answer time. Which TWO changes BEST separate useful prompt reuse from the evidence-freshness obligation?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Move case-specific opinions into the shared system policy so every answer can reuse the same stable prefix regardless of corrections.",
+          "correct": false,
+          "why": "Dynamic evidence should not masquerade as stable policy."
+        },
+        {
+          "text": "Set a longer prompt-cache lifetime and assume cached legal opinions become authoritative until that lifetime expires.",
+          "correct": false,
+          "why": "Cache lifetime is not a source-validity guarantee."
+        },
+        {
+          "text": "If answer caching is used, key and invalidate it using relevant source versions and authorization, with validity checks matching the freshness commitment.",
+          "correct": true,
+          "why": "Returned answers need their own freshness and access controls."
+        },
+        {
+          "text": "Cache eligible stable prompt prefixes while retrieving or validating case-specific evidence under its current source-validity rules.",
+          "correct": true,
+          "why": "Prompt reuse need not freeze dynamic evidence."
+        },
+        {
+          "text": "Disable every form of caching permanently because current evidence requirements make reuse of static instructions inherently unsafe.",
+          "correct": false,
+          "why": "Static prefix reuse can coexist with current evidence validation."
+        }
+      ],
+      "decision": "Separate prompt-token reuse, evidence freshness and answer validity; these mechanisms have different correctness boundaries.",
+      "sources": [
+        "guide",
+        "cache"
+      ]
+    },
+    {
+      "id": "S03Q17",
+      "domain": 2,
+      "objectives": [
+        "2.5"
+      ],
+      "title": "A Skill discovered for the wrong task boundary",
+      "stem": "A developer assistant uses concise Skill metadata and loads procedures only after discovery. It repeatedly selects a cloud-deployment Skill for local preview requests because both descriptions say launch the app. The correct local-preview Skill is installed and works when selected; permissions already prevent production deployment. Which change BEST improves task selection while retaining progressive loading and the existing enforced safety boundary?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Load both complete procedures on every session and remove the concise metadata so the model must compare all instructions for every task.",
+          "correct": false,
+          "why": "This abandons progressive loading without repairing the trigger contract."
+        },
+        {
+          "text": "Broaden deployment permissions so choosing the wrong Skill no longer produces a denial before the local-preview task completes.",
+          "correct": false,
+          "why": "It weakens a working boundary and does not choose the correct task."
+        },
+        {
+          "text": "Delete the cloud-deployment Skill for all users, including deployment tasks, because its presence proves specialist procedures cannot be safely discovered.",
+          "correct": false,
+          "why": "The legitimate procedure can remain with discriminating metadata."
+        },
+        {
+          "text": "Clarify the two Skills' task boundaries and trigger descriptions, then test discovery on ambiguous local-preview and deployment requests.",
+          "correct": true,
+          "why": "The failure is selection metadata, not procedure availability or authority."
+        }
+      ],
+      "decision": "When procedures and permissions work, repair the discovery contract rather than duplicating context or widening authority.",
+      "sources": [
+        "guide",
+        "skills"
+      ]
+    },
+    {
+      "id": "S03Q18",
+      "domain": 2,
+      "objectives": [
+        "2.2",
+        "2.4"
+      ],
+      "title": "A structured output that omits the right distinction",
+      "stem": "A medical-device service extracts maintenance dates into a schema with fields for date and technician. Some reports mention a scheduled date and a completed date, but the prompt says only to find the maintenance date. The model produces valid JSON with the wrong date type. The downstream system rejects missing dates, though pending work is valid. Which TWO changes BEST address the specification ambiguity?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Keep one date field and force a response through stricter JSON validation, assuming schema conformance establishes the intended meaning.",
+          "correct": false,
+          "why": "Syntactic validity does not identify the correct date type."
+        },
+        {
+          "text": "Add reviewed examples and evaluation slices containing both date types, checking semantic field correctness rather than JSON validity alone.",
+          "correct": true,
+          "why": "This validates the ambiguity boundary."
+        },
+        {
+          "text": "Increase the output token limit so the model can explain which date it selected without changing the downstream schema.",
+          "correct": false,
+          "why": "Explanation does not fix the ambiguous contract."
+        },
+        {
+          "text": "Define scheduled and completed dates as distinct fields with explicit semantics, allowing unknown or not-yet-completed states where the workflow permits them.",
+          "correct": true,
+          "why": "The schema must represent the actual business states."
+        },
+        {
+          "text": "Choose whichever date appears first in the report and document that positional rule as the maintenance-date interpretation.",
+          "correct": false,
+          "why": "Position is unrelated to the stated business meaning."
+        }
+      ],
+      "decision": "Structured output enforces a shape, not an underspecified business meaning; represent and test the actual states.",
+      "sources": [
+        "guide",
+        "prompting",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q19",
+      "domain": 2,
+      "objectives": [
+        "2.1",
+        "2.3"
+      ],
+      "title": "Reasoning effort as a measured allocation",
+      "stem": "An assistant extracts straightforward form fields and resolves occasional cross-document inconsistencies. Raising reasoning effort globally improves the inconsistency slice but doubles latency for ordinary forms, breaching their service target. The task types can be distinguished by a validated preprocessing check. Which configuration experiment BEST preserves the proven benefit while testing a more efficient allocation of reasoning effort?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Disable higher effort globally because a configuration that breaches one slice cannot ever be useful within a routed design.",
+          "correct": false,
+          "why": "The demonstrated benefit may fit a validated specialist path."
+        },
+        {
+          "text": "Keep higher effort globally and report average latency across both task types so ordinary-form breaches become less visible.",
+          "correct": false,
+          "why": "The ordinary-form service target remains binding."
+        },
+        {
+          "text": "Choose effort from the model's self-reported confidence after the answer, excluding routed failures from the latency calculation.",
+          "correct": false,
+          "why": "Post-answer confidence and exclusions do not validate the proposed allocation."
+        },
+        {
+          "text": "Test targeted higher effort for detected inconsistencies, checking routing errors, critical-case quality gates and latency on both paths.",
+          "correct": true,
+          "why": "This tests targeted effort with system-level safeguards."
+        }
+      ],
+      "decision": "Allocate expensive reasoning to measured need, and validate the routing system rather than assuming isolated slice gains carry over.",
+      "sources": [
+        "guide",
+        "thinking",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q20",
+      "domain": 3,
+      "objectives": [
+        "3.1"
+      ],
+      "title": "A narrow wrapper versus broad parameter space",
+      "stem": "A finance assistant needs to retrieve approved monthly balances. Its only connector is a generic SQL tool with read/write credentials and free-form query text. The system prompt limits use to a reporting view, but adversarial tests access unrelated tables. The database supports scoped read-only credentials and a typed reporting endpoint. Which integration change BEST reduces unnecessary capability while retaining the required reports?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Keep generic SQL and add more examples of compliant SELECT statements, preserving write credentials for potential future reporting extensions.",
+          "correct": false,
+          "why": "Prompt examples leave the broad capability available."
+        },
+        {
+          "text": "Keep generic SQL with read-only credentials spanning every finance table, relying on output filtering to hide unrelated records.",
+          "correct": false,
+          "why": "This removes writes but leaves unnecessary data access."
+        },
+        {
+          "text": "Require every generic SQL query to receive a model-generated policy explanation before the unchanged credential executes it.",
+          "correct": false,
+          "why": "An explanation does not constrain the executable interface."
+        },
+        {
+          "text": "Replace generic SQL with a typed balance-report operation backed by credentials restricted to the approved read-only reporting view.",
+          "correct": true,
+          "why": "Both interface and credential scope match the actual task."
+        }
+      ],
+      "decision": "Least privilege applies to parameter space and credentials, not only the visible number of tools.",
+      "sources": [
+        "guide",
+        "auth"
+      ]
+    },
+    {
+      "id": "S03Q21",
+      "domain": 3,
+      "objectives": [
+        "3.2"
+      ],
+      "title": "Authorization across paginated results",
+      "stem": "A search connector checks a user's department on the first page of results. Its continuation token contains a raw backend offset, and subsequent page calls skip authorization because the initial page succeeded. A user changes the offset to retrieve records from another department. The team must retain pagination and support legitimate permission changes during long sessions. Which TWO repairs BEST address the actual boundary?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Cache the first page's permission decision indefinitely so long sessions remain fast when department memberships change.",
+          "correct": false,
+          "why": "It violates current-permission requirements."
+        },
+        {
+          "text": "Reapply current user and tenant authorization to every page request and every returned record, rather than inheriting permission from page one.",
+          "correct": true,
+          "why": "Authorization must hold at each data return."
+        },
+        {
+          "text": "Ask the model to reject suspicious-looking continuation tokens before sending them to the unchanged backend endpoint.",
+          "correct": false,
+          "why": "The backend remains responsible for enforcing authorization."
+        },
+        {
+          "text": "Increase the randomness of the visible offset while leaving subsequent page authorization disabled after a successful first page.",
+          "correct": false,
+          "why": "Obscuring an offset does not enforce access."
+        },
+        {
+          "text": "Bind continuation state to the authorized query and principal using tamper-resistant server-managed or authenticated cursor state.",
+          "correct": true,
+          "why": "The user must not alter the cursor's effective query scope."
+        }
+      ],
+      "decision": "Pagination is another access boundary; a prior authorized page cannot authorize arbitrary future cursor scope.",
+      "sources": [
+        "guide",
+        "auth"
+      ]
+    },
+    {
+      "id": "S03Q22",
+      "domain": 3,
+      "objectives": [
+        "3.2",
+        "3.7"
+      ],
+      "title": "A callback URL as an internal-network path",
+      "stem": "An MCP-backed document converter accepts a user-supplied callback URL for completed jobs. A security test points it at an internal metadata endpoint; the server follows redirects and fetches the endpoint while validating the callback. Authentication of the requesting user is correct. Which control BEST addresses this request-forgery risk without abandoning asynchronous job notifications altogether?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Validate destinations and redirects against an explicit approved callback policy, blocking internal/link-local targets and enforcing network egress restrictions.",
+          "correct": true,
+          "why": "Authenticated users still must not direct server requests arbitrarily."
+        },
+        {
+          "text": "Require HTTPS for the original URL but allow redirects to any target because encrypted transport authenticates the destination's purpose.",
+          "correct": false,
+          "why": "HTTPS does not prevent internal targets or unsafe redirects."
+        },
+        {
+          "text": "Rate-limit callback validation per user while retaining unrestricted destination access so internal probing becomes less frequent.",
+          "correct": false,
+          "why": "Rate limits reduce frequency but leave the forbidden access path."
+        },
+        {
+          "text": "Require the model to confirm that the callback URL appears trustworthy, then let the server follow all redirects unchanged.",
+          "correct": false,
+          "why": "Model judgment is not an enforced network boundary."
+        }
+      ],
+      "decision": "User authentication and server-side destination authorization solve different problems; constrain every effective outbound target.",
+      "sources": [
+        "guide",
+        "mcp-security"
+      ]
+    },
+    {
+      "id": "S03Q23",
+      "domain": 3,
+      "objectives": [
+        "3.4",
+        "3.7"
+      ],
+      "title": "Tracing an asynchronous result",
+      "stem": "An assistant submits a long-running export job and returns a job identifier. Completion arrives through a webhook processed by another service. Customers sometimes receive duplicate notifications or never receive a final result, while initial submission metrics look healthy. The team needs end-to-end diagnosis across delayed callbacks and retries. Which THREE additions BEST observe and control the full operation lifecycle?",
+      "select": 3,
+      "options": [
+        {
+          "text": "Track accepted-to-finalized latency and unresolved job age, with reconciliation and escalation for missing or contradictory terminal states.",
+          "correct": true,
+          "why": "This exposes jobs that disappear after accepted submission."
+        },
+        {
+          "text": "Verify webhook authenticity and deduplicate completion events by stable event or operation identity before emitting customer-visible effects.",
+          "correct": true,
+          "why": "Retries must not produce repeated notifications or forged completion."
+        },
+        {
+          "text": "Treat accepted submission as the final service success and measure webhook delivery separately without linking it to customer outcomes.",
+          "correct": false,
+          "why": "It hides unfinished operations behind healthy initial metrics."
+        },
+        {
+          "text": "Carry a durable business-operation identifier through submission, job status, webhook handling and customer notification, linked to each attempt.",
+          "correct": true,
+          "why": "This correlates the asynchronous journey beyond the initial call."
+        },
+        {
+          "text": "Create a new customer operation for every webhook retry so notification processing remains stateless and naturally parallel.",
+          "correct": false,
+          "why": "New operation identities produce duplicate effects."
+        }
+      ],
+      "decision": "Asynchronous acceptance is an intermediate state; correlate, authenticate and reconcile the terminal business outcome.",
+      "sources": [
+        "guide",
+        "agents",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q24",
+      "domain": 3,
+      "objectives": [
+        "3.3"
+      ],
+      "title": "A bottleneck outside model generation",
+      "stem": "A permit assistant's trace shows queueing at 4.0 seconds, retrieval at 0.4 seconds and generation at 0.8 seconds during peak arrivals. The proposed model upgrade reduces generation to 0.5 seconds but doubles its per-request cost. The completed-response target is 3 seconds, and queueing is caused by a shared worker-concurrency cap. Which next intervention BEST follows the observed bottleneck before paying for the upgrade?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Switch to streaming and redefine queued requests as outside response-time measurement because generation has not yet begun.",
+          "correct": false,
+          "why": "Queueing is part of user-visible completion."
+        },
+        {
+          "text": "Evaluate worker scheduling and safe concurrency against dependency capacity, then remeasure end-to-end tails under representative peak load.",
+          "correct": true,
+          "why": "The dominant delay is admission queueing, not generation."
+        },
+        {
+          "text": "Double retrieved evidence to improve answer confidence, keeping the same worker cap and relying on a larger context to reduce user retries.",
+          "correct": false,
+          "why": "This does not target the observed queueing cause."
+        },
+        {
+          "text": "Adopt the faster model immediately and claim the three-second target is met because its generation time is below one second.",
+          "correct": false,
+          "why": "The four-second queue remains before generation."
+        }
+      ],
+      "decision": "Use the critical-path evidence to locate the dominant constraint; isolated model speed cannot erase an upstream queue.",
+      "sources": [
+        "guide",
+        "evals"
+      ],
+      "exhibit": {
+        "headers": [
+          "Stage",
+          "Observed duration at peak"
+        ],
+        "rows": [
+          [
+            "Admission queue",
+            "4.0 s"
+          ],
+          [
+            "Retrieval",
+            "0.4 s"
+          ],
+          [
+            "Generation",
+            "0.8 s"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S03Q25",
+      "domain": 3,
+      "objectives": [
+        "3.5"
+      ],
+      "title": "Correct table ingestion, incorrect normalization",
+      "stem": "A laboratory RAG pipeline preserves table headers, units and source versions correctly. Traces show the retrieved source value is 12 micrograms. A post-retrieval normalization step converts it to 0.012 milligrams but leaves the metadata unit as micrograms. The generator accurately repeats the resulting structured evidence. Which repair BEST targets the observed causal defect rather than rebuilding the functioning ingestion pipeline?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Disable normalization and compare the unconverted number with a milligram threshold without changing the downstream threshold contract.",
+          "correct": false,
+          "why": "That creates a different unit mismatch at the consumer."
+        },
+        {
+          "text": "Increase the generator model and add arithmetic examples, preserving the contradictory structured value and unit it receives.",
+          "correct": false,
+          "why": "The generator faithfully repeats malformed evidence."
+        },
+        {
+          "text": "Fix normalization to transform values and units together, validating paired source and normalized representations before generation.",
+          "correct": true,
+          "why": "The incorrect value-unit pairing is introduced by the transformation."
+        },
+        {
+          "text": "Rechunk tables with more surrounding headings, retaining the same normalization step and metadata mapping.",
+          "correct": false,
+          "why": "Ingestion already preserves the required relationship correctly."
+        }
+      ],
+      "decision": "Use the trace to locate the representation-changing stage; correct ingestion and faithful generation can surround a faulty transformation.",
+      "sources": [
+        "guide",
+        "retrieval"
+      ]
+    },
+    {
+      "id": "S03Q26",
+      "domain": 3,
+      "objectives": [
+        "3.6"
+      ],
+      "title": "Retrieval for time-dependent relationships",
+      "stem": "A corporate assistant answers who owned a subsidiary when a contract was signed. Documents contain multiple ownership transfers and repeated company names. The current semantic retriever returns recent ownership summaries, which are relevant in topic but wrong for the contract date. Which TWO retrieval improvements BEST target the temporal relationship question rather than merely increasing generic passage similarity?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Increase dense top-k without retaining transfer dates, then choose the company named most frequently in the retrieved passages.",
+          "correct": false,
+          "why": "Frequency cannot establish the temporal relationship."
+        },
+        {
+          "text": "Remove old contracts from evaluation so current-owner retrieval can be treated as the universal ownership-answering task.",
+          "correct": false,
+          "why": "That changes the intended task rather than solving it."
+        },
+        {
+          "text": "Extract and index ownership relationships with validity intervals and source provenance, applying the contract date to candidate selection.",
+          "correct": true,
+          "why": "The answer depends on a time-bounded relation."
+        },
+        {
+          "text": "Favor the newest document in every reranking decision, assuming recent summaries supersede all historical ownership facts.",
+          "correct": false,
+          "why": "Newest ownership is not ownership at the historical date."
+        },
+        {
+          "text": "Evaluate date-constrained relationship retrieval alongside textual evidence on historical-transfer cases, checking supported ownership at the requested time.",
+          "correct": true,
+          "why": "This validates the temporal question shape."
+        }
+      ],
+      "decision": "Match retrieval to the entity-relation-time structure of the question; topical relevance alone does not establish the requested fact.",
+      "sources": [
+        "guide",
+        "retrieval"
+      ]
+    },
+    {
+      "id": "S03Q27",
+      "domain": 3,
+      "objectives": [
+        "3.7"
+      ],
+      "title": "Tool protocol versus delegated service ownership",
+      "stem": "A central assistant needs to ask a separately operated planning service for a multi-step delivery plan. That service owns its own work state, can request clarification and reports eventual completion; it is more than a stateless function. Another team proposes exposing all of its internal tools directly to the central assistant. Which integration boundary BEST preserves the service's responsibility and avoids duplicating its planner?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Expose every internal planner tool directly and let the central model reconstruct the service's workflow separately for each delivery request.",
+          "correct": false,
+          "why": "This duplicates planning responsibility across the boundary."
+        },
+        {
+          "text": "Represent the service as a synchronous scalar function and discard pending or clarification states to simplify the caller's tool schema.",
+          "correct": false,
+          "why": "The contract cannot represent the actual task lifecycle."
+        },
+        {
+          "text": "Replace the service interface with a shared prompt file and assume both operators will interpret completion and responsibility identically.",
+          "correct": false,
+          "why": "Shared prose does not establish a reliable task contract."
+        },
+        {
+          "text": "Use a task-oriented service contract with explicit pending, clarification and completion states, keeping internal planning tools behind its boundary.",
+          "correct": true,
+          "why": "The interaction delegates an owned task, not raw implementation steps."
+        }
+      ],
+      "decision": "Choose the boundary around owned work and lifecycle semantics; a list of internal tools is not always the right integration abstraction.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q28",
+      "domain": 3,
+      "objectives": [
+        "3.8"
+      ],
+      "title": "A discovery failure caused by metadata",
+      "stem": "A tool-search pilot saves context but often fails to discover the account-history tool for requests phrased as previous billing adjustments. The tool's metadata says only fetch_record_v2, while its schema and implementation are correct. Frequently used account lookup remains direct. The team wants to preserve progressive discovery if it can improve task completion. Which TWO changes BEST investigate and repair the specific discovery weakness?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Rename every specialist tool with the same broad billing keyword so search always returns a large set of candidates.",
+          "correct": false,
+          "why": "Non-discriminating metadata can worsen selection ambiguity."
+        },
+        {
+          "text": "Increase the model output limit while leaving the terse discovery catalog unchanged, assuming additional response space improves catalog matching.",
+          "correct": false,
+          "why": "The failing input metadata remains unchanged."
+        },
+        {
+          "text": "Improve the deferred tool's description and searchable metadata using accurate domain terms and distinctions from nearby tools.",
+          "correct": true,
+          "why": "Discovery needs meaningful vocabulary linking requests to capabilities."
+        },
+        {
+          "text": "Expose all specialist definitions directly forever, treating one poor metadata example as proof that progressive discovery cannot work.",
+          "correct": false,
+          "why": "That abandons the context benefit without testing the localized issue."
+        },
+        {
+          "text": "Evaluate discovery recall and downstream completion on paraphrased billing-adjustment tasks, including confusing neighboring tools and the direct-tool baseline.",
+          "correct": true,
+          "why": "This measures whether metadata repairs the actual failure."
+        }
+      ],
+      "decision": "Progressive discovery needs an evaluated capability-description contract; fix and measure metadata before changing the whole strategy.",
+      "sources": [
+        "guide",
+        "discovery"
+      ]
+    },
+    {
+      "id": "S03Q29",
+      "domain": 3,
+      "objectives": [
+        "3.5",
+        "3.4"
+      ],
+      "title": "A migration that mixes vector spaces",
+      "stem": "A team changes embedding models and incrementally updates its RAG index. Newly embedded queries search a mixture of old and new document vectors. Retrieval quality degrades only on partially migrated collections, while fully old and fully new test collections behave normally. The generator is unchanged. Which repair BEST addresses the migration consistency defect while enabling a controlled rollback?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Delete the old index before rebuilding, accepting missing-document abstentions without retaining a rollback path.",
+          "correct": false,
+          "why": "This discards continuity and controlled recovery unnecessarily."
+        },
+        {
+          "text": "Increase the generator's reasoning budget while leaving old and new vectors interleaved until ordinary updates eventually replace every document.",
+          "correct": false,
+          "why": "Generation cannot repair inconsistent similarity geometry."
+        },
+        {
+          "text": "Normalize all vector lengths and assume any embedding models become mutually comparable once they share the same numerical magnitude.",
+          "correct": false,
+          "why": "Length normalization does not align distinct embedding spaces."
+        },
+        {
+          "text": "Build a version-consistent index, pair it with matching query embeddings, and switch atomically with a tested rollback pointer.",
+          "correct": true,
+          "why": "Matching representations avoids mixed-space comparisons and preserves recovery."
+        }
+      ],
+      "decision": "Version the retrieval representation as a coherent pair; migration consistency is an upstream correctness requirement.",
+      "sources": [
+        "guide",
+        "retrieval"
+      ]
+    },
+    {
+      "id": "S03Q30",
+      "domain": 3,
+      "objectives": [
+        "3.3",
+        "3.6"
+      ],
+      "title": "Average latency cannot prove a tail commitment",
+      "stem": "A product assistant tests evidence budgets on the same workload. Six chunks achieve 93% supported correctness with 1.8-second mean completion; ten achieve 96% with 2.4-second mean; twenty achieve 96.2% with 4.0-second mean. The release requires at least 95% supported correctness and p95 completion no greater than 2.8 seconds. No tail measurements were collected. Which conclusion is justified before selecting a production configuration?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Select twenty chunks because maximum measured correctness compensates for uncertain latency once the service supplies more supporting evidence.",
+          "correct": false,
+          "why": "The independent latency gate remains unproven and cannot be traded away."
+        },
+        {
+          "text": "Select ten chunks because its measured 2.4-second mean proves that at least 95% of completed responses are faster than 2.8 seconds.",
+          "correct": false,
+          "why": "Mean and p95 are different statistics."
+        },
+        {
+          "text": "Select six chunks because its lower mean guarantees sufficient tail headroom, allowing the correctness gate to be estimated from speed.",
+          "correct": false,
+          "why": "It misses quality and mean does not guarantee the tail."
+        },
+        {
+          "text": "Ten chunks is a quality-feasible candidate, but representative p95 measurement is still required before claiming the latency gate passes.",
+          "correct": true,
+          "why": "A mean below the threshold does not establish p95."
+        }
+      ],
+      "decision": "Read the metric definition as carefully as the measured values; a candidate can look feasible on the wrong statistic.",
+      "sources": [
+        "guide",
+        "retrieval",
+        "evals"
+      ],
+      "exhibit": {
+        "headers": [
+          "Chunks",
+          "Supported correctness",
+          "Mean completion; p95 unmeasured"
+        ],
+        "rows": [
+          [
+            "6",
+            "93%",
+            "1.8 s"
+          ],
+          [
+            "10",
+            "96%",
+            "2.4 s"
+          ],
+          [
+            "20",
+            "96.2%",
+            "4.0 s"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S03Q31",
+      "domain": 3,
+      "objectives": [
+        "3.2",
+        "3.4"
+      ],
+      "title": "Tenant identity lost at a shared connector",
+      "stem": "An orchestrator authenticates each employee, but a shared connector calls the document service using one broad service account and no end-user context. Audit logs attribute all reads to that account, and the document service cannot enforce department permissions. The team needs centralized integration without losing per-user restrictions or traceability. Which TWO changes BEST restore the missing boundary?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Propagate validated principal and tenant context through an approved delegated-access mechanism, enforcing object-level authorization at the document-serving boundary.",
+          "correct": true,
+          "why": "The service needs trustworthy identity context for per-user restrictions."
+        },
+        {
+          "text": "Use separate model prompts for each department while retaining the same broad uncontextualized service account at the document endpoint.",
+          "correct": false,
+          "why": "Prompt variation cannot enforce source-side permissions."
+        },
+        {
+          "text": "Ask employees to include their department in natural-language queries and trust that text as the authorization context for the connector.",
+          "correct": false,
+          "why": "User-supplied claims are not validated identity context."
+        },
+        {
+          "text": "Log full returned documents under the service account so auditors can later infer which employee probably initiated each read.",
+          "correct": false,
+          "why": "Content capture does not provide reliable principal attribution."
+        },
+        {
+          "text": "Record principal, operation and resource identifiers in access-controlled audit metadata, while minimizing sensitive document content in routine logs.",
+          "correct": true,
+          "why": "This restores attributable access without wholesale content logging."
+        }
+      ],
+      "decision": "Centralized connectivity must preserve authenticated principal context; a broad service credential cannot replace user-level authorization.",
+      "sources": [
+        "guide",
+        "auth"
+      ]
+    },
+    {
+      "id": "S03Q32",
+      "domain": 4,
+      "objectives": [
+        "4.1"
+      ],
+      "title": "The denominator behind a quality improvement",
+      "stem": "An assistant's reported success rises from 88% to 96% after adding an abstention path. The new dashboard computes accuracy only among answered cases, and answer coverage falls to 60%. The business requires both supported answers and a manageable handoff workload. Which measurement plan BEST makes the apparent improvement interpretable before deciding whether the change meets product goals?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Treat all abstentions as incorrect and discard answered-case correctness so the dashboard contains only one simple success number.",
+          "correct": false,
+          "why": "One number hides useful distinctions needed for decisions."
+        },
+        {
+          "text": "Report answered-case correctness, coverage, abstention appropriateness and handoff outcomes against common workload denominators and independent business targets.",
+          "correct": true,
+          "why": "This reveals both reliability and the displaced work."
+        },
+        {
+          "text": "Report 96% alone because abstained cases are outside model performance once the assistant chooses not to answer.",
+          "correct": false,
+          "why": "The product still owns coverage and handoff consequences."
+        },
+        {
+          "text": "Report only the number of generated answers, assuming fewer unsupported outputs establishes a net productivity improvement.",
+          "correct": false,
+          "why": "Volume does not quantify correctness or handoff burden."
+        }
+      ],
+      "decision": "A changed denominator can create a misleading improvement; measure coverage and downstream resolution alongside conditional accuracy.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q33",
+      "domain": 4,
+      "objectives": [
+        "4.2"
+      ],
+      "title": "An agent test with uncontrolled initial state",
+      "stem": "A software-maintenance agent is tested repeatedly in the same repository checkout. Earlier trials leave fixes and generated files behind, so later trials pass without performing the requested repair. The evaluator grades final tests and reports increasing success across runs. The team needs repeatable evidence across stochastic trials. Which TWO changes BEST remove the evaluation artifact without forcing one exact solution trajectory?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Keep accumulated fixes because agents in production may also benefit from previous work, and describe every later pass as a new successful repair.",
+          "correct": false,
+          "why": "The benchmark no longer measures the requested repair capability."
+        },
+        {
+          "text": "Reset each trial to a known isolated repository state, including relevant services and generated artifacts, before running the agent.",
+          "correct": true,
+          "why": "Trials need consistent starting conditions."
+        },
+        {
+          "text": "Grade required final behavior and prohibited side effects, recording trial configuration and outcomes across repeated independent attempts.",
+          "correct": true,
+          "why": "This permits valid solution variation while measuring reliability."
+        },
+        {
+          "text": "Increase the number of trials in the same unreset checkout so the average pass rate becomes statistically more stable.",
+          "correct": false,
+          "why": "More contaminated trials do not improve validity."
+        },
+        {
+          "text": "Require the final code to match a reference patch byte-for-byte, leaving the shared checkout state unchanged between trials.",
+          "correct": false,
+          "why": "Exact patch matching does not fix contaminated starting state."
+        }
+      ],
+      "decision": "Agent evaluations need controlled initial state and outcome-based grading; repeated trials are meaningful only when their task conditions are valid.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q34",
+      "domain": 4,
+      "objectives": [
+        "4.3"
+      ],
+      "title": "An experiment with social contamination",
+      "stem": "An internal writing assistant tests two drafting styles. Employees frequently share drafts within the same account team, so one employee's exposure changes colleagues' later behavior. The team currently randomizes each request independently and attributes team-level deal outcomes to the latest variant. Which assignment strategy BEST reduces contamination for the stated downstream outcome while retaining a meaningful controlled comparison?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Alternate variants every hour and compare total deals completed in those hours, ignoring the lag between drafting and deal closure.",
+          "correct": false,
+          "why": "Temporal lag and shared exposure remain unresolved."
+        },
+        {
+          "text": "Randomize at a stable account-team unit and analyze outcomes at that unit, balancing important team characteristics and tracking exposure.",
+          "correct": true,
+          "why": "The unit aligns with shared behavior and the measured outcome."
+        },
+        {
+          "text": "Continue request-level randomization and attribute every eventual deal to whichever variant generated the most recent draft.",
+          "correct": false,
+          "why": "Repeated shared exposure prevents clean attribution."
+        },
+        {
+          "text": "Assign treatment to the highest-performing teams and control to new teams so the business can observe maximal benefit quickly.",
+          "correct": false,
+          "why": "Team capability becomes a confounder."
+        }
+      ],
+      "decision": "Choose an experimental unit consistent with how treatment spreads and how the downstream outcome is observed.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q35",
+      "domain": 4,
+      "objectives": [
+        "4.4"
+      ],
+      "title": "A high score with incomplete task success",
+      "stem": "A support agent scores highly because the evaluator checks ticket status. An audit finds that some closed tickets lack the required customer explanation. The team can inspect delivery events, message content and final ticket state. It wants valid readiness evidence without requiring one exact wording or internal reasoning trace. Which grader repair BEST captures the missing product obligation?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Add customer satisfaction only for tickets with delivered explanations, keeping all other closed tickets automatically successful under the original grader.",
+          "correct": false,
+          "why": "The unexplained closures remain false successes."
+        },
+        {
+          "text": "Require a drafted explanation in the transcript and closed ticket status, without verifying customer delivery.",
+          "correct": false,
+          "why": "Drafted text may never have been delivered."
+        },
+        {
+          "text": "Require verified explanation delivery and policy-relevant content alongside final resolution state, allowing semantically valid wording variations.",
+          "correct": true,
+          "why": "The business outcome includes both resolution and communication."
+        },
+        {
+          "text": "Require one reference explanation string alongside the closed ticket state, rejecting all alternate wording even when it satisfies the policy.",
+          "correct": false,
+          "why": "Exact phrasing is not the stated content obligation."
+        }
+      ],
+      "decision": "Verify the external communication effect and its required meaning; neither a draft nor one reference string defines the full obligation.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q36",
+      "domain": 4,
+      "objectives": [
+        "4.5"
+      ],
+      "title": "Savings after router mistakes",
+      "stem": "A proposed router sends 70% of requests to a cheap path costing $0.02 and the rest to a strong path costing $0.10. Of cheap-path requests, 10% require a strong-path retry costing another $0.10. All completed outcomes meet quality and no human work is needed. On 10,000 requests, what model-charge saving is supported versus using the strong path for every request?",
+      "select": 1,
+      "options": [
+        {
+          "text": "A $490 saving: routed charges total $510, including $70 for the 700 strong-path retries after cheap-path failures.",
+          "correct": true,
+          "why": "7000×.02+3000×.10+700×.10=510."
+        },
+        {
+          "text": "A $560 saving: routed charges total $440, because the 70% cheap-route share already accounts for all retries.",
+          "correct": false,
+          "why": "This omits the additional $70 retry charge."
+        },
+        {
+          "text": "A $630 saving: routed charges total $370, because failed cheap calls are replaced rather than billed alongside their retries.",
+          "correct": false,
+          "why": "The initial cheap calls remain charged."
+        },
+        {
+          "text": "A $420 saving: routed charges total $580, because 10% of all requests require an additional strong-path retry.",
+          "correct": false,
+          "why": "Ten percent applies only to 7000 cheap-path requests."
+        }
+      ],
+      "decision": "Apply failure rates to the correct route population and include both the initial call and recovery charge.",
+      "sources": [
+        "guide",
+        "evals"
+      ],
+      "exhibit": {
+        "headers": [
+          "Input",
+          "Fictional value"
+        ],
+        "rows": [
+          [
+            "Requests",
+            "10,000"
+          ],
+          [
+            "Cheap route / cost",
+            "70% / $0.02"
+          ],
+          [
+            "Strong route / cost",
+            "30% / $0.10"
+          ],
+          [
+            "Cheap-route retry rate",
+            "10%, plus $0.10"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S03Q37",
+      "domain": 4,
+      "objectives": [
+        "4.6"
+      ],
+      "title": "A dashboard that cannot compare releases",
+      "stem": "A document agent's daily quality metric declines after a rollout. Traffic also shifts toward a new document type, and logs omit prompt and retrieval versions. The team cannot tell whether the decline reflects workload mix or changed system behavior. Privacy rules prohibit routine raw-document capture. Which monitoring improvement BEST supports a valid diagnosis within those limits?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Compare only global daily averages and roll back whenever traffic composition changes, assuming every decline is a deployment defect.",
+          "correct": false,
+          "why": "This cannot distinguish the two hypotheses."
+        },
+        {
+          "text": "Record versioned configuration and non-sensitive workload-slice identifiers with outcome metadata, comparing matched slices and stable regression cases across releases.",
+          "correct": true,
+          "why": "This separates mix changes from configuration effects."
+        },
+        {
+          "text": "Exclude the new document type from both monitoring and customer support until the global average returns to its prior level.",
+          "correct": false,
+          "why": "It hides the changed workload rather than diagnosing it."
+        },
+        {
+          "text": "Store all raw documents indefinitely and defer adding version identifiers because full content can later reveal which release was used.",
+          "correct": false,
+          "why": "Content cannot reliably reconstruct missing configuration lineage."
+        }
+      ],
+      "decision": "Observable version and workload context are necessary to interpret drift without indiscriminate content retention.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q38",
+      "domain": 4,
+      "objectives": [
+        "4.2"
+      ],
+      "title": "Evaluating helpfulness without copying a reference",
+      "stem": "A training assistant answers open-ended coaching questions. Several different responses are acceptable, but a reference-answer overlap grader rewards stock phrasing and penalizes concise useful alternatives. Experts can define supported advice and prohibited claims. The team needs a scalable evaluator that does not simply reward similarity to one preferred answer. Which TWO changes BEST fit this evaluation target?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Ask the answering model to grade itself without a rubric and use its confidence as the sole evaluation signal.",
+          "correct": false,
+          "why": "Self-scoring without criteria or calibration is unreliable."
+        },
+        {
+          "text": "Calibrate semantic grading against expert-labeled alternatives and periodically inspect disagreements, rather than treating reference wording as the only acceptable response.",
+          "correct": true,
+          "why": "Calibration checks whether the evaluator recognizes valid diverse responses."
+        },
+        {
+          "text": "Use explicit expert-derived semantic criteria for useful supported advice, retaining deterministic checks for prohibited or independently verifiable claims.",
+          "correct": true,
+          "why": "The rubric targets meaning and the checks cover objective constraints."
+        },
+        {
+          "text": "Expand the exact reference answer until it contains every phrase ever accepted by experts, then retain token-overlap scoring.",
+          "correct": false,
+          "why": "Lexical coverage still does not establish semantic usefulness."
+        },
+        {
+          "text": "Use response length as a proxy for coaching depth and discard expert review after the first automated benchmark run.",
+          "correct": false,
+          "why": "Length is not a valid helpfulness criterion."
+        }
+      ],
+      "decision": "When valid outputs vary, grade the intended semantic properties rather than superficial reference overlap.",
+      "sources": [
+        "guide",
+        "evals",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q39",
+      "domain": 4,
+      "objectives": [
+        "4.3"
+      ],
+      "title": "A safety regression during a beneficial test",
+      "stem": "An A/B test improves task completion and reduces cost, but the treatment has a reproducible cross-tenant disclosure in a low-volume slice. Security acceptance requires zero known exploitable tenant-isolation defects. The product sponsor wants more traffic to determine whether aggregate business gains outweigh the rare issue. Which TWO responses BEST respect the test's independent safety obligation?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Ask the model to avoid mentioning other tenants and release the treatment immediately because the business metrics already improved.",
+          "correct": false,
+          "why": "Prompt wording is not validation of the isolation boundary."
+        },
+        {
+          "text": "Retain the business findings as provisional evidence, repair the boundary and rerun relevant security and quality regressions before reconsidering release.",
+          "correct": true,
+          "why": "Useful results do not validate an unsafe configuration."
+        },
+        {
+          "text": "Stop or contain the affected treatment path under the safety rule and coordinate the security response before increasing exposure.",
+          "correct": true,
+          "why": "Known exploitable isolation failure violates the independent gate."
+        },
+        {
+          "text": "Remove the affected tenant from the published dashboard while retaining treatment for similar tenants to preserve experiment power.",
+          "correct": false,
+          "why": "Hiding the slice does not repair its defect."
+        },
+        {
+          "text": "Continue the test until the aggregate completion improvement reaches statistical significance, treating the disclosure as a cost in the same objective.",
+          "correct": false,
+          "why": "An independent security gate is not a compensable metric."
+        }
+      ],
+      "decision": "Independent security constraints govern exposure during experiments; business improvement does not authorize continuing a known exploitable path.",
+      "sources": [
+        "guide",
+        "evals",
+        "auth"
+      ]
+    },
+    {
+      "id": "S03Q40",
+      "domain": 4,
+      "objectives": [
+        "4.4"
+      ],
+      "title": "A controlled diagnosis before model replacement",
+      "stem": "A small model passes short extractive questions but misses cross-document conditions in exception-resolution tasks. Retrieval traces confirm the needed evidence is present. A stronger model succeeds on those cases using the same evidence, at higher cost. The prompt's exception instructions may also be ambiguous. Which next experiment BEST distinguishes prompt repair from model mismatch under the actual workload requirements?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Change the small model's prompt and retrieval pipeline together, comparing the result only with the stronger model's earlier configuration.",
+          "correct": false,
+          "why": "Multiple changes obscure the source of improvement."
+        },
+        {
+          "text": "Cross-test clarified and current prompts on candidate models with fixed representative evidence, comparing required quality, latency and cost.",
+          "correct": true,
+          "why": "This separates prompt and model effects on the deployed task."
+        },
+        {
+          "text": "Compare models using only the original extractive benchmark and choose the cheapest passing configuration for exception resolution.",
+          "correct": false,
+          "why": "The benchmark omits the failing task demand."
+        },
+        {
+          "text": "Evaluate the stronger model on only its previously successful cases and use that score to authorize replacement without latency testing.",
+          "correct": false,
+          "why": "Selected cases and missing service evidence do not establish fitness."
+        }
+      ],
+      "decision": "A small controlled factorial comparison can isolate prompt and model factors; keep the representative evidence and requirements fixed.",
+      "sources": [
+        "guide",
+        "evals",
+        "prompting"
+      ]
+    },
+    {
+      "id": "S03Q41",
+      "domain": 4,
+      "objectives": [
+        "4.1",
+        "4.6"
+      ],
+      "title": "Reliability across repeated attempts",
+      "stem": "An agent passes each task at least once across five attempts, but many tasks fail on the first attempt and users normally allow only one run. The dashboard reports only the percentage with any successful attempt. The team wants a realistic reliability claim for single-run users while still studying whether retries help. Which TWO metrics or analyses BEST support that distinction?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Discard failed attempts once a later trial succeeds so the final dataset contains one representative successful trajectory per task.",
+          "correct": false,
+          "why": "This removes the evidence needed to estimate reliability."
+        },
+        {
+          "text": "Report retry-assisted success and added cost/latency separately, including whether repeated attempts introduce unsafe or inconsistent side effects.",
+          "correct": true,
+          "why": "Retries change both reliability and operating consequences."
+        },
+        {
+          "text": "Report first-attempt or single-trial success with uncertainty and failure slices under the user's actual no-retry operating policy.",
+          "correct": true,
+          "why": "This matches the deployed experience."
+        },
+        {
+          "text": "Use any-success-across-five as the single-run reliability estimate because each task has demonstrated that a correct solution is possible.",
+          "correct": false,
+          "why": "Capability across retries differs from single-run reliability."
+        },
+        {
+          "text": "Select the best five-attempt result for every release without recording trial count, because repeated sampling is an internal implementation detail.",
+          "correct": false,
+          "why": "Trial count changes the measured claim and resource usage."
+        }
+      ],
+      "decision": "Distinguish existence of a successful trajectory from reliability under the actual allowed number of attempts.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q42",
+      "domain": 5,
+      "objectives": [
+        "5.1",
+        "5.2"
+      ],
+      "title": "A guardrail that checks the wrong representation",
+      "stem": "An assistant extracts wire-transfer instructions from email for staff review. A detector checks the original text, but a later model transformation normalizes account numbers and adds a beneficiary inferred from context. The review interface displays only a prose summary, and tests show altered details can reach execution. Which control BEST addresses the gap at the consequential boundary while preserving useful extraction?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Require the extraction model to certify that normalization preserves meaning, leaving the execution payload unchecked.",
+          "correct": false,
+          "why": "Self-certification does not validate the final effect."
+        },
+        {
+          "text": "Validate and display the exact executable payment fields, rejecting unsupported transformations and binding approval to that payload.",
+          "correct": true,
+          "why": "The final actionable representation needs evidence and approval checks."
+        },
+        {
+          "text": "Show the original email beside a fluent summary while allowing hidden structured fields to differ from both approved views.",
+          "correct": false,
+          "why": "The reviewer still cannot verify the executed values."
+        },
+        {
+          "text": "Strengthen detection only on the original email and assume all later transformations inherit its safe classification.",
+          "correct": false,
+          "why": "The risky changes happen after that check."
+        }
+      ],
+      "decision": "Place controls on the representation that drives the effect; checking an earlier text form leaves transformation gaps.",
+      "sources": [
+        "guide",
+        "injection",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q43",
+      "domain": 5,
+      "objectives": [
+        "5.2",
+        "5.3"
+      ],
+      "title": "Reviewer automation bias",
+      "stem": "A credit-support assistant highlights a recommended decision before reviewers inspect evidence. Audits find reviewers accept incorrect recommendations more often than when shown the same evidence without a recommendation. Human approval is already mandatory, and the team cannot remove the qualified reviewers. Which THREE changes BEST improve meaningful oversight rather than merely increasing the number of approval clicks?",
+      "select": 3,
+      "options": [
+        {
+          "text": "Remove evidence access to shorten review time, keeping the model's numerical confidence and the reviewer's final signature.",
+          "correct": false,
+          "why": "This weakens the reviewer's ability to detect errors."
+        },
+        {
+          "text": "Test a review interface that elicits an independent evidence assessment before revealing the assistant's recommendation, especially for high-consequence cases.",
+          "correct": true,
+          "why": "This targets anchoring on the recommendation."
+        },
+        {
+          "text": "Add a second approval click to the same recommendation-first screen, using completion of both clicks as proof of independent review.",
+          "correct": false,
+          "why": "Repeated clicks do not address observed anchoring."
+        },
+        {
+          "text": "Measure reviewer error and disagreement by case risk, using seeded or retrospective challenging cases to evaluate oversight effectiveness.",
+          "correct": true,
+          "why": "Approval rate alone does not establish effective review."
+        },
+        {
+          "text": "Provide source-linked evidence, explicit uncertainty and a clear route to reject or escalate recommendations without workflow penalties.",
+          "correct": true,
+          "why": "Reviewers need usable evidence and real discretion."
+        }
+      ],
+      "decision": "Human-in-the-loop is a behaviorally effective control only if the interface, incentives and measurement support independent judgment.",
+      "sources": [
+        "guide",
+        "agent-evals",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q44",
+      "domain": 5,
+      "objectives": [
+        "5.4"
+      ],
+      "title": "A healthcare dataset with uncertain de-identification",
+      "stem": "A healthcare team wants to reuse historical consultation text for evaluation. Direct names were removed, but records retain exact dates, rare conditions and geographic details. The approved plan permits only data that meets the organization's applicable de-identification determination, or explicitly authorized protected-data processing. The team has not obtained either decision for this dataset. What is the BEST next step before sharing it with an external evaluator?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Ask the evaluator to promise not to identify patients and treat that promise as equivalent to the required organizational determination.",
+          "correct": false,
+          "why": "A promise does not satisfy the specified approval path."
+        },
+        {
+          "text": "Encrypt the dataset and send the key separately, considering encryption sufficient to classify the readable records as de-identified.",
+          "correct": false,
+          "why": "Authorized recipient access still exposes readable identifying combinations."
+        },
+        {
+          "text": "Share the dataset because removal of obvious names guarantees that all remaining clinical details are non-identifying for evaluation purposes.",
+          "correct": false,
+          "why": "Combinations of remaining attributes can still identify individuals."
+        },
+        {
+          "text": "Obtain the required privacy determination for this dataset; use synthetic examples until its permitted processing path is established.",
+          "correct": true,
+          "why": "Name removal alone does not establish the approved condition."
+        }
+      ],
+      "decision": "Follow the established privacy decision path for the actual dataset; cosmetic identifier removal is not a sufficient determination.",
+      "sources": [
+        "guide",
+        "hipaa"
+      ]
+    },
+    {
+      "id": "S03Q45",
+      "domain": 5,
+      "objectives": [
+        "5.4",
+        "5.5"
+      ],
+      "title": "Transparency in a consequential automated decision",
+      "stem": "A housing service uses an assistant to recommend applicants for accelerated processing. Applicants receive only a generic statement that AI was used. The organization has established that affected applicants must receive meaningful information and a usable review channel for this consequential processing. Staff can explain the approved criteria and reconsider disputed facts. Which implementation BEST satisfies the stated obligation without disclosing unrelated proprietary source code?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Explain material criteria and applicant facts, identify the automated role, and provide an accountable accessible review channel.",
+          "correct": true,
+          "why": "This makes the decision understandable and contestable."
+        },
+        {
+          "text": "Publish general vendor information and offer a generic chatbot without access to reconsideration staff.",
+          "correct": false,
+          "why": "General product information is not a meaningful case review."
+        },
+        {
+          "text": "State only that human staff approved the result and withhold the criteria because approval makes automated-processing transparency unnecessary.",
+          "correct": false,
+          "why": "The established obligation still applies to the actual process."
+        },
+        {
+          "text": "Release the entire source repository but provide no explanation of the applicant's material facts or way to correct them.",
+          "correct": false,
+          "why": "Source disclosure does not create an actionable contest process."
+        }
+      ],
+      "decision": "Implement the confirmed transparency obligation at the affected person's decision and recourse boundary, not as generic AI branding.",
+      "sources": [
+        "guide",
+        "gdpr"
+      ]
+    },
+    {
+      "id": "S03Q46",
+      "domain": 5,
+      "objectives": [
+        "5.4",
+        "5.2"
+      ],
+      "title": "A boundary change after assurance review",
+      "stem": "An agency assistant completed an applicable security review for an approved model endpoint and controlled logging path. A team now proposes a third-party tracing proxy that receives prompts and responses outside that reviewed boundary. The original provider's assurance status is unchanged. Which TWO actions BEST assess the change before routing agency data through the proxy?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Document the new recipient, data categories, egress and operational controls, then evaluate the changed boundary through the responsible security process.",
+          "correct": true,
+          "why": "The data flow and control responsibility have changed."
+        },
+        {
+          "text": "Send all content to the proxy and ask it to redact after receipt, treating later redaction as proof that no new exposure occurred.",
+          "correct": false,
+          "why": "The recipient has already received the content."
+        },
+        {
+          "text": "Use metadata-only instrumentation within the reviewed path while obtaining the necessary decision for any new content-processing recipient.",
+          "correct": true,
+          "why": "This preserves a constrained observability option during review."
+        },
+        {
+          "text": "Reuse the original approval unchanged because the model endpoint itself remains the same and the proxy is only an observability component.",
+          "correct": false,
+          "why": "The proxy still processes protected data outside the boundary."
+        },
+        {
+          "text": "Accept the proxy vendor's generic cloud certification as automatic approval for every agency workload and customer-operated configuration.",
+          "correct": false,
+          "why": "Vendor evidence does not replace the specific system decision."
+        }
+      ],
+      "decision": "An observability component can materially change the authorized data boundary even when the model provider is unchanged.",
+      "sources": [
+        "guide",
+        "fedramp"
+      ]
+    },
+    {
+      "id": "S03Q47",
+      "domain": 5,
+      "objectives": [
+        "5.5"
+      ],
+      "title": "A fairness metric with unreliable labels",
+      "stem": "A translation-support assistant has lower assessed quality for one dialect. Investigation finds the evaluator's reference labels were produced by reviewers unfamiliar with that dialect, and community reviewers identify valid responses marked wrong. The team must determine whether the system, the evaluation or both need repair. Which next step BEST avoids treating an invalid benchmark as conclusive evidence of either fairness or absence of bias?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Revalidate the affected labels and criteria with qualified dialect experts, then compare system errors and user outcomes on the corrected slices.",
+          "correct": true,
+          "why": "Measurement validity must be established before interpreting disparity."
+        },
+        {
+          "text": "Average the disputed dialect into the global quality score so unreliable subgroup labels no longer influence the rollout decision.",
+          "correct": false,
+          "why": "Aggregation conceals rather than resolves the uncertainty."
+        },
+        {
+          "text": "Declare the model fair because several disputed labels were wrong, and discard all dialect-specific evaluation from future release gates.",
+          "correct": false,
+          "why": "Some bad labels do not prove the system has no disparity."
+        },
+        {
+          "text": "Retrain the prompt to match every existing reference exactly, assuming expert disagreement means the model should imitate the current benchmark more closely.",
+          "correct": false,
+          "why": "That can encode the evaluator's mistake."
+        }
+      ],
+      "decision": "Fairness assessment depends on valid labels and criteria; audit the measurement process as well as the model.",
+      "sources": [
+        "guide",
+        "evals",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q48",
+      "domain": 5,
+      "objectives": [
+        "5.3"
+      ],
+      "title": "Human escalation without an authorized reviewer",
+      "stem": "A rural service assistant escalates emergency-assistance exceptions to a general administrator overnight. Policy requires a trained caseworker for decisions, and the administrator can only acknowledge requests and contact the on-call team. The interface nevertheless shows the administrator an approve button. What change BEST makes the escalation path consistent with actual authority while preserving prompt acknowledgment to users?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Disable overnight intake despite permitted acknowledgment and on-call contact, resuming only with an onsite caseworker.",
+          "correct": false,
+          "why": "This unnecessarily removes a useful authorized service path."
+        },
+        {
+          "text": "Separate acknowledgment from approval, route decisions to the trained on-call role, and show the pending response expectation.",
+          "correct": true,
+          "why": "This matches interface actions to the recipient's permitted role."
+        },
+        {
+          "text": "Let the model approve urgent requests when the administrator accepts its recommendation, recording both names for later caseworker review.",
+          "correct": false,
+          "why": "Neither participant has the required decision authority."
+        },
+        {
+          "text": "Keep the administrator's approve button but require a warning acknowledgment before use, because escalation implies temporary delegated authority.",
+          "correct": false,
+          "why": "A warning does not confer the missing authority."
+        }
+      ],
+      "decision": "An escalation destination must be capable and authorized for its assigned action; notification and approval are different roles.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q49",
+      "domain": 5,
+      "objectives": [
+        "5.1",
+        "5.2"
+      ],
+      "title": "An effective control with stale tests",
+      "stem": "A model-based safety classifier is upgraded independently of the assistant it protects. Standard benign tests pass, but the team has not rerun adversarial examples containing encoded tool arguments that previously bypassed checks. The deployment process versions only the main assistant prompt. Which TWO controls BEST make the combined protection assessable as a production system?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Require the main model to obey the classifier's result more strongly while leaving guard provenance and execution-boundary testing unchanged.",
+          "correct": false,
+          "why": "Stronger obedience does not establish a correct classification."
+        },
+        {
+          "text": "Monitor bypass and false-positive slices with accountable rollback or containment criteria, using actual boundary outcomes rather than guard labels alone.",
+          "correct": true,
+          "why": "Protection effectiveness includes both misses and operational disruption."
+        },
+        {
+          "text": "Report only the classifier's aggregate benign accuracy, assuming unchanged benign behavior establishes resistance to encoded adversarial inputs.",
+          "correct": false,
+          "why": "Benign accuracy does not test the known attack class."
+        },
+        {
+          "text": "Treat the guard upgrade as infrastructure maintenance and exempt it from evaluation because its role is to improve safety.",
+          "correct": false,
+          "why": "A safety component change can introduce regressions."
+        },
+        {
+          "text": "Version the guard configuration with the assistant and execute relevant adversarial and regression cases against the full protected execution path.",
+          "correct": true,
+          "why": "The guard is part of the behavior-producing configuration."
+        }
+      ],
+      "decision": "Safety middleware has a lifecycle too; evaluate and version the complete protected system at its consequential boundaries.",
+      "sources": [
+        "guide",
+        "injection",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q50",
+      "domain": 5,
+      "objectives": [
+        "5.5",
+        "5.2"
+      ],
+      "title": "A restricted secondary use",
+      "stem": "A customer service team collected support conversations to resolve product issues under an approved purpose. Marketing now proposes using them to infer sensitive personal traits and target offers. No applicable permission or lawful-purpose assessment has been completed for that secondary processing. The team can analyze aggregate issue trends within the approved scope. Which action BEST respects the established boundary while allowing useful work?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Ask the model to label inferred traits as uncertain and treat that disclaimer as authorization for customer-level marketing use.",
+          "correct": false,
+          "why": "Uncertainty disclosure is not processing authorization."
+        },
+        {
+          "text": "Keep current analysis within approved issue trends; seek the responsible assessment before sensitive inference or secondary use.",
+          "correct": true,
+          "why": "The new purpose needs its own applicable assessment."
+        },
+        {
+          "text": "Proceed with sensitive inference because customers voluntarily supplied the conversations while seeking support for the original product issue.",
+          "correct": false,
+          "why": "Voluntary disclosure for support does not establish every secondary purpose."
+        },
+        {
+          "text": "Remove names but retain account identifiers, using inferred traits for targeting without secondary-purpose review.",
+          "correct": false,
+          "why": "Pseudonymization does not remove the new processing purpose."
+        }
+      ],
+      "decision": "A permitted data source does not authorize every inferred attribute or secondary use; preserve the approved purpose boundary.",
+      "sources": [
+        "guide",
+        "gdpr"
+      ]
+    },
+    {
+      "id": "S03Q51",
+      "domain": 6,
+      "objectives": [
+        "6.1"
+      ],
+      "title": "Discovery when users disagree on the baseline",
+      "stem": "A purchasing assistant pilot reports eight minutes saved per request. Experienced buyers say the baseline includes work they never perform; newer buyers say the new workflow omits mandatory checks. The sponsor wants to scale the pilot immediately. Success is defined as shorter fully compliant handling time. Which discovery step BEST resolves the evidence conflict before a rollout commitment?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Observe representative buyers, agree the complete compliant task baseline, and remeasure pilot effort including omitted checks.",
+          "correct": true,
+          "why": "The claimed benefit depends on a disputed task definition."
+        },
+        {
+          "text": "Retain the sponsor-approved baseline for simpler reporting, without checking disputed required work or buyer differences.",
+          "correct": false,
+          "why": "Convenient consistency does not validate the disputed measure."
+        },
+        {
+          "text": "Scale first and gather more satisfaction responses, treating increased sample size as sufficient to validate the existing time-saving claim.",
+          "correct": false,
+          "why": "More responses do not fix an invalid task boundary."
+        },
+        {
+          "text": "Average the two buyer groups' opinions and use that number as the new baseline without observing the actual required work.",
+          "correct": false,
+          "why": "Opinion averaging does not resolve omitted checks."
+        }
+      ],
+      "decision": "A business baseline must represent the full intended task and population before it can support a value or rollout claim.",
+      "sources": [
+        "guide"
+      ]
+    },
+    {
+      "id": "S03Q52",
+      "domain": 6,
+      "objectives": [
+        "6.2"
+      ],
+      "title": "A decision communication that preserves uncertainty",
+      "stem": "A team selects regional processing because a documented residency requirement is satisfied there. A global endpoint is cheaper and scores better, but its terms for this workload remain unresolved. The sponsor understands that both quality and residency matter, yet asks for a clear decision record and future review condition. Which TWO communication elements BEST avoid both hiding trade-offs and treating unresolved terms as established facts?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Document the regional choice and its current cost but omit the higher-scoring alternative because reviewers cannot select it today.",
+          "correct": false,
+          "why": "That hides a material trade-off and future review option."
+        },
+        {
+          "text": "Record the global benchmark advantage as the release decision, postponing the residency question until after the preferred configuration is deployed.",
+          "correct": false,
+          "why": "This treats an unresolved feasibility condition as satisfied."
+        },
+        {
+          "text": "Record the selected option, responsible reviewer and specific residency evidence that would trigger reconsideration of the global alternative.",
+          "correct": true,
+          "why": "This creates an accountable conditional decision rather than a permanent claim."
+        },
+        {
+          "text": "State which requirements are verified, which remain unresolved and how the feasible options compare on measured quality and cost.",
+          "correct": true,
+          "why": "This separates known constraints from preferences and uncertainty."
+        },
+        {
+          "text": "Describe global processing as permanently prohibited without preserving the unresolved-term distinction, simplifying the decision into one universal legal rule.",
+          "correct": false,
+          "why": "The supplied uncertainty does not establish a universal prohibition."
+        }
+      ],
+      "decision": "A useful decision record distinguishes evidence, uncertainty and trade-offs, and says what would justify revisiting the choice.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q53",
+      "domain": 6,
+      "objectives": [
+        "6.3"
+      ],
+      "title": "A fallback changes the service promise",
+      "stem": "A customer agreement promises a supported answer within four seconds. During dependency outages the team proposes returning an acknowledgment in one second and sending the answer later, while continuing to report every acknowledgment as SLA success. The fallback is useful but was not part of the agreed completion definition. Which next action BEST aligns expectations and monitoring before enabling it broadly?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Enable the fallback and count acknowledgments as completed supported answers because the user receives some response within the existing target.",
+          "correct": false,
+          "why": "That silently changes the promised outcome."
+        },
+        {
+          "text": "Disable every acknowledgment during outages so users see no response until a supported answer meets the original four-second target.",
+          "correct": false,
+          "why": "Users can receive useful status without misreporting compliance."
+        },
+        {
+          "text": "Agree and instrument separate degraded acknowledgment and eventual-answer commitments, keeping original completion breaches visible pending accepted changes.",
+          "correct": true,
+          "why": "A useful fallback requires explicit service semantics."
+        },
+        {
+          "text": "Exclude all dependency-outage requests from reporting without customer agreement, preserving a favorable normal-operation latency chart.",
+          "correct": false,
+          "why": "Unagreed exclusions do not align the service obligation."
+        }
+      ],
+      "decision": "A fallback can be valuable without satisfying the original SLA; make its separate commitment explicit rather than relabeling success.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q54",
+      "domain": 6,
+      "objectives": [
+        "6.4",
+        "6.5"
+      ],
+      "title": "Implementation guidance after an ownership split",
+      "stem": "A delivery team builds an assistant while another team owns retrieval indexing. Incidents repeatedly bounce between them because the handoff says only that search is integrated. Both components meet isolated tests, but nobody owns stale-source detection or reindex rollback. Which TWO documentation changes BEST address this cross-team gap rather than merely adding more component diagrams?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Keep ownership informal until incident volume is high enough to justify a separate cross-team project.",
+          "correct": false,
+          "why": "The recurring operational gap is already established."
+        },
+        {
+          "text": "Add a detailed diagram of each team's internal classes without defining which team acts when the integrated answer uses stale evidence.",
+          "correct": false,
+          "why": "Internal diagrams do not resolve boundary ownership."
+        },
+        {
+          "text": "Specify version compatibility, failure signals and a tested reindex/rollback procedure that both teams exercise during handoff.",
+          "correct": true,
+          "why": "This makes operational coordination implementable and verifiable."
+        },
+        {
+          "text": "Document end-to-end freshness and recovery responsibilities with named owners, escalation paths and joint acceptance criteria at the retrieval boundary.",
+          "correct": true,
+          "why": "This assigns the unowned cross-component behavior."
+        },
+        {
+          "text": "Assign every stale-answer incident to the model team by default because it produces the final prose, regardless of upstream source state.",
+          "correct": false,
+          "why": "The default ignores actual failure responsibility and repair authority."
+        }
+      ],
+      "decision": "Document shared service behavior and decision ownership at interfaces; isolated component acceptance cannot establish end-to-end operability.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q55",
+      "domain": 6,
+      "objectives": [
+        "6.3",
+        "6.5"
+      ],
+      "title": "A loud request versus representative feedback",
+      "stem": "A major customer requests a much longer answer format. Smaller customers say the current concise format is essential, and support data shows different needs by task type. The product owner wants a single immediate global prompt change to satisfy the largest account. Which response BEST handles feedback while preserving evidence-based product behavior and existing commitments?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Apply the largest customer's preferred format globally, treating commercial priority as evidence of universal task fit.",
+          "correct": false,
+          "why": "Commercial priority does not establish every user's task need."
+        },
+        {
+          "text": "Let the model infer customer importance from query wording and silently vary detail without a documented product configuration or evaluation.",
+          "correct": false,
+          "why": "Implicit untested variation is difficult to govern or explain."
+        },
+        {
+          "text": "Reject the request because the original concise format passed acceptance and therefore cannot be revised after launch.",
+          "correct": false,
+          "why": "Accepted behavior can evolve through controlled change."
+        },
+        {
+          "text": "Clarify task-specific needs, test approved format variants on affected slices, and agree explicit configuration and ownership.",
+          "correct": true,
+          "why": "This addresses real differences without assuming one account represents all users."
+        }
+      ],
+      "decision": "Feedback should be translated into explicit user/task requirements and evaluated options, not weighted solely by the loudest source.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q56",
+      "domain": 6,
+      "objectives": [
+        "6.1",
+        "6.5"
+      ],
+      "title": "A prototype cannot answer a rollout-capacity question",
+      "stem": "A successful analyst pilot uses a curated document collection and a dedicated support engineer. A planned enterprise rollout adds forty departments with independent retention rules and no assigned support capacity. Executives ask for a delivery estimate based on the pilot's two-week build. Which next step BEST supports a defensible estimate without discarding the pilot's useful technical evidence?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Discover departmental requirements and rollout ownership, then estimate staged delivery with explicit dependencies, assumptions and validation effort.",
+          "correct": true,
+          "why": "The pilot omits material rollout scope and support obligations."
+        },
+        {
+          "text": "Reuse the two-week estimate unchanged because the core model interaction already demonstrated technical feasibility on curated documents.",
+          "correct": false,
+          "why": "Technical feasibility does not establish enterprise readiness."
+        },
+        {
+          "text": "Restart all prototype engineering from scratch before interviewing departments, assuming nothing from a small pilot can inform a larger program.",
+          "correct": false,
+          "why": "The pilot's validated technical findings remain useful."
+        },
+        {
+          "text": "Multiply the pilot build time by forty and present the result as a complete enterprise implementation estimate without further discovery.",
+          "correct": false,
+          "why": "Linear scaling ignores shared work and new constraints."
+        }
+      ],
+      "decision": "Reuse evidence within its scope while discovering new rollout requirements; an estimate must include the changed operating model.",
+      "sources": [
+        "guide"
+      ]
+    },
+    {
+      "id": "S03Q57",
+      "domain": 6,
+      "objectives": [
+        "6.2",
+        "6.4",
+        "6.5"
+      ],
+      "title": "An iteration proposal ready for a governance forum",
+      "stem": "Monitoring reveals that a document assistant underperforms on a newly common source format. A repair requires a parser change, not a model upgrade. The steering group needs to approve effort and understand user impact; operations needs a rollback plan. Which THREE elements BEST make the proposal concrete enough for both an informed decision and controlled implementation?",
+      "select": 3,
+      "options": [
+        {
+          "text": "Specify staged rollout, monitoring triggers and rollback responsibility, communicating expected temporary limitations to affected service owners.",
+          "correct": true,
+          "why": "This makes the release operable and expectations explicit."
+        },
+        {
+          "text": "Show the affected workload share and supported failure evidence, distinguishing business impact from unrelated aggregate model benchmarks.",
+          "correct": true,
+          "why": "This establishes why the iteration matters."
+        },
+        {
+          "text": "Present only a favorable demonstration on one repaired document, leaving affected traffic, interface changes and recovery ownership for later.",
+          "correct": false,
+          "why": "One example does not support the delivery and operating decision."
+        },
+        {
+          "text": "Request a blanket model-upgrade budget because all assistant failures can be categorized as insufficient language-model capability.",
+          "correct": false,
+          "why": "It does not address the diagnosed parser defect."
+        },
+        {
+          "text": "Describe the parser change, interfaces, owner and representative acceptance tests, including regressions against existing document formats.",
+          "correct": true,
+          "why": "This defines implementable scope and verification."
+        }
+      ],
+      "decision": "An iteration proposal should connect observed impact, bounded repair and release control; diagnosis determines the work rather than AI branding.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q58",
+      "domain": 6,
+      "objectives": [
+        "6.5"
+      ],
+      "title": "Retiring an assistant with active obligations",
+      "stem": "A company will retire an old procurement assistant after replacing it. The old system still has pending approvals, scheduled notifications and links in active cases. Operations proposes turning off the endpoint immediately because new questions already use the replacement. Which lifecycle plan BEST retires the service without abandoning users or executing stale pending work?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Reconcile outstanding obligations with owners, migrate or close them, communicate access changes, and verify pending effects and credentials are retired.",
+          "correct": true,
+          "why": "Retirement must account for active state and authority."
+        },
+        {
+          "text": "Delete the old database immediately because no new questions are routed there, assuming pending approvals belong to the replacement automatically.",
+          "correct": false,
+          "why": "Routing new traffic does not migrate existing obligations."
+        },
+        {
+          "text": "Keep the old service fully privileged indefinitely so historical links work without explicit migration decisions.",
+          "correct": false,
+          "why": "Indefinite authority is unnecessary and complicates ownership."
+        },
+        {
+          "text": "Stop the endpoint immediately and leave pending jobs running on their existing credentials until users report any missing results.",
+          "correct": false,
+          "why": "This leaves unowned effects and abandoned cases."
+        }
+      ],
+      "decision": "Lifecycle management includes retirement and reconciliation of active commitments, not only launch and prompt iteration.",
+      "sources": [
+        "guide",
+        "agents"
+      ]
+    },
+    {
+      "id": "S03Q59",
+      "domain": 6,
+      "objectives": [
+        "6.3",
+        "6.5"
+      ],
+      "title": "A missed commitment and an honest recovery plan",
+      "stem": "A team committed to a launch date before discovering that a third-party connector lacks required audit metadata. The missing control blocks the approved production scope; a read-only limited pilot remains feasible. The sponsor asks the architect to maintain the date by describing the gap as post-launch cleanup. Which TWO responses BEST preserve expectation alignment and an actionable delivery decision?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Describe the limited pilot as the full production release so the date remains unchanged, then expand silently when the connector is repaired.",
+          "correct": false,
+          "why": "That misaligns stakeholder expectations and scope."
+        },
+        {
+          "text": "Launch the original scope and record the audit-metadata gap only in an internal backlog, retaining the original readiness announcement.",
+          "correct": false,
+          "why": "It hides a known unmet acceptance condition."
+        },
+        {
+          "text": "Explain the blocked acceptance condition, impact and evidence promptly, separating the original production commitment from the feasible limited pilot.",
+          "correct": true,
+          "why": "This prevents an undisclosed change to readiness claims."
+        },
+        {
+          "text": "Cancel the entire program without offering the feasible pilot or explaining which constraint caused the production delay.",
+          "correct": false,
+          "why": "It removes an available informed option."
+        },
+        {
+          "text": "Present revised scope/date options with owners and dependencies, obtaining an explicit decision and updating acceptance and operational communication accordingly.",
+          "correct": true,
+          "why": "The recovery becomes a concrete agreed delivery plan."
+        }
+      ],
+      "decision": "Surface the unmet commitment with feasible choices; honest scope and dependency communication is part of architectural delivery.",
+      "sources": [
+        "guide",
+        "evals"
+      ]
+    },
+    {
+      "id": "S03Q60",
+      "domain": 7,
+      "objectives": [
+        "7.1"
+      ],
+      "title": "Formatter feedback within the editing loop",
+      "stem": "A team already has a deterministic repository formatter and CI validation. Developers want immediate formatting feedback after AI source edits, before review; commit and deployment remain separate approved steps. Prompt reminders are often missed. The project formatter supports a bounded modified-file invocation. Which configuration BEST reuses the existing tool at the requested point without expanding the workflow's action scope?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Run a formatter hook that silently ignores failures, relying on CI to detect whether the immediate formatting action actually succeeded.",
+          "correct": false,
+          "why": "The immediate feedback is misleading when the formatter fails."
+        },
+        {
+          "text": "Run the repository formatter on modified files through a scoped edit hook, surface failures and retain CI validation.",
+          "correct": true,
+          "why": "It gives immediate deterministic feedback with bounded effects."
+        },
+        {
+          "text": "Run a full-repository formatter after every edit and silently rewrite unrelated generated files before the review starts.",
+          "correct": false,
+          "why": "It expands the change scope beyond the supported modified-file action."
+        },
+        {
+          "text": "Keep formatting only in CI after pull-request submission, preserving deterministic checks but providing no edit-loop feedback.",
+          "correct": false,
+          "why": "It misses the requested timing despite useful later validation."
+        }
+      ],
+      "decision": "Reuse the deterministic tool at the needed feedback point, limiting effects and exposing errors instead of adding unrelated automation.",
+      "sources": [
+        "guide",
+        "hooks"
+      ]
+    },
+    {
+      "id": "S03Q61",
+      "domain": 7,
+      "objectives": [
+        "7.2"
+      ],
+      "title": "An AI debug assistant that needs observability",
+      "stem": "Developers repeatedly paste partial error messages into a coding assistant. It proposes plausible fixes, but many fail because the actual configuration and failing test command are missing. The repository already has reproducible test scripts and sanitized diagnostic logs. The team wants shorter debugging cycles while keeping human review. Which TWO workflow changes BEST improve the evidence available to the assistant?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Provide the exact failing command, relevant sanitized trace, environment version and minimal reproduction before asking for a repair hypothesis.",
+          "correct": true,
+          "why": "This grounds diagnosis in the actual failure conditions."
+        },
+        {
+          "text": "Paste full environment dumps including secrets so the assistant can infer every possible configuration detail without a scoping step.",
+          "correct": false,
+          "why": "This exposes sensitive data unnecessarily."
+        },
+        {
+          "text": "Have the assistant validate a bounded proposed change with the existing relevant test, recording what passed and retaining review of the resulting diff.",
+          "correct": true,
+          "why": "This closes the diagnosis-to-verification loop."
+        },
+        {
+          "text": "Disable the failing test until the proposed repair is merged, using a successful build as proof the original runtime error is resolved.",
+          "correct": false,
+          "why": "A different passing check does not validate the failed behavior."
+        },
+        {
+          "text": "Ask the assistant for more speculative fixes per error and merge the first one that reads convincingly to an unfamiliar reviewer.",
+          "correct": false,
+          "why": "More guesses do not replace missing evidence."
+        }
+      ],
+      "decision": "Better debugging assistance comes from reproducible evidence and targeted verification, not the volume of plausible patches.",
+      "sources": [
+        "guide",
+        "agent-evals"
+      ]
+    },
+    {
+      "id": "S03Q62",
+      "domain": 7,
+      "objectives": [
+        "7.3"
+      ],
+      "title": "A permission denial is not a broken tool",
+      "stem": "A coding assistant's build command works locally but is denied in the shared execution environment. The denial message identifies a prohibited network access, while the project also supports an offline dependency cache. The team must retain the approved execution policy. Which diagnostic response BEST distinguishes policy from tool failure and finds a permitted verification path?",
+      "select": 1,
+      "options": [
+        {
+          "text": "Report the build passed from local behavior, omitting the shared environment's unexecuted verification and denial.",
+          "correct": false,
+          "why": "That misstates the evidence actually obtained."
+        },
+        {
+          "text": "Disable the shared execution policy temporarily because a command that works locally proves the denial is a tool defect.",
+          "correct": false,
+          "why": "Local success does not authorize prohibited access."
+        },
+        {
+          "text": "Inspect the denied capability, test the approved offline-cache build path, and report any remaining verification limits precisely.",
+          "correct": true,
+          "why": "This respects policy while testing an available permitted path."
+        },
+        {
+          "text": "Retry the same networked build repeatedly with different wording in the assistant prompt until the denial no longer appears.",
+          "correct": false,
+          "why": "Prompt wording does not address the policy boundary."
+        }
+      ],
+      "decision": "A denied capability and an implementation error require different responses; use permitted alternatives and state verification limits honestly.",
+      "sources": [
+        "guide",
+        "permissions"
+      ]
+    },
+    {
+      "id": "S03Q63",
+      "domain": 7,
+      "objectives": [
+        "7.1",
+        "7.3"
+      ],
+      "title": "A changed tool interface after an upgrade",
+      "stem": "A team upgrades its approved MCP server. Existing prompts still name an old tool and assume a field that the new schema removed. The server is reachable and authentication succeeds; calls fail validation before execution. The team needs a repeatable repair across developers without weakening the server's schema checks. Which TWO changes BEST address the actual compatibility failure?",
+      "select": 2,
+      "options": [
+        {
+          "text": "Refresh credentials repeatedly because successful authentication can still be the most likely cause of a deterministic schema-validation error.",
+          "correct": false,
+          "why": "The observed failure already identifies the incompatible request."
+        },
+        {
+          "text": "Add a small compatibility smoke test for the required operation and distribute the corrected shared configuration through the established team setup.",
+          "correct": true,
+          "why": "This catches and consistently propagates the repaired contract."
+        },
+        {
+          "text": "Ask each developer to invent local aliases for the removed tool and omit documenting the server version to avoid coupling.",
+          "correct": false,
+          "why": "Untracked aliases create more divergent interfaces."
+        },
+        {
+          "text": "Disable argument validation on the server so prompts written against the removed field can continue sending their previous request shapes.",
+          "correct": false,
+          "why": "Weakening validation does not restore intended operation semantics."
+        },
+        {
+          "text": "Compare the pinned client expectations with the server's current advertised tools and schemas, updating the integration contract and version compatibility record.",
+          "correct": true,
+          "why": "The error concerns interface mismatch rather than connectivity."
+        }
+      ],
+      "decision": "Localize failures by boundary; reachable authenticated servers can still reject an outdated caller contract.",
+      "sources": [
+        "guide",
+        "discovery"
+      ]
+    }
+  ],
+  "order": [
+    10,
+    21,
+    62,
+    36,
+    18,
+    20,
+    46,
+    47,
+    58,
+    0,
+    7,
+    24,
+    22,
+    56,
+    37,
+    59,
+    33,
+    49,
+    29,
+    60,
+    27,
+    6,
+    8,
+    32,
+    39,
+    15,
+    5,
+    25,
+    51,
+    40,
+    41,
+    52,
+    53,
+    57,
+    34,
+    61,
+    42,
+    11,
+    2,
+    50,
+    9,
+    26,
+    12,
+    35,
+    31,
+    55,
+    1,
+    14,
+    23,
+    43,
+    28,
+    45,
+    30,
+    16,
+    54,
+    13,
+    17,
+    38,
+    44,
+    4,
+    19,
+    48,
+    3
+  ],
+  "drills": [
+    {
+      "id": "S03M1",
+      "type": "matrix",
+      "title": "Validity of evidence and measurement",
+      "stem": "Judge each row independently against its stated requirement. Choose Yes or No for each; no fixed number of Yes answers is implied.",
+      "rows": [
+        {
+          "text": "Requirement: estimate single-run agent reliability. Evidence: every task succeeded at least once across five attempts, with failed attempts omitted.",
+          "answer": "No",
+          "why": "Existence of a successful attempt is not single-run reliability."
+        },
+        {
+          "text": "Requirement: evaluate a repair task repeatedly. Proposal: reset each trial to known state and grade the required outcome plus forbidden side effects.",
+          "answer": "Yes",
+          "why": "Controlled starting conditions and behavior criteria support valid repeated trials."
+        },
+        {
+          "text": "Requirement: answer historical ownership. Proposal: retrieve current ownership summaries and always prefer the newest document.",
+          "answer": "No",
+          "why": "Current ownership does not establish the relation at the requested historical date."
+        },
+        {
+          "text": "Requirement: preserve units in retrieved evidence. Proposal: index table rows with their associated headers, units and provenance.",
+          "answer": "Yes",
+          "why": "The source structure carries meaning essential to the number."
+        },
+        {
+          "text": "Requirement: understand dialect quality disparity. Proposal: revalidate disputed labels with qualified reviewers before drawing system fairness conclusions.",
+          "answer": "Yes",
+          "why": "The measurement process must be valid before interpreting the gap."
+        }
+      ]
+    },
+    {
+      "id": "S03M2",
+      "type": "matrix",
+      "title": "Boundaries during change",
+      "stem": "Judge each row independently against its stated requirement. Choose Yes or No for each; no fixed number of Yes answers is implied.",
+      "rows": [
+        {
+          "text": "Requirement: retain a fixed investigation budget. Proposal: every worker has a local cap, but replacement workers can be spawned without a shared cap.",
+          "answer": "No",
+          "why": "Unlimited replacement delegation can exceed the authorized aggregate budget."
+        },
+        {
+          "text": "Requirement: useful service during an outage. Proposal: offer an explicit pending acknowledgment while continuing to count unfulfilled original completion promises accurately.",
+          "answer": "Yes",
+          "why": "Useful status and honest completion measurement can coexist."
+        },
+        {
+          "text": "Requirement: safe retirement. Proposal: reconcile pending approvals and scheduled effects before revoking credentials and closing the old service.",
+          "answer": "Yes",
+          "why": "Outstanding obligations need deliberate transfer or closure."
+        },
+        {
+          "text": "Requirement: enforce tenant search permissions. Proposal: authenticate page one only and allow arbitrary offsets for later pages.",
+          "answer": "No",
+          "why": "Every data-returning page remains an authorization boundary."
+        },
+        {
+          "text": "Requirement: bounded formatting automation. Proposal: a formatter hook also commits and deploys every edit without separate review.",
+          "answer": "No",
+          "why": "The extra effects exceed the requested deterministic formatting action."
+        }
+      ]
+    },
+    {
+      "id": "S03D1",
+      "type": "matching",
+      "title": "Locate the failing boundary",
+      "stem": "Choose the BEST primary boundary to investigate for each observation. Options may repeat; these are practice categories, not a live-exam format guarantee.",
+      "choices": [
+        "Requirement or metric definition",
+        "Source representation",
+        "Integration contract",
+        "Operational lifecycle"
+      ],
+      "rows": [
+        {
+          "text": "A quality score rises after abstentions because the dashboard now excludes unanswered cases from its denominator.",
+          "answer": "Requirement or metric definition",
+          "why": "The measurement changed what success means."
+        },
+        {
+          "text": "The correct table row is retrieved, but its unit and heading were dropped during ingestion.",
+          "answer": "Source representation",
+          "why": "The source structure lost essential meaning before generation."
+        },
+        {
+          "text": "A reachable authenticated MCP server rejects a removed argument field after an upgrade.",
+          "answer": "Integration contract",
+          "why": "Caller and server schema expectations no longer match."
+        },
+        {
+          "text": "A retired service still holds scheduled notifications and pending approvals with active credentials.",
+          "answer": "Operational lifecycle",
+          "why": "Retirement did not reconcile active commitments and effects."
+        },
+        {
+          "text": "New query embeddings search a collection mixing old and new incompatible document-vector representations.",
+          "answer": "Source representation",
+          "why": "The retrieval representation is not version-consistent."
+        }
+      ]
+    }
+  ]
+}
