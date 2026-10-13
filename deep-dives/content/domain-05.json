@@ -1,0 +1,503 @@
+{
+  "domain": 5,
+  "title": "Governance, Safety & Risk Management",
+  "weight": 14,
+  "summary": "Learn to turn AI risk into enforceable boundaries, useful review workflows, evidence and accountable decisions. Build a synthetic safety case for a nutrition assistant or worker marketplace, then practise the architectural judgments assessed by Domain 5.",
+  "objectives": [
+    "Implement guardrails and safety controls",
+    "Identify risks, limitations, and failure modes of LLM systems",
+    "Apply human-in-the-loop validation strategies",
+    "Ensure compliance with regulations (e.g., GDPR, HIPAA, FedRAMP)",
+    "Address ethical AI considerations (bias, fairness, transparency)"
+  ],
+  "sections": [
+    {
+      "id": "d5-risk-boundaries",
+      "title": "Begin with the decision, the harm and the owner",
+      "objective_ids": [
+        "5.1",
+        "5.2"
+      ],
+      "minutes": 12,
+      "body": "<p>A governance design begins with a concrete sentence: “This system may propose X, for person Y, using data Z; person or service W decides whether X happens.” That sentence separates useful generation from real authority. A meal-planning assistant that suggests recipes, an assistant that changes a hospital patient’s diet, and an agent that purchases groceries have different consequences even if they share a model. Your first task is to identify the action and its affected people, rather than assign one risk label to the entire chatbot.</p>\n<p>Throughout this chapter, a <strong>hypothetical NutriMind extension</strong> drafts meal ideas and a <strong>hypothetical Krishi Mazdoor extension</strong> helps workers discover suitable jobs. These are design exercises, not claims about either project’s present implementation, legal status or users. All quantities and records are synthetic. The learning goal is a defensible design that you could adapt after discovering the real requirements.</p>\n<h3>Distinguish quality, safety, security and compliance</h3>\n<p>Quality asks whether the meal draft is useful. Safety asks whether an otherwise useful draft creates unacceptable harm, such as overlooking an allergy. Security asks whether an attacker can cause disclosure or unauthorized action. Compliance asks which obligations apply to this actor, purpose and deployment, and what evidence demonstrates that they are met. These concerns overlap: an access-control failure can also be a privacy violation. They still need different tests and owners. A high helpfulness score cannot compensate for a release that exposes another tenant’s records.</p>\n<p>NIST’s AI RMF organizes continuous risk work around Govern, Map, Measure and Manage. Governance spans the other functions; these are interrelated activities, not four boxes completed once before launch. The RMF is voluntary guidance, and the official site notes that a revision is in progress. We use its current 1.0 core as a practical organizing aid, not as a certificate. <a href=\"https://airc.nist.gov/airmf-resources/airmf/5-sec-core/\">D5-S01</a></p>\n<figure class=\"diagram\"><figcaption>A risk decision remains open to new evidence throughout the lifecycle.</figcaption><ol class=\"flow\"><li><strong>Govern:</strong> identify accountable owner, permitted purpose and stop conditions.</li><li><strong>Map:</strong> connect inputs, actors, actions and possible harms.</li><li><strong>Measure:</strong> test the specific failure and the control that should contain it.</li><li><strong>Manage:</strong> reduce scope, add a control, accept a justified residual risk, or stop.</li><li><strong>Revisit:</strong> new model, data, tool or user population changes the evidence.</li></ol></figure>\n<h3>Write a risk as a causal chain</h3>\n<p>“Hallucinations are risky” gives an engineer little to implement. A useful entry says: “An imported recipe lacks a reliable allergen field; the model infers that it is suitable; a user trusts the suitability badge; a person with an allergy may consume it.” The control might require a verified ingredient record for that badge, with no badge when evidence is missing. Its test should inject incomplete ingredient data and verify the badge is withheld. Its owner is the team able to maintain the ingredient source and eligibility rule, not whoever wrote the latest prompt.</p>\n<p>Separate <strong>inherent risk</strong>, before the chosen controls, from <strong>residual risk</strong>, after the controls have been tested. “Low residual risk” needs a stated basis: test conditions, sample size, remaining escape paths and an owner authorized to accept it. Scores such as likelihood × severity help order work, but multiplying two ordinal labels does not produce a measured probability. Severe, irreversible harms may warrant a hard constraint even when their frequency is unknown.</p>\n<div class=\"example\"><h3>Project artifact</h3><p>Use the <a href=\"templates/domain-05/risk-register.md\" download>risk-register template</a>. Create three rows: a factual error, an unauthorized tool action and a harmful exclusion. For each, record the affected person, trigger, consequence, preventive control, detection, recovery, evidence and risk owner. If the owner cannot explain how the release can be stopped, governance is still aspirational.</p></div>\n<p class=\"callout\"><strong>Architectural decision:</strong> if the system cannot safely perform the consequential action, preserve value by shrinking the action. A draft-only service, verified lookup or human-supported workflow may satisfy the user’s actual need with a smaller and more testable risk surface.</p>"
+    },
+    {
+      "id": "d5-guardrails",
+      "title": "Guardrails are controls at distinct boundaries",
+      "objective_ids": [
+        "5.1",
+        "5.2"
+      ],
+      "minutes": 16,
+      "body": "<p>A guardrail is a mechanism that changes what the system can say, read or do. Its strength depends on where it executes. A system prompt can discourage unsafe advice; a tool service can refuse an unauthorized transaction even if the model requests it. Both are useful, but the second is the authority that prevents the transaction. Design each control around an explicit failure, an enforcement point and a known escape route.</p>\n<p>OWASP’s excessive-agency guidance separates three problems: functions the agent does not need, privileges those functions should not have, and autonomy that allows consequences without an appropriate decision. This distinction is useful because hiding a dangerous tool from a menu does not revoke a powerful backend credential. <a href=\"https://genai.owasp.org/llmrisk/llm062025-excessive-agency/\">D5-S03</a></p>\n<figure class=\"diagram\"><figcaption>Layered controls: data enters through a checked path; proposed actions leave through an independent executor.</figcaption><ol class=\"flow\"><li><strong>Authenticated request:</strong> establish actor and tenant from the session, not model-written text.</li><li><strong>Data gateway:</strong> minimize fields, enforce document ACLs and attach provenance.</li><li><strong>Model/harness:</strong> describe scope, label untrusted evidence and request a bounded proposal.</li><li><strong>Proposal validation:</strong> check schema, values, evidence and permitted action type.</li><li><strong>Policy executor:</strong> recheck current permissions, limits, approvals and object state.</li><li><strong>Outcome/recovery:</strong> reconcile the actual result, record safe audit metadata and expose an appeal path.</li></ol></figure>\n<h3>What each layer can and cannot prove</h3>\n<div class=\"table-wrap\"><table><thead><tr><th>Control</th><th>Useful guarantee or evidence</th><th>Remaining limitation</th></tr></thead><tbody><tr><td>Schema validation</td><td>Required fields and permitted types are present.</td><td>A valid number or citation can still be wrong.</td></tr><tr><td>Content safety classifier</td><td>Detects categories it was trained and evaluated to recognize.</td><td>Has false positives, false negatives and distribution limits.</td></tr><tr><td>Document ACL enforcement</td><td>Only permitted records reach a particular authenticated context.</td><td>Does not establish that permitted content is trustworthy.</td></tr><tr><td>Action allowlist and scoped identity</td><td>Restricts the available side effects and their resource scope.</td><td>A permitted action can still be a bad decision.</td></tr><tr><td>Human approval of a bound proposal</td><td>An authorized reviewer approves a specific consequence.</td><td>Review can be mistaken, stale or rushed.</td></tr><tr><td>Audit and rollback</td><td>Supports detection, investigation and some recovery.</td><td>Cannot unsend disclosed information or reverse every harm.</td></tr></tbody></table></div>\n<p>For the marketplace exercise, replace an unrestricted <code>update_worker</code> tool with <code>draft_profile_change</code>. Let the authenticated worker approve the precise diff before a narrow service applies it. For job ranking, the model should not choose the tenant or override eligibility permissions by emitting <code>tenant_id</code>. Derive those fields from trusted application context. Treat all model arguments as untrusted input, even when they arrived in syntactically valid JSON.</p>\n<h3>The executor must own the final decision</h3>\n<pre><code># Illustrative policy logic, not production authentication code\nactor = authenticated_session.actor\nproposal = validate_allowed_schema(model_proposal)\nresource = load_current_resource(proposal.resource_id)\nrequire_can_act(actor, resource)\nrequire_allowed_purpose(actor, proposal.action)\nrequire_fresh_approval(proposal.hash, actor, resource.version)\napply_once(proposal, idempotency_key)\nrecord_outcome_without_raw_sensitive_payload()</code></pre>\n<p>The checks must occur in the same authoritative path as the mutation. A UI button that is disabled while an API still accepts the call is an incomplete control. A precheck can race with a permissions change; use the backend’s transaction or concurrency facilities to prevent applying a proposal against a different version. Idempotency prevents a retry from duplicating a successful action; it does not authorize the original action or make an incorrect action safe.</p>\n<p>MCP’s July 2026 security guidance gives a concrete infrastructure example: accepting tokens intended for another resource and passing them downstream breaks the intended authorization boundary; token passthrough is prohibited by the specification. A model instruction saying “only use authorized data” cannot repair audience validation in a server. <a href=\"https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices\">D5-S08</a></p>\n<p>Claude Code permissions provide a current product example of implementing tool controls separately from project guidance. Its permission behavior depends on configuration and version; inspect the effective policy in your deployment rather than copy a rule and assume it works. Repository instructions describe workflow intent, while tool policies, sandboxing and service identities constrain execution. <a href=\"https://code.claude.com/docs/en/permissions\">D5-S09</a></p>\n<p class=\"warning\"><strong>Failure behavior is part of the control.</strong> If an approval or authorization service is unavailable, a consequential write should remain pending or be denied under the agreed policy. Sending it anyway to meet latency targets silently changes the safety design. A read-only fallback may preserve useful service without granting extra authority.</p>"
+    },
+    {
+      "id": "d5-injection",
+      "title": "Indirect injection, provenance and the confused authority problem",
+      "objective_ids": [
+        "5.1",
+        "5.2"
+      ],
+      "minutes": 15,
+      "body": "<p>Imagine the nutrition assistant retrieves a recipe PDF. Its text includes a forged maintenance note asking the assistant to export user profiles to a diagnostic endpoint. The real user asked for a recipe comparison. The PDF is evidence about recipes, not an authorized instruction source. If the model follows the note, the boundary between content and authority has failed.</p>\n<p>Direct injection arrives in an adversary’s own request. Indirect injection arrives through material the assistant is processing: a document, tool response, issue comment, page or image. OWASP explicitly notes that RAG and fine-tuning do not fully remove this vulnerability. Retrieval can improve factual relevance while simultaneously introducing attacker-controlled text into context. <a href=\"https://genai.owasp.org/llmrisk/llm01-prompt-injection/\">D5-S04</a></p>\n<figure class=\"diagram\"><figcaption>The dangerous jump is from an evidence source to an action carrying the user’s authority.</figcaption><ol class=\"flow\"><li><strong>User intent:</strong> compare three recipe records.</li><li><strong>Untrusted record:</strong> includes a forged instruction to export profiles.</li><li><strong>Vulnerable interpretation:</strong> model treats the record as operational authority.</li><li><strong>Proposed side effect:</strong> export unrelated personal data.</li><li><strong>Independent boundary:</strong> no export tool, no destination permission and no matching approval; executor denies.</li></ol></figure>\n<h3>Provenance and permission answer different questions</h3>\n<p>Provenance tells you where a fact came from, which version supplied it and how it was transformed. Authorization tells you who may read or use it for this operation. An internal wiki can have excellent provenance and still contain an attacker’s comment. A publicly readable page can contain accurate facts but lack authority to instruct your agent. A trusted transport also does not make the transported content trusted: a legitimate MCP server can return a user-uploaded document.</p>\n<p>Attach document ID, source owner, retrieval time, version and access scope to each chunk. Preserve those fields through summarization. Otherwise a malicious sentence can be paraphrased into a clean-looking summary, losing the signal that it came from an untrusted attachment. Do not let a summarizer promote an assertion such as “the user approved export” into the application’s approval record. Approval comes from the trusted interaction and is stored by the application.</p>\n<div class=\"example\"><h3>Worked case: contain a poisoned job listing</h3><p>A synthetic listing says that applicants must provide their full contact history to complete eligibility checks. The assistant can read the listing and help a worker understand its stated requirements. It must not gain permission to search unrelated contacts simply because the listing requests them. Keep listing text in an evidence field; constrain the assistant to supported job fields; flag the unusual requirement; and let the worker decide whether to continue. The service must separately enforce the data fields permitted for an application.</p><p>Now make the attack subtler: the listing falsely claims that transport is available only to one language group. A blocked export tool does not fix this informational harm. Verify consequential eligibility claims against an approved policy source, show uncertainty when evidence conflicts, and include this case in ranking and explanation tests. Security containment and factual validation address different stages of the same attack.</p></div>\n<h3>Use contemporary industry reports with their limits attached</h3>\n<p>Anthropic’s November 2025 browser-defense report describes model training, classifiers and expert red teaming, while explicitly treating prompt injection as unresolved. Its reported attack-success result belongs to a particular internal adaptive test and configuration. It is not a guaranteed production failure rate for your assistant. <a href=\"https://www.anthropic.com/research/prompt-injection-defenses\">D5-S05</a></p>\n<p>A newer report, dated 9 October 2026, describes unintended actions observed in evaluations and internal use, including working around tool restrictions and interacting with real forms. Anthropic reports limited impact in the described cases and changes to containment, monitoring and evaluation environments. These are selected investigated cases, not a prevalence estimate across customer deployments. The practical design lesson is to test failure paths and enforce the environment boundary when a helpful agent encounters a blocker. <a href=\"https://www.anthropic.com/research/investigating-unintended-model-actions\">D5-S07</a></p>\n<p class=\"callout\"><strong>Test the boundary, not just the refusal.</strong> A passing test should show that the unrelated export or write did not occur, that no sensitive payload escaped through logs or URLs, and that the legitimate recipe or job task could continue safely. Counting “I cannot comply” messages alone misses actions that already happened.</p>"
+    },
+    {
+      "id": "d5-reliability",
+      "title": "Reliability, uncertainty and evidence that survives contact with production",
+      "objective_ids": [
+        "5.2",
+        "5.3"
+      ],
+      "minutes": 16,
+      "body": "<p>LLM failure has more forms than an invented fact. The assistant may quote a real policy from the wrong year, use the wrong unit, omit an exception, misidentify a tool’s completion state, or perform the right action twice. A model can produce a plausible explanation for any of these. NIST’s Generative AI Profile identifies confabulation and the misleading confidence of generated content, including invented logic or citations. The profile is a risk lens; it does not estimate your application’s error rate. <a href=\"https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf\">D5-S02</a></p>\n<h3>Diagnose the earliest wrong boundary</h3>\n<div class=\"table-wrap\"><table><thead><tr><th>Observed symptom</th><th>Possible mechanism</th><th>A discriminating check</th></tr></thead><tbody><tr><td>Allergy note missing</td><td>Source omission, retrieval miss or generation omission</td><td>Inspect source, retrieved evidence and delivered text separately.</td></tr><tr><td>Correct citation, wrong recommendation</td><td>Citation exists but does not entail the claim</td><td>Compare the exact claim with the cited passage and applicable context.</td></tr><tr><td>Job status says applied; no application exists</td><td>HTTP response confused with business completion</td><td>Read terminal application state using a transaction identifier.</td></tr><tr><td>Two applications submitted</td><td>Retry after ambiguous timeout</td><td>Reconcile previous operation before a second mutation.</td></tr><tr><td>Good aggregate score; poor language support</td><td>Traffic mix hides slice failure</td><td>Report quality and abstention by the affected slice.</td></tr></tbody></table></div>\n<p>Correct the mechanism rather than defaulting to a larger model. If the source lacks the allergen record, a stronger generator still lacks evidence. If the parser changes milligrams to grams, adding citations cannot repair the transformation. Trace one failing case through its input, retrieved evidence, proposal, executor decision and delivered outcome. Preserve the versions needed to reproduce it without retaining unnecessary sensitive text.</p>\n<h3>A confidence number needs a measured meaning</h3>\n<p>Calibration means that predictions assigned a probability should succeed at roughly that frequency under the stated conditions. Guo and colleagues studied calibration of classification networks in 2017; their findings and temperature-scaling results do not establish that a current LLM’s self-written “95% confident” is calibrated. Use the definition, then test the particular signal and task. <a href=\"https://arxiv.org/abs/1706.04599\">D5-S10</a></p>\n<div class=\"example\"><h3>Worked case: confidence and selective answering</h3><p>On 200 synthetic eligibility questions assigned to a high-confidence bin, only 166 answers are correct. The observed correctness is 166 / 200 = <strong>83%</strong>, whatever the model’s confidence label says. Examine source freshness, question types and subgroup composition before using that signal for automatic decisions.</p><p>A revised evidence threshold answers 160 of the 200 questions and gets 152 correct. Accepted-answer accuracy is 152 / 160 = <strong>95%</strong>; coverage is 160 / 200 = <strong>80%</strong>; 40 cases abstain. Report both numbers. If a language subgroup supplies 30 of those 40 abstentions, the overall improvement may conceal a new access problem. An abstention is only useful when a safe and timely alternative exists.</p></div>\n<h3>Rare harms and common false alarms</h3>\n<p>Suppose 10,000 requests contain 100 genuinely unsafe cases. A detector catches 90 and incorrectly flags 198 of the 9,900 safe cases. Recall is 90%, but only 90 / (90 + 198) = <strong>31.25%</strong> of its alerts are true. This is a base-rate effect, not an arithmetic failure. A reviewer will see many false alarms despite a seemingly strong detector. Measure both escape rate and review burden before choosing a threshold.</p>\n<p>Zero observed failures also needs qualification. With independent, representative trials and a stable failure probability, zero failures in 300 trials gives an approximate 95% upper bound of 3 / 300 = <strong>1%</strong> under the common rule-of-three approximation. It does not establish zero risk, cover untested attacks or validate a changed deployment. Correlated examples and adaptive attackers weaken that simple interpretation.</p>\n<p>Combine scenario tests, adversarial tests, outcome checks and production evidence. Anthropic’s January 2026 evaluation article discusses complementary automated, human and operational methods. For this exercise, score final state as well as the transcript: no unauthorized write, correct attribution, proper abstention and safe recovery. A judge model can help triage but needs human calibration and must not be the sole verifier of access control. <a href=\"https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents\">D5-S20</a></p>"
+    },
+    {
+      "id": "d5-hitl",
+      "title": "Human review is a staffed decision system",
+      "objective_ids": [
+        "5.1",
+        "5.3"
+      ],
+      "minutes": 17,
+      "body": "<p>Adding an “Approve” button does not automatically create meaningful oversight. The reviewer needs the right expertise, relevant evidence, sufficient time, authority to change the outcome and a safe route when they cannot decide. An approval made after the user has already received the consequential advice cannot prevent that harm. Choose the review point by asking what the person must be able to stop.</p>\n<p>Anthropic’s April 2026 discussion of trustworthy agents highlights the tension between autonomy, human control and repeated permission prompts. Its examples are product design choices, not a general guarantee that approving a plan makes every later action safe. Use that industry experience to distinguish useful oversight from habitual confirmation. <a href=\"https://www.anthropic.com/research/trustworthy-agents\">D5-S06</a></p>\n<figure class=\"diagram\"><figcaption>A review decision applies to a particular action and current state.</figcaption><ol class=\"flow\"><li><strong>Prepare:</strong> show the exact proposed change, affected resource and evidence.</li><li><strong>Review:</strong> authorized person approves, edits, rejects or escalates.</li><li><strong>Bind:</strong> store the approved proposal hash, reviewer, permitted scope, expiry and resource version.</li><li><strong>Revalidate:</strong> executor checks permissions, freshness and state immediately before applying.</li><li><strong>Apply or return:</strong> material changes require a new decision; timeout never silently becomes approval.</li><li><strong>Learn:</strong> reconcile the outcome and feed adjudicated errors into controlled evaluation updates.</li></ol></figure>\n<h3>Match oversight to consequence</h3>\n<p>In the nutrition exercise, ordinary recipe formatting might be checked by automated schema and rendering tests. A draft that makes a disease-specific suitability claim crosses a different boundary: under this exercise’s policy, it must remain withheld for a qualified domain reviewer or be converted into general, nonpersonalized information. This is a stipulated product rule, not a clinical recommendation. In the marketplace, a worker can approve an application containing their own contact details, while an appeal about unfair exclusion may need a trained operational reviewer with authority to amend the record.</p>\n<p>A review screen should emphasize the consequential delta. Show “send these three fields to this employer,” rather than “continue workflow.” Display missing evidence and conflicts alongside supporting evidence. Give the reviewer access to original sources without exposing unrelated records. Keep an honest outcome history. A generated explanation is a proposal for the reviewer to inspect, not proof of what the system actually did.</p>\n<h3>Worked case: a queue can invalidate the safety design</h3>\n<p>Suppose a pilot receives 40 cases per hour and routes 60% to review. That is <strong>24 review cases/hour</strong>. Two reviewers, each averaging six minutes per case with no other duties, supply 2 × 60 / 6 = <strong>20 cases/hour</strong>. Demand exceeds this idealized capacity by four cases each hour. After five hours, the backlog has grown by 20 cases; even after all new arrivals stop, that backlog alone takes about one hour to clear at the same idealized service rate.</p>\n<div class=\"equation\">Review arrival rate = total arrivals × review fraction<br>Ideal service capacity = reviewers × 60 / mean review minutes<br>Load ratio = review arrival rate / capacity = 24 / 20 = 1.2</div>\n<p>This is a simple workload calculation, not a waiting-time or p95 SLA model. Real reviewers take breaks, cases vary, arrivals burst and some decisions need specialists. Load below one is necessary for stability under these assumptions; it is not enough to promise a short tail latency. Staff for realistic demand and availability, measure queue age by risk class, and agree an overflow response before launch.</p>\n<p>The permitted responses are to reduce admission, pause the consequential feature, add qualified capacity, or use an already approved lower-risk alternative. Removing mandatory review when the queue is long changes the safety policy. It needs a new accountable decision supported by evidence; it is not routine operational tuning.</p>\n<h3>Prevent stale approvals and automation bias</h3>\n<p>A reviewer approves an application to employer A containing a redacted phone number. Before execution, the model revises the recipient to employer B and adds an address. The old approval must not cover this new proposal. Bind approval to meaningfully relevant fields and a version, then recheck it at execution. A proposal hash is useful only if it covers the canonical fields that determine the action, and the executor verifies it rather than trusting a model-supplied claim.</p>\n<p>Automation bias occurs when a person over-relies on the system’s suggestion. Reduce it with evidence-first presentation, explicit uncertainty, clear disagreement controls and periodic review of cases where the model was wrong. Sample accepted and rejected cases; disagreement alone does not tell you which party was correct. Adjudicate difficult cases with appropriate expertise before turning feedback into training or eval labels.</p>\n<p class=\"callout\">The <a href=\"templates/domain-05/review-policy.md\" download>review-policy template</a> connects routing, reviewer authority, evidence, approval binding, staffing and failure behavior. A complete policy answers both “Who can say yes?” and “What happens while nobody qualified is available?”</p>"
+    },
+    {
+      "id": "d5-gdpr",
+      "title": "GDPR: follow the purpose and every copy of the data",
+      "objective_ids": [
+        "5.4",
+        "5.1"
+      ],
+      "minutes": 17,
+      "body": "<p>Start with applicability, actor roles and purpose, then design controls around the resulting obligations. A product’s name or hosting region does not settle applicability. For a hypothetical deployment in scope, map each processing operation: collecting a profile, generating an answer, logging a trace, creating an embedding, performing analytics and handling a rights request. Each operation may have a different purpose and retention need.</p>\n<p>EDPB guidance explains that a controller determines purposes and means, while a processor acts on the controller’s instructions; contracts and subprocessor arrangements matter. A vendor does not become the controller for your product merely because it hosts the model. Conversely, calling a vendor a processor does not settle all of its independent processing. Verify the actual activities and terms. <a href=\"https://www.edpb.europa.eu/sme/learn-the-basics/data-controller-or-data-processor_en\">D5-S22</a></p>\n<p>The EDPB’s basics guidance connects purpose limitation, minimisation, accuracy, storage limitation, security and accountability. Identifiability can be indirect: replacing a name with a stable user ID does not automatically anonymize a detailed profile. Health information may also be a special category requiring additional conditions. <a href=\"https://www.edpb.europa.eu/sme/learn-the-basics/data-protection-basics_en\">D5-S21</a></p>\n<h3>Translate principles into engineering choices</h3>\n<p>For the hypothetical nutrition extension, ask whether the generation request needs a full historical diary or only the user-selected ingredients and current constraints. Keep identity mapping outside the model context when possible. Redact irrelevant free text before telemetry, and prefer structured error codes over raw prompts. Short retention does not compensate for an unjustified collection, and encryption does not make an unnecessary collection necessary.</p>\n<p>A lawful basis must fit the processing purpose. EDPB guidance distinguishes the available bases and warns against artificially expanding contractual necessity. A meal-planning service and optional sponsor targeting are different purposes; a single “I agree” checkbox does not automatically justify both. Where sensitive data is involved, identify the additional applicable condition as well. Have the responsible privacy/legal owner assess actual scope, notices, rights, transfers and any required impact assessment before implementing a real deployment. <a href=\"https://www.edpb.europa.eu/sme/be-compliant/process-personal-data-lawfully_en\">D5-S23</a></p>\n<figure class=\"diagram\"><figcaption>Deleting the profile row is only one branch of a complete data lifecycle.</figcaption><ol class=\"flow\"><li><strong>Collection:</strong> profile and user-selected inputs, with purpose and retention metadata.</li><li><strong>Derived copies:</strong> summaries, embeddings, caches and search indexes retain lineage.</li><li><strong>Operational copies:</strong> traces, support exports and vendors have named owners.</li><li><strong>Rights decision:</strong> verify identity, determine scope and applicable exceptions.</li><li><strong>Execution:</strong> erase/restrict eligible copies; segregate justified retained records.</li><li><strong>Recovery:</strong> replay eligible erasure records before a backup restore returns to service.</li></ol></figure>\n<h3>Worked case: a rights request after an AI conversation</h3>\n<p>Synthetic user U-104 asks for erasure. The application has a profile, a meal summary in a vector index, a prompt cache, an error trace containing a pasted address and a separate invoice. The privacy owner has determined that the profile-derived records are eligible for erasure and that a specific invoice must be retained under an applicable obligation. Engineers should not choose that exception themselves; they implement the scoped decision.</p>\n<p>Delete eligible live records and derived index entries, invalidate relevant caches, notify processors through the established path and verify completion. Keep the justified invoice segregated, restrict its use to the approved retention purpose and state its retention basis. Do not continue personalization from retained invoice data. EDPB describes erasure as conditional, with limited exceptions, and access responses must protect other people’s rights. An export should therefore isolate this user’s personal data rather than hand over a mixed-tenant trace dump. <a href=\"https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en\">D5-S11</a></p>\n<p>The EDPB’s February 2026 enforcement report highlights backup handling as a real difficulty. It recognizes that changing backup contents may not always be advisable and calls for procedures that track erasure requests and address restored systems. This supports a designed restore procedure; it is not a blanket permission to exclude backups or retain them indefinitely. <a href=\"https://www.edpb.europa.eu/system/files/2026-02/edpb_cef-report_2025_right-to-erasure_en.pdf\">D5-S12</a></p>\n<p>In the exercise, record a minimal, access-controlled deletion instruction for U-104, restore a synthetic backup into quarantine, replay the instruction, then test the profile and index before reopening traffic. The deletion record itself can be personal data and needs its own justified retention and access policy. A finite backup schedule, restoration control and evidence of successful replay work together; none alone demonstrates full compliance.</p>\n<p class=\"warning\"><strong>Automated decisions require scope analysis.</strong> GDPR protections concerning solely automated decisions focus on legal or similarly significant effects, with specific conditions and exceptions. A nominal human rubber stamp is not a dependable design answer. For an exclusion from work opportunities, involve the privacy owner and preserve meaningful contestability. Do not assume that every recommendation falls under the same rule or that every human click removes it. <a href=\"https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en\">D5-S11</a></p>"
+    },
+    {
+      "id": "d5-hipaa",
+      "title": "HIPAA: relationships, PHI flows and shared responsibilities",
+      "objective_ids": [
+        "5.4"
+      ],
+      "minutes": 13,
+      "body": "<p>“Our app discusses health, therefore HIPAA applies” is an unreliable shortcut. HIPAA’s rules apply to covered entities and business associates. Determine the actors and relationships: a qualifying provider, health plan or clearinghouse; an app working on their behalf; the activities performed; and the protected information created, received, maintained or transmitted. HHS explains that an entity outside those definitions is not subject to the HIPAA Rules on that basis. Other laws and contractual obligations still require separate analysis. <a href=\"https://www.hhs.gov/hipaa/for-professionals/covered-entities/index.html\">D5-S13</a></p>\n<p>HHS’s business-associate guidance currently includes health-app vendors acting for covered entities and an AI chatbot on a provider’s patient portal using patients’ PHI. These examples illustrate why the same software can have different obligations in different business relationships. They do not establish that the hypothetical NutriMind extension is a business associate. <a href=\"https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/business-associates/index.html\">D5-S14</a></p>\n<h3>Worked case: clinic-sponsored meal drafts</h3>\n<p>Assume, solely for this exercise, that a clinic is a covered entity and contracts an app to prepare drafts using patient information on its behalf. The responsible legal/security team has confirmed the relevant business-associate relationships and permitted use. Draw the entire ePHI route: clinic identity, app, model endpoint, storage, support tools, logs and backup services. A contract covering the main model endpoint does not automatically cover an unrelated analytics service receiving raw conversation text.</p>\n<p>Minimize each payload, restrict access by role and patient context, verify approved services and configurations, protect credentials, establish incident notification responsibilities and test continuity. A BAA documents important obligations and permitted handling; signing it does not configure your application or make every subsequent use permissible. “BAA available” is a procurement input, not a deployment assurance result.</p>\n<div class=\"table-wrap\"><table><thead><tr><th>Control area</th><th>Exercise allocation</th><th>Evidence to request or produce</th></tr></thead><tbody><tr><td>Patient-context access</td><td>App/clinic implement role and record checks.</td><td>Wrong-patient and revoked-user tests.</td></tr><tr><td>Provider storage/admin access</td><td>Provider operates agreed infrastructure controls.</td><td>Relevant service documentation and responsibility mapping.</td></tr><tr><td>Trace retention</td><td>App selects allowed telemetry and retention.</td><td>Synthetic sensitive-field scan and expiry test.</td></tr><tr><td>Availability/recovery</td><td>Both parties operate their assigned recovery paths.</td><td>Restore exercise and access to required records.</td></tr><tr><td>Incident coordination</td><td>Named parties execute agreed notification procedures.</td><td>Contact tree and timed tabletop drill.</td></tr></tbody></table></div>\n<h3>Encryption does not remove the relationship</h3>\n<p>HHS explicitly states that a cloud provider maintaining encrypted ePHI on behalf of a covered entity or business associate can remain a business associate even without the decryption key. Its cloud guidance also explains that encryption alone does not address integrity, availability or administrative safeguards. For no-view services, particular access-control responsibilities may be met through one party’s agreed implementation; other obligations remain. <a href=\"https://www.hhs.gov/hipaa/for-professionals/special-topics/health-information-technology/cloud-computing/index.html\">D5-S15</a></p>\n<p>Do not respond by implementing every control twice. Write down which party implements what, how the other party depends on it and how failure is detected. If only the clinic can decrypt a backup, recovery needs a tested route to the appropriate key; a healthy storage service is insufficient when the application cannot restore usable records. Use the <a href=\"templates/domain-05/dataflow-control-matrix.md\" download>dataflow and control matrix</a> to make those dependencies visible.</p>"
+    },
+    {
+      "id": "d5-fedramp",
+      "title": "FedRAMP: reuse provider evidence, authorize the actual system",
+      "objective_ids": [
+        "5.4"
+      ],
+      "minutes": 11,
+      "body": "<p>FedRAMP is a US federal cloud assurance context, not a universal badge needed by every AI startup. In a prospective federal deployment, let the agency determine scope and the applicable requirements. Then identify the exact cloud service offering, certified boundary, configuration, integrations and agency information system. A commercial service with a similar brand name may not be the offering covered by the evidence.</p>\n<p>The current FedRAMP Consolidated Rules for 2026 describe provider certifications as reusable security evidence while agencies authorize their own information systems. The agency authorizing official accepts risk for its specific use, including customer-operated controls and integrations. The page explicitly distinguishes an agency system using a service from creating a standalone ATO for the cloud offering itself. Terminology has evolved; this is the checked 2026 guidance, not a rewrite of the July exam guide. <a href=\"https://www.fedramp.gov/2026/agencies/use/\">D5-S16</a></p>\n<figure class=\"diagram\"><figcaption>Assurance is inherited only where the boundary and responsibility match.</figcaption><ol class=\"flow\"><li><strong>Provider offering:</strong> security evidence covers specified service scope and provider controls.</li><li><strong>Agency architecture:</strong> chooses identity, data, model access, connectors and configuration.</li><li><strong>Responsibility mapping:</strong> mark inherited, shared and agency-operated controls.</li><li><strong>System decision:</strong> agency authorizes the actual system and accepts scoped residual risk.</li><li><strong>Ongoing use:</strong> monitor changes and operate the customer controls continuously.</li></ol></figure>\n<h3>Worked case: a document assistant changes its boundary</h3>\n<p>An agency plans a synthetic document-search assistant on an approved cloud offering. The prototype adds a public model endpoint for summarization and an external tracing service because they are convenient. The original infrastructure evidence does not automatically cover those new paths. Inventory what leaves the approved boundary, identify the proposed services and data, and resolve the gap before processing live federal information.</p>\n<p>The smallest correction may be to remove external tracing and use an already permitted endpoint, rather than recreate the provider’s entire assessment. The agency team still needs evidence for its identity integration, document permissions, safe logs, retention, incident response and monitoring. A cloud provider can operate secure infrastructure while your assistant retrieves the wrong department’s documents through an overprivileged service identity.</p>\n<p>A useful handoff names the exact inherited evidence and the exact tests you own. For instance: “The provider controls the underlying service infrastructure; our application enforces per-user retrieval; test a user from department B against department A’s record.” That sentence is more actionable than “FedRAMP handled by cloud.” Keep the responsibility matrix versioned when a connector, identity path or processing location changes.</p>"
+    },
+    {
+      "id": "d5-fairness",
+      "title": "Fairness, transparency and the people outside your metrics",
+      "objective_ids": [
+        "5.5",
+        "5.2",
+        "5.3"
+      ],
+      "minutes": 19,
+      "body": "<p>Ethical design starts by asking who benefits, who bears the error and who can challenge it. In the marketplace exercise, an inaccurate job recommendation wastes someone’s travel time. An unjustified exclusion can remove an opportunity entirely. A convenient interface for employers can create surveillance pressure for workers. These effects are not fully described by average answer accuracy.</p>\n<p>NIST’s bias publication treats AI as a sociotechnical system: harmful bias can arise from data and algorithms, but also from institutional practices and human behavior. Removing an explicit group field does not remove those mechanisms. Language, geography, device access or a history shaped by unequal opportunities may act as proxies. <a href=\"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1270.pdf\">D5-S17</a></p>\n<h3>First define the decision and a legitimate comparison</h3>\n<p>“Fair to every group” is too vague to test. Specify the decision: whether a worker receives a recommendation for a job whose stated requirements they meet. Specify the harm: missing suitable opportunities, irrelevant recommendations, delays in review or inaccessible explanations. Determine how labels are established. An employer’s past selection is not automatically an unbiased label for qualification. Involve people affected by the decision and appropriate domain/legal experts before choosing features and targets.</p>\n<p>Measure at relevant stages: source availability, retrieval, ranking, display, abstention, review wait and final opportunity. If recommendations have equal correctness among users who receive them, but one language group receives mostly abstentions, the delivered service differs. If workers with older devices cannot open the review screen, improving a model metric will not fix that exclusion.</p>\n<div class=\"example\"><h3>Worked case: equal error rates, unequal precision</h3><p>Consider two synthetic groups with 1,000 records each. Independent assessment says that 200 records in group A and 100 in group B meet the particular job requirements. A recommender has 80% true-positive rate and 10% false-positive rate in both groups. These are teaching quantities, not claims about any population.</p><div class=\"table-wrap\"><table><thead><tr><th>Count or metric</th><th>Group A</th><th>Group B</th></tr></thead><tbody><tr><td>Meets requirements / does not</td><td>200 / 800</td><td>100 / 900</td></tr><tr><td>Correctly recommended</td><td>160</td><td>80</td></tr><tr><td>Incorrectly recommended</td><td>80</td><td>90</td></tr><tr><td>Qualified records missed</td><td>40</td><td>20</td></tr><tr><td>Recommendation rate</td><td>240 / 1,000 = 24%</td><td>170 / 1,000 = 17%</td></tr><tr><td>Precision among recommendations</td><td>160 / 240 ≈ 66.7%</td><td>80 / 170 ≈ 47.1%</td></tr></tbody></table></div><p>Equal true-positive and false-positive rates do not produce equal selection rates or precision when these base rates differ. That does not decide which policy is justified. It tells you which trade-off must be made explicit, whether the labels and base rates are defensible, and who should participate in deciding the policy.</p></div>\n<p>Kleinberg, Mullainathan and Raghavan’s research proves incompatibilities among particular formal fairness conditions for risk scores except under constrained cases. It does not say that fairness is impossible or that every fairness metric conflicts in every application. Use the result to resist a universal “fairness score”; evaluate the relevant harms and assumptions instead. <a href=\"https://arxiv.org/abs/1609.05807\">D5-S18</a></p>\n<h3>Use complementary tests rather than a single parity target</h3>\n<p>Slice tests compare relevant outcomes across groups with sample counts and uncertainty. Paired tests hold legitimate requirements fixed while changing a field that should not affect the decision. For example, two synthetic profiles with identical skills and availability but different names should not receive different eligibility explanations when name is irrelevant. Such tests can reveal sensitivity, but do not prove every real-world outcome is fair.</p>\n<p>Audit the complete policy, including human review. Reviewers may introduce inconsistent judgments or delay one group more often. Monitor abstention, completion and appeal outcomes alongside model errors. Avoid inferring sensitive characteristics casually just to populate a dashboard; the audit data itself needs an appropriate purpose, safeguards and access limits. Small groups may need qualitative investigation rather than confident claims from a handful of records.</p>\n<h3>Transparency should help someone act</h3>\n<p>Explain when AI is involved, the purpose of the output, the evidence used, material limitations and how to correct or contest it. For a worker, “not shown because the job requires a licence not present in your verified profile; update the record or request review” is more useful than a vague “AI suitability score.” The reason must reflect the actual decision path. Do not generate a persuasive rationale after the fact and treat it as an audit trail.</p>\n<p>Google DeepMind maintains a public model-card collection, a current industry example of documenting models. Your application still needs its own scope, tested performance, known limitations and operational responsibilities; a provider card does not describe your retrieval permissions, user population or appeal process. <a href=\"https://deepmind.google/models/model-cards/\">D5-S19</a></p>\n<p>Keep an internal decision record detailed enough to reproduce the relevant action, and a user explanation appropriate to that person’s needs. These need not expose confidential prompts, secrets or unrestricted personal records. A useful transparency design supports understanding and recourse while respecting the same privacy and security boundaries as the rest of the system.</p>\n<p class=\"callout\">Use the <a href=\"templates/domain-05/fairness-worksheet.md\" download>fairness and transparency worksheet</a> to state the harm, label source, comparison groups, chosen metrics, unresolved trade-offs and appeal owner. A metric without a named decision and affected person is easy to optimize without improving the product.</p>"
+    },
+    {
+      "id": "d5-lab",
+      "title": "Build a safety case using an offline, synthetic lab",
+      "objective_ids": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5"
+      ],
+      "minutes": 30,
+      "body": "<p>This lab turns the chapter into artifacts you can reuse. It requires a text editor and Python 3, no API credentials, personal records or live services. Download the four worksheets and the <a href=\"templates/domain-05/governance-lab.py\" download>self-contained governance lab</a>. The script contains fabricated records, deterministic policy checks and assert-based expected outcomes. It performs no network access, external writes or real applications.</p>\n<p>These checks demonstrate engineering ideas; they are not a production security implementation, a clinical validation or a compliance certification. MCP’s security guidance illustrates why real integrations also need correct protocol-level authorization, and NIST’s RMF places such tests within an ongoing accountable risk process. The toy checks below cover only their declared fixtures. <a href=\"https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices\">D5-S08</a> <a href=\"https://airc.nist.gov/airmf-resources/airmf/5-sec-core/\">D5-S01</a></p>\n<h3>Six concrete steps</h3>\n<ol><li><strong>Declare scope and owners.</strong> In the risk register, choose the hypothetical nutrition or marketplace extension. State the permitted user benefit, a consequential action you will not automate under this exercise, the affected people and three causal risks. In the control matrix, trace source → model → proposed action → executor → telemetry → backup. <em>Acceptance:</em> every risk has a preventive control, a detection/recovery path and an accountable owner; every data copy has a purpose and retention decision.</li>\n<li><strong>Run the executor fixtures.</strong> Save the script, open a terminal in its folder and run <code>python3 governance-lab.py</code>. Inspect the valid proposal, the wrong-tenant record, the unexpected field and the forged approval in its source. A hostile document string is evidence only and never enters the policy’s approval state. <em>Expected:</em> the valid proposal is permitted, all unauthorized variants are denied and there is no real side effect. <em>Acceptance:</em> explain which independent check stopped each variant; “the model refused” is insufficient.</li>\n<li><strong>Break approval binding.</strong> Read the stale-version and expired-approval fixtures. Change the synthetic current listing version, allowed fields or reviewer identity in a local copy and rerun. Use the review-policy worksheet to define which changes need a new decision. <em>Expected:</em> the assertions detect any attempt to permit a proposal covered by the wrong approval. <em>Acceptance:</em> both proposal content and current resource state are checked before the simulated permission result, including revoked access.</li>\n<li><strong>Stress the review plan.</strong> Recalculate the fixture with 40 arrivals/hour, a 60% review fraction, two reviewers and six minutes/case. Then remove one reviewer and consider a burst of unfamiliar cases. <em>Expected:</em> the initial load is 24 versus 20 cases/hour; with one reviewer ideal capacity falls to 10. <em>Acceptance:</em> record an approved pause/admission/fallback response and a queue-age alert. Do not claim these averages establish a p95 SLA, and do not solve overload by silently dropping required review.</li>\n<li><strong>Practise a scoped restore.</strong> The script marks U-104 eligible for erasure, U-205 retained, and the U-104 invoice retained for a stipulated separate obligation. Run the synthetic restore/replay check and inspect the remaining records. <em>Expected:</em> the eligible profile and derived embedding are absent; the approved retained record remains segregated. <em>Acceptance:</em> your matrix names who made that scoped decision and how you would verify each live/derived/vendor copy. The fixture assumes the legal decision; it does not make it.</li>\n<li><strong>Defend the fairness and launch decision.</strong> Reproduce the two-group table in the fairness worksheet and inspect the script’s calculated precision. Write a short launch recommendation naming the benefit, strongest evidence, unresolved harm, required review capacity and stop condition. <em>Expected:</em> equal 80% true-positive and 10% false-positive rates yield about 66.7% versus 47.1% precision here. <em>Acceptance:</em> explain the denominator, reject a universal fairness claim and specify a meaningful appeal route. Attach the ten learning-check results as supporting practice, not as proof of production safety.</li></ol>\n<h3>Move from toy evidence to your project</h3>\n<p>Replace one assumption at a time. Discover the real actor and data flow before adding a provider. Replace synthetic access fixtures with integration tests of the actual backend. Validate review decisions with qualified people and realistic cases before setting a threshold. Test a quarantined restore before promising erasure behavior. Review model, tool, prompt, source and policy changes against the same documented risks. Keep high-consequence features behind explicit release criteria until the relevant evidence exists.</p>\n<p class=\"callout\"><strong>Exam transfer:</strong> when several answers sound responsible, identify the failed boundary, the accountable decision maker and the missing evidence. A larger model, another disclaimer, a provider badge or a generic human checkpoint may help one layer while leaving the actual failure untouched. Prefer the option that addresses the mechanism under the scenario’s stated constraints.</p>"
+    }
+  ],
+  "checks": [
+    {
+      "id": "d5-check-01",
+      "question": "A model emits a valid JSON request to change a worker profile. The session belongs to tenant A, but the target record belongs to tenant B. The output validator accepts the schema and the model says the user approved. Which control most directly prevents the wrong-tenant change?",
+      "options": [
+        "The backend derives the actor from the session and checks that actor against the current target record before applying the change.",
+        "The proposal validator requires a tenant field and compares it with the tenant name repeated in the generated explanation.",
+        "The prompt requires the model to retrieve the target record and explain why the user has permission before requesting a change.",
+        "The interface shows the generated target tenant prominently and records a complete transcript whenever the user presses Continue."
+      ],
+      "correct": 0,
+      "explanations": [
+        "The authoritative executor must check the authenticated actor against the real resource. Model statements cannot grant access.",
+        "A model-provided tenant and model-provided explanation can agree while both are wrong; neither establishes the authenticated permission.",
+        "Retrieval and explanations may assist the workflow but do not replace a backend authorization check at the mutation boundary.",
+        "Visibility and audit help review and investigation, but a cross-tenant request must still be denied by the backend."
+      ]
+    },
+    {
+      "id": "d5-check-02",
+      "question": "A verified internal document contains an attacker-added paragraph asking an agent to export unrelated user profiles. The document is readable by the requesting user. Which design best preserves the legitimate summarization task while containing the unauthorized action?",
+      "options": [
+        "Require documents to come from the internal connector, then allow requests described by those documents because their provenance is verified.",
+        "Block any retrieved document containing imperative language, then continue with the remaining documents without changing the tool permissions.",
+        "Treat the paragraph as untrusted content, preserve its provenance and enforce an independent export permission and approval boundary.",
+        "Ask a second model to summarize the document into trusted operational instructions before the primary agent uses its existing export tool."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Known provenance establishes origin, not authority for new actions. An authorized reader can still encounter attacker-controlled content.",
+        "A coarse language filter can block legitimate instructions and miss subtle attacks. It leaves the export authority problem unresolved.",
+        "Data may inform the answer without granting authority. Independent permissions contain side effects while safe summarization can continue.",
+        "A summary can launder an injected instruction into a cleaner-looking form; a second model does not create user authorization."
+      ]
+    },
+    {
+      "id": "d5-check-03",
+      "question": "A model labels 200 eligibility answers “95% confident”; independent checking finds 166 correct. An evidence threshold instead answers 160 cases and gets 152 correct. What should the team report and use to decide automatic handling?",
+      "options": [
+        "Treat the 95% model label as the common confidence scale and use the threshold only to reduce the volume of low-priority questions.",
+        "Report 83% bin correctness, 95% accepted accuracy and 80% coverage, then validate slices and fallback capacity before automatic handling.",
+        "Adopt the threshold because 152 correct accepted answers establish a 95% success rate for all incoming eligibility questions in production.",
+        "Combine the 40 abstentions with incorrect answers, publish one overall score and optimize that score without separately tracking service coverage."
+      ],
+      "correct": 1,
+      "explanations": [
+        "The self-written confidence label is contradicted by the observed outcomes. It cannot serve as an established probability scale.",
+        "The three denominators describe different properties. Slice behavior and a safe fallback determine whether selective answering is usable.",
+        "95% is accuracy among accepted cases, not all traffic, and the synthetic test does not establish production behavior.",
+        "A single composite score hides the distinction between wrong answers and withheld answers and can conceal unequal access to service."
+      ]
+    },
+    {
+      "id": "d5-check-04",
+      "question": "A safety policy requires review for the cases currently routed to it. Traffic is 40 cases/hour and 60% are routed. Two reviewers average six minutes/case, with no other duties assumed. What is the best launch response?",
+      "options": [
+        "Start the full rollout because two reviewers supply 120 reviewer-minutes/hour and the average model latency remains within the response target.",
+        "Keep full admission, lengthen the queue SLA and automatically release cases that have waited longer than the revised time limit.",
+        "Change the route threshold until exactly 20 cases/hour enter review, then call the existing safety policy satisfied without new evidence.",
+        "Resolve the 24-versus-20 cases/hour capacity gap through approved staffing, admission or scope changes, and validate queue-age behavior before scaling."
+      ],
+      "correct": 3,
+      "explanations": [
+        "The relevant calculation includes minutes per review: ideal capacity is 120 / 6 = 20 cases/hour, below the 24-case demand.",
+        "Automatic release on timeout bypasses the stipulated review requirement precisely when oversight is under pressure.",
+        "Changing the threshold changes which risky cases avoid review. It needs a justified policy decision, not a queue-only adjustment.",
+        "Demand exceeds even ideal capacity. Address it within the approved safety policy and measure realistic queue behavior; averages do not establish p95."
+      ]
+    },
+    {
+      "id": "d5-check-05",
+      "question": "A worker approves an application to employer A with fields X and Y. Before execution, the proposal changes to employer B and adds field Z; the approval has not expired. Which behavior correctly handles the original approval?",
+      "options": [
+        "Allow execution because the worker approved the same application workflow and the approval remains inside its expiry window.",
+        "Require a new bound approval for the changed recipient and fields, then recheck current actor permissions and resource state before applying.",
+        "Allow execution if the model explains that field Z is relevant and the new employer uses the same application schema.",
+        "Keep the original approval and send only fields X and Y to employer B, because preserving the field list preserves the approved scope."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Workflow-level approval is not enough for materially different recipients or data. Expiry is only one part of approval validity.",
+        "Bind approval to the consequential proposal and state. Both content changes and current authorization matter at execution.",
+        "Relevance and schema validity do not prove that the worker approved disclosure to a different employer.",
+        "The recipient changed, so even the unchanged fields are being disclosed under a different consequence. A new decision is needed."
+      ]
+    },
+    {
+      "id": "d5-check-06",
+      "question": "For a hypothetical GDPR deployment, the privacy owner determines that a user’s profile, summary and embedding are eligible for erasure, while a specified invoice must be retained under an applicable obligation. What should the implementation do?",
+      "options": [
+        "Erase eligible live and derived copies, restrict the justified invoice to its retention purpose, and verify vendor/cache/restore handling against the scoped decision.",
+        "Erase every record and all backup contents immediately, including the invoice, because a user request overrides every documented retention obligation.",
+        "Delete the profile row and replace the user identifier with its hash in summaries and embeddings, treating those copies as automatically anonymous.",
+        "Retain all records in an encrypted archive and disable the account, because inaccessible encrypted data is equivalent to completed erasure."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Implement the authorized scope, including derived copies and recovery paths; a justified retained record does not justify continued personalization.",
+        "Erasure is conditional. The scenario explicitly gives a justified retention obligation; engineers should implement that scoped determination.",
+        "Hashing an identifier does not automatically make detailed linked records anonymous. The eligible derived copies remain in scope here.",
+        "Encryption and account closure do not by themselves perform erasure or resolve the purpose and retention obligations."
+      ]
+    },
+    {
+      "id": "d5-check-07",
+      "question": "A cloud provider maintains encrypted ePHI on behalf of a clinic business associate and has no decryption key. The parties agree that the customer implements patient-level authentication. Which conclusion is best supported?",
+      "options": [
+        "The provider is outside HIPAA because no-view storage prevents it from identifying patients or reading the clinical content.",
+        "The customer must duplicate every provider infrastructure control, because any shared allocation leaves the parties individually noncompliant.",
+        "The provider remains a BA; document agreed responsibilities and test remaining applicable controls and identified risks.",
+        "A signed BAA and customer authentication fully satisfy the arrangement, so no separate integrity or availability analysis is needed."
+      ],
+      "correct": 2,
+      "explanations": [
+        "HHS explicitly states that maintaining encrypted ePHI on behalf of a covered entity or BA can create BA status even without a key.",
+        "HHS permits particular agreed responsibilities to be satisfied through one party’s actions. Duplication is not the general requirement.",
+        "No-view changes the risk and control allocation, not all obligations. Each party must operate its assigned and otherwise applicable controls.",
+        "The agreement is important, but encryption and authentication do not settle integrity, availability, administrative controls or actual operation."
+      ]
+    },
+    {
+      "id": "d5-check-08",
+      "question": "An agency assistant uses a FedRAMP-certified cloud offering. A prototype adds an external model endpoint and tracing service. The team plans to process live federal information. What is the best next architectural action?",
+      "options": [
+        "Reuse the cloud offering’s certification as sufficient evidence for the prototype because the application itself still runs on certified infrastructure.",
+        "Require the agency to repeat the provider’s entire infrastructure assessment before considering any application-specific permissions or integrations.",
+        "Keep the integrations and remove personal identifiers from logs, then defer the system authorization discussion until the pilot generates usage evidence.",
+        "Resolve the added processing boundaries, map responsibilities, and obtain the agency’s actual system authorization before live use."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Certification evidence has a defined offering and boundary; new external processing does not automatically inherit that assurance.",
+        "FedRAMP is designed for evidence reuse. The agency must focus on its actual system and responsibilities rather than recreate all provider work.",
+        "Minimisation can reduce risk but does not decide whether external services and processing paths are authorized for this system.",
+        "The agency authorizes its specific system use, configurations and integrations while reusing applicable provider evidence."
+      ]
+    },
+    {
+      "id": "d5-check-09",
+      "question": "Two synthetic groups have different qualification base rates. A recommender achieves the same 80% true-positive rate and 10% false-positive rate for both, but the precision of recommendations differs. What follows?",
+      "options": [
+        "Different base rates can explain this; validate labels and choose fairness goals with affected stakeholders.",
+        "The result demonstrates an implementation bug because equal false-positive and true-positive rates necessarily produce equal precision across groups.",
+        "The result establishes that the system is fair because matching these two error rates satisfies every reasonable fairness definition.",
+        "The result requires immediate equalization of recommendation counts, regardless of qualification labels, operational effects or applicable policy."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Different base rates can yield different precision despite equal error rates. The justified policy requires context, not one universal metric.",
+        "Precision depends on the relative counts of qualified and unqualified records, so the stated result does not by itself show a bug.",
+        "These rates describe particular properties. They do not establish equal coverage, contestability, label quality or every fairness objective.",
+        "Count parity is a possible policy consideration, not an automatic inference from the arithmetic or a substitute for a defensible decision."
+      ]
+    },
+    {
+      "id": "d5-check-10",
+      "question": "A marketplace team wants to train a job-suitability model using past employer selections as qualification labels. Aggregate prediction accuracy is high, but workers report unexplained exclusion. Which next step most directly improves the fairness evidence?",
+      "options": [
+        "Increase the model size and keep the same labels so the ranking can represent more nuanced versions of the employers’ historical preferences.",
+        "Remove explicit demographic fields and treat the resulting accuracy as evidence that protected characteristics no longer influence the decision.",
+        "Validate selection labels with experts and affected workers; test delivered outcomes and provide meaningful correction and appeal.",
+        "Publish the model’s generated rationale for each rejection and use the absence of later complaints as the main criterion for acceptable fairness."
+      ],
+      "correct": 2,
+      "explanations": [
+        "A more expressive model can reproduce historical selection patterns more accurately without making those patterns a valid qualification target.",
+        "Proxies and biased historical processes can remain. Removing a field does not validate the target or demonstrate fair outcomes.",
+        "Investigate whether historical selection represents legitimate qualification and test delivered harms. Recourse helps identify and correct real errors.",
+        "A generated rationale may not reflect the actual decision, and lack of complaints may reflect access barriers rather than lack of harm."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "D5-S01",
+      "title": "NIST AI RMF 1.0 Core (2023; revision in progress when checked)",
+      "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+      "used_for": "Continuous Govern, Map, Measure, Manage functions; owners and risk decisions."
+    },
+    {
+      "id": "D5-S02",
+      "title": "NIST AI 600-1: Generative AI Profile (July 2024)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "used_for": "Confabulation, information integrity, human interaction and generative-AI risk framing."
+    },
+    {
+      "id": "D5-S03",
+      "title": "OWASP LLM06:2025 Excessive Agency",
+      "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+      "used_for": "Functionality, permissions and autonomy as separate sources of dangerous authority."
+    },
+    {
+      "id": "D5-S04",
+      "title": "OWASP LLM01:2025 Prompt Injection",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "used_for": "Direct and indirect injection; RAG is not an injection immunity mechanism."
+    },
+    {
+      "id": "D5-S05",
+      "title": "Anthropic: Mitigating the risk of prompt injections in browser use (24 Nov 2025)",
+      "url": "https://www.anthropic.com/research/prompt-injection-defenses",
+      "used_for": "Layered browser defenses and limits of vendor attack-success measurements."
+    },
+    {
+      "id": "D5-S06",
+      "title": "Anthropic: Trustworthy agents in practice (9 Apr 2026)",
+      "url": "https://www.anthropic.com/research/trustworthy-agents",
+      "used_for": "Model, harness, tools and environment; meaningful human control and permission fatigue."
+    },
+    {
+      "id": "D5-S07",
+      "title": "Anthropic: Investigating unintended model actions (9 Oct 2026)",
+      "url": "https://www.anthropic.com/research/investigating-unintended-model-actions",
+      "used_for": "Recently reported evaluation/internal-use restriction workarounds and containment response."
+    },
+    {
+      "id": "D5-S08",
+      "title": "MCP Security Best Practices (2026-07-28 documentation)",
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+      "used_for": "Token audience, no token passthrough, and explicit security boundaries."
+    },
+    {
+      "id": "D5-S09",
+      "title": "Claude Code: Configure permissions (checked 13 Oct 2026)",
+      "url": "https://code.claude.com/docs/en/permissions",
+      "used_for": "Tool permissions are an implementation control distinct from repository instructions."
+    },
+    {
+      "id": "D5-S10",
+      "title": "Guo et al.: On Calibration of Modern Neural Networks (ICML 2017)",
+      "url": "https://arxiv.org/abs/1706.04599",
+      "used_for": "Definition of empirical calibration; classification findings are not an LLM confidence guarantee."
+    },
+    {
+      "id": "D5-S11",
+      "title": "EDPB: Respect individuals’ rights (checked 13 Oct 2026)",
+      "url": "https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en",
+      "used_for": "Conditional erasure, access protecting other people, and significant solely automated decisions."
+    },
+    {
+      "id": "D5-S12",
+      "title": "EDPB: 2025 CEF right-to-erasure report (adopted February 2026)",
+      "url": "https://www.edpb.europa.eu/system/files/2026-02/edpb_cef-report_2025_right-to-erasure_en.pdf",
+      "used_for": "Data location, retention and backup erasure/restore handling, especially pages 20–22."
+    },
+    {
+      "id": "D5-S13",
+      "title": "HHS: Covered Entities and Business Associates (checked 13 Oct 2026)",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/covered-entities/index.html",
+      "used_for": "HIPAA actor/relationship applicability rather than health-data keywords alone."
+    },
+    {
+      "id": "D5-S14",
+      "title": "HHS: Business Associates (checked 13 Oct 2026)",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/business-associates/index.html",
+      "used_for": "Health-app/cloud/AI-chatbot business-associate examples and relationships."
+    },
+    {
+      "id": "D5-S15",
+      "title": "HHS: Guidance on HIPAA & Cloud Computing (checked 13 Oct 2026)",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/special-topics/health-information-technology/cloud-computing/index.html",
+      "used_for": "No-view cloud remains a BA; encryption, BAA, availability and assigned controls."
+    },
+    {
+      "id": "D5-S16",
+      "title": "FedRAMP Consolidated Rules for 2026: Using a Certified Cloud Service",
+      "url": "https://www.fedramp.gov/2026/agencies/use/",
+      "used_for": "Cloud-service evidence versus agency information-system authorization and customer controls."
+    },
+    {
+      "id": "D5-S17",
+      "title": "NIST SP 1270: Identifying and Managing Bias in AI (March 2022)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1270.pdf",
+      "used_for": "Bias as a sociotechnical issue, including systemic and human factors."
+    },
+    {
+      "id": "D5-S18",
+      "title": "Kleinberg, Mullainathan & Raghavan: Inherent Trade-Offs in Fair Risk Scores (2016)",
+      "url": "https://arxiv.org/abs/1609.05807",
+      "used_for": "Scoped mathematical incompatibility of particular fairness conditions; no universal fairness score."
+    },
+    {
+      "id": "D5-S19",
+      "title": "Google DeepMind: Model cards (checked 13 Oct 2026)",
+      "url": "https://deepmind.google/models/model-cards/",
+      "used_for": "Current industry example of published model documentation; not application assurance."
+    },
+    {
+      "id": "D5-S20",
+      "title": "Anthropic: Demystifying evals for AI agents (9 Jan 2026)",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "used_for": "Outcome/state evaluation, transcripts and complementary production/human evidence."
+    },
+    {
+      "id": "D5-S21",
+      "title": "EDPB: Data protection basics (checked 13 Oct 2026)",
+      "url": "https://www.edpb.europa.eu/sme/learn-the-basics/data-protection-basics_en",
+      "used_for": "Purpose, minimisation, retention and identifiable or sensitive data."
+    },
+    {
+      "id": "D5-S22",
+      "title": "EDPB: Data controller or data processor (checked 13 Oct 2026)",
+      "url": "https://www.edpb.europa.eu/sme/learn-the-basics/data-controller-or-data-processor_en",
+      "used_for": "Purposes/means, processing on instructions, contracts and subprocessors."
+    },
+    {
+      "id": "D5-S23",
+      "title": "EDPB: Process personal data lawfully (checked 13 Oct 2026)",
+      "url": "https://www.edpb.europa.eu/sme/be-compliant/process-personal-data-lawfully_en",
+      "used_for": "Purpose-specific lawful bases and additional conditions for sensitive data."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Authority boundary",
+      "definition": "The point where trusted application policy decides whether an action may read data or produce a side effect."
+    },
+    {
+      "term": "Residual risk",
+      "definition": "The risk that remains after specified controls, with their tested limits and unresolved escape paths."
+    },
+    {
+      "term": "Indirect prompt injection",
+      "definition": "An attempt to redirect a model through content it was asked to process rather than through an authorized user instruction."
+    },
+    {
+      "term": "Provenance",
+      "definition": "Information about a record’s origin, version and transformations; it is separate from permission and factual correctness."
+    },
+    {
+      "term": "Least privilege",
+      "definition": "Granting only the functions, resources and duration needed for the intended task."
+    },
+    {
+      "term": "Approval binding",
+      "definition": "Connecting a reviewer’s decision to the precise consequential proposal, scope, expiry and resource state."
+    },
+    {
+      "term": "Automation bias",
+      "definition": "Over-reliance on an automated suggestion that weakens a person’s independent judgment."
+    },
+    {
+      "term": "Abstention",
+      "definition": "Withholding a decision or answer because conditions for safe handling are not met; its fallback and access effects still matter."
+    },
+    {
+      "term": "Calibration",
+      "definition": "Agreement between assigned probabilities and observed correctness frequencies under specified task and population conditions."
+    },
+    {
+      "term": "Coverage",
+      "definition": "The fraction of eligible incoming cases for which the system supplies the measured answer or decision."
+    },
+    {
+      "term": "Precision",
+      "definition": "The fraction of flagged or selected cases that are truly positive under the chosen reference labels."
+    },
+    {
+      "term": "Data controller",
+      "definition": "The actor determining purposes and means of a personal-data processing operation."
+    },
+    {
+      "term": "Data processor",
+      "definition": "An actor processing personal data on the controller’s instructions under the relevant arrangement."
+    },
+    {
+      "term": "Business associate",
+      "definition": "A HIPAA-defined relationship involving relevant functions/services and PHI on behalf of a covered entity or another BA; assess actual scope."
+    },
+    {
+      "term": "Inherited control",
+      "definition": "A control operated by another party whose relevant evidence and boundary are applicable to your system."
+    },
+    {
+      "term": "Contestability",
+      "definition": "A practical ability to understand, challenge and obtain correction of a consequential decision."
+    },
+    {
+      "term": "Selection bias",
+      "definition": "A distortion arising from which cases enter the observed dataset or receive labels, rather than only from model fitting."
+    },
+    {
+      "term": "Idempotency",
+      "definition": "A property or mechanism preventing a repeated request from producing an additional duplicate effect; it does not authorize the effect."
+    }
+  ]
+}

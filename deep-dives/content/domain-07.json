@@ -1,0 +1,461 @@
+{
+  "domain": 7,
+  "title": "Developer Productivity & Operational Enablement",
+  "weight": 7,
+  "summary": "Build a reproducible, bounded team environment; use AI in a verifiable engineering loop; measure net value and diagnose failures through business outcomes. Includes a complete offline retry lab and reusable operating worksheets.",
+  "objectives": [
+    "Configure Claude tools and environments for teams (e.g., Claude Code)",
+    "Improve developer workflows using AI-assisted tooling",
+    "Support debugging and operational issue resolution"
+  ],
+  "sections": [
+    {
+      "id": "d7-operating-model",
+      "title": "Build a team operating model before adding an agent",
+      "objective_ids": [
+        "7.1",
+        "7.2"
+      ],
+      "minutes": 18,
+      "body": "\n<p>A developer agent is a program that can interpret a goal, inspect a codebase, invoke tools and revise its work. Productivity comes from making that loop reliable. A good answer in chat is only one intermediate result; the outcome is a change that works for users, survives review and can be operated by someone else. Domain 7 therefore connects developer convenience to the control and lifecycle decisions in Domains 5 and 6.</p>\n<p>Use a concrete task contract: what behavior should change, where it lives, how success will be observed and which actions are authorized. For a proposed Quiet Hours feature, “improve scheduling” is weak. “When a user crosses a time zone, preserve the chosen local quiet interval; show the next activation time; test the daylight-saving boundary using synthetic dates” gives an agent an observable target. This is a design exercise, not a claim about the current Quiet Hours implementation.</p>\n<h3>Four layers answer four different questions</h3>\n<div class=\"table-wrap\"><table><thead><tr><th>Layer</th><th>Question</th><th>Example evidence</th></tr></thead><tbody>\n<tr><td>Task and instructions</td><td>What should the agent do?</td><td>Acceptance examples, repository map, CLAUDE.md</td></tr>\n<tr><td>Tool policy</td><td>Which calls may it request or execute?</td><td>Effective permission rules and approved MCP services</td></tr>\n<tr><td>Execution environment</td><td>What can the process actually reach?</td><td>Filesystem mounts, network policy, runner identity</td></tr>\n<tr><td>Verification and ownership</td><td>Who establishes that the result works?</td><td>Independent test, review, rollout owner and rollback</td></tr>\n</tbody></table></div>\n<figure class=\"diagram\"><figcaption>Figure 1. A task passes through separate guidance, authority and evidence boundaries.</figcaption><ol class=\"flow\"><li><strong>User outcome</strong><br>Define behavior and acceptance</li><li><strong>Model context</strong><br>Instructions help choose actions</li><li><strong>Client policy</strong><br>Evaluate requested tool calls</li><li><strong>Runtime boundary</strong><br>Limit files, network and identity</li><li><strong>Observed result</strong><br>Test, review and assign ownership</li></ol></figure>\n<p>These layers are complementary. A README cannot stop a process reading a mounted secret; a container cannot decide whether an accessibility label is useful; a successful unit test cannot authorize publishing private data. Claude Code explicitly distinguishes model-facing project instructions from client-enforced settings. <a href=\"https://code.claude.com/docs/en/memory\">[D7-S02]</a> The architecture should preserve that distinction even when a team uses a different coding assistant.</p>\n<h3>Worked case: a new developer joins NutriMind</h3>\n<p>Suppose a new engineer needs to add a dietary preference filter using synthetic meal records. Provide the actual module map, approved local runtime, fixture path, task contract and project-specific verification command. Give access to the necessary source tree and a staging API only if the task needs it. Keep production nutrition records and service credentials outside this exercise. The engineer should produce a focused diff, evidence for the filter behavior and a note about untested device behavior.</p>\n<p>The onboarding acceptance criterion is practical: another engineer can reproduce the same outcome from the documented environment without borrowing the first developer's secrets or conversation history. “Claude opened successfully” is an installation check. It does not establish that the team can safely build, review or support a change. Keep a named owner for the shared configuration so broken defaults do not become each developer's private workaround.</p>\n"
+    },
+    {
+      "id": "d7-configuration",
+      "title": "Configuration scope and precedence: resolve the effective policy",
+      "objective_ids": [
+        "7.1",
+        "7.3"
+      ],
+      "minutes": 22,
+      "body": "\n<p>Configuration bugs often resemble model unreliability. One developer receives a permission prompt and another does not; a setting works in a terminal but not in a cloud runner. Before changing a prompt, identify which machine runs the agent, its version, its starting directory and the sources it loaded. A file committed in a repository reaches teammates only after they receive it, and machine-local files do not automatically travel into a cloud environment.</p>\n<h3>Know the ordinary settings stack</h3>\n<div class=\"table-wrap\"><table><thead><tr><th>Scope</th><th>Location or source</th><th>Intended owner</th></tr></thead><tbody>\n<tr><td>Managed</td><td>Organization-delivered policy</td><td>Organization administrator</td></tr>\n<tr><td>Command line</td><td>Session settings supplied with --settings</td><td>Session launcher, within policy</td></tr>\n<tr><td>Project local</td><td>.claude/settings.local.json</td><td>One developer in this project</td></tr>\n<tr><td>Shared project</td><td>.claude/settings.json</td><td>Repository team</td></tr>\n<tr><td>User</td><td>~/.claude/settings.json</td><td>One developer across projects</td></tr>\n</tbody></table></div>\n<p>For ordinary overlapping keys, the table is highest first. Permission arrays merge across files instead of replacing one another; matching deny rules precede ask and allow. Environment-variable and flag interactions are key-specific. Read the current entry for the key rather than treating a single stack diagram as the complete evaluator. Run <code>/status</code> to see loaded setting sources and <code>claude doctor</code> to investigate rejected entries. <a href=\"https://code.claude.com/docs/en/settings\">[D7-S01]</a> <a href=\"https://code.claude.com/docs/en/permissions\">[D7-S03]</a></p>\n<div class=\"example\"><h3>Worked case: “my local allow should win”</h3><p>An organization denies a sensitive file read. A developer adds a local allow rule to debug a test. The relevant permission entries are evaluated together, and the deny still blocks the matching call. The solution is an approved synthetic fixture or a reviewed administrative policy change. Repeating the allow at a more specific scope does not make the sensitive read legitimate.</p></div>\n<p>Conversely, when a normal preference is overridden by the shared project, a personal local preference can be appropriate. The important distinction is between resolving an ordinary value and evaluating permission rules. Also inspect whether a managed source limits lower-scope permission grants. Administrators must verify delivery on the surface actually used; a device policy file is not automatically present on a hosted runner. <a href=\"https://code.claude.com/docs/en/managed-settings\">[D7-S21]</a></p>\n<h3>A small reviewed example</h3>\n<p><a href=\"templates/domain-07/settings.example.json\" download>Download settings.example.json</a>. It is strict JSON, researched against the documentation on 2026-10-13, and inert until you deliberately install it. It permits two narrowly described Git command patterns, asks for a push and denies selected built-in file reads. It is a teaching sample, not an exhaustive enterprise policy. Review Git configuration and indirect command execution before adopting command grants.</p>\n<pre><code>{\n  \"permissions\": {\n    \"allow\": [\"Bash(git status)\", \"Bash(git diff *)\"],\n    \"ask\": [\"Bash(git push *)\"],\n    \"deny\": [\"Read(./.env)\", \"Read(./.env.*)\"]\n  }\n}</code></pre>\n<p>Validate syntax, then test one permitted, one prompting and one denied operation with harmless fixtures. Capture expected and observed outcomes without displaying secrets. Do not merge the sample over an existing policy wholesale: preserve the team's current rules, check their combined behavior and confirm compatibility with the installed Claude Code release. A policy that parses but is not loaded provides no protection.</p>\n"
+    },
+    {
+      "id": "d7-instructions-hooks",
+      "title": "Instructions, permissions and hooks solve different problems",
+      "objective_ids": [
+        "7.1",
+        "7.2"
+      ],
+      "minutes": 24,
+      "body": "\n<p>Put durable project knowledge in instructions: where modules live, how to run the real checks, which generated files should not be hand-edited and what acceptance looks like. Keep it short enough to remain useful. A large pasted design archive makes important facts harder to find and becomes stale. Link detailed references from a concise repository map, and update the map when paths or commands change.</p>\n<p><code>CLAUDE.md</code> shapes the model's behavior; it is not a guaranteed enforcement layer. Use permission controls for tool decisions and an appropriate execution boundary for process access. A denied built-in file read does not prove that every allowed script is unable to open the same file indirectly. The official permission documentation describes these process limitations explicitly. <a href=\"https://code.claude.com/docs/en/memory\">[D7-S02]</a> <a href=\"https://code.claude.com/docs/en/permissions\">[D7-S03]</a></p>\n<h3>Hooks are event-driven programs</h3>\n<p>A hook runs because its event occurs, not because the model remembered a sentence. That makes hooks useful for mechanical checks or reporting. But the event determines what the hook can still prevent. A synchronous <code>PreToolUse</code> check runs before the call; <code>PostToolUse</code> runs after the effect. Exit code 2 blocks a PreToolUse call, while a PostToolUse result cannot undo an action that already happened. Background <code>async</code> command hooks cannot block the completed action through decision fields. <a href=\"https://code.claude.com/docs/en/hooks\">[D7-S04]</a></p>\n<figure class=\"diagram\"><figcaption>Figure 2. Timing determines whether a hook can prevent an effect.</figcaption><ol class=\"flow\"><li><strong>Proposed tool call</strong><br>No side effect yet</li><li><strong>Synchronous PreToolUse</strong><br>Check or block this call</li><li><strong>Tool execution</strong><br>Effect may now exist</li><li><strong>PostToolUse / async work</strong><br>Observe, report, or request follow-up</li></ol></figure>\n<div class=\"warning\"><p><strong>Tricky point:</strong> “exit 2 always blocks” is too broad. The hook reference defines behavior per event; for example, PermissionRequest uses a structured decision rather than treating exit 2 as denial. A script crash, timeout and intentional blocking response are different outcomes. Test the exact event and failure behavior on the deployed version before relying on a hook for a required control. <a href=\"https://code.claude.com/docs/en/hooks\">[D7-S04]</a></p></div>\n<h3>Worked case: generated code is formatted, but is it correct?</h3>\n<p>A team adds a post-edit formatter. The resulting code has consistent whitespace; it can still introduce a second charge after a timeout. Formatting provides useful fast feedback about one property. It does not validate business invariants. Likewise, a background test that finishes after a deployment has started cannot retroactively make deployment contingent on passing. A release gate must wait for the required result and fail according to an explicitly tested contract.</p>\n<p>For a proposed Android screen change, separate mechanical feedback from behavioral verification. The formatter checks style; the compile step checks type and dependency consistency; a focused test checks state transitions; an observed device or emulator path checks whether the intended user can complete the interaction. Use the actual repository's commands after inspecting its scripts and build files. A familiar-looking Gradle task copied from another project may not exist or may verify the wrong module.</p>\n<p>Treat a hook itself as code with an owner, version and test. Feed it both permitted and rejected fixtures, malformed input and a simulated dependency failure. If it logs a path or command, consider whether that output contains secrets. Prefer the smallest deterministic check that supports the task. Do not build a fragile shell-command deny parser and describe it as a complete sandbox; shell languages and indirect execution have a much larger surface than a few string patterns.</p>\n"
+    },
+    {
+      "id": "d7-skills-mcp",
+      "title": "Skills and MCP: reusable knowledge is not unrestricted authority",
+      "objective_ids": [
+        "7.1",
+        "7.2"
+      ],
+      "minutes": 22,
+      "body": "\n<p>A skill packages a recurring procedure and its supporting material. An MCP server exposes tools or resources through a protocol. The first primarily improves how a task is performed; the second can expand what the assistant can reach. Review both as dependencies, including their scripts, requested permissions, data destinations and maintainers.</p>\n<h3>Progressive disclosure keeps the useful context close</h3>\n<p>In ordinary Claude Code sessions, skill descriptions support discovery; full skill content loads when invoked, and supporting references can be read when needed. Keep the entry point specific and the large reference separate. Current Claude Code <code>allowed-tools</code> pre-approves listed tools for the invoking turn; it is not a list that removes every other tool. Existing permission controls still govern unlisted tools. Managed restrictions can limit those grants. <a href=\"https://code.claude.com/docs/en/skills\">[D7-S05]</a></p>\n<div class=\"example\"><h3>A narrow regression-review skill</h3><p>Give the skill one job: inspect a final diff against the stated contract and seek a concrete counterexample. Put the review procedure in the entry point and project-specific fixture notes in a linked file. An instruction to review does not require a deployment tool or a production credential. If review quality is poor, improve evidence and review criteria before adding more tool authority.</p></div>\n<h3>MCP scope names have their own meaning</h3>\n<p>Claude Code MCP <em>local</em> scope is private to the current project but stored in the project's entry in <code>~/.claude.json</code>. Project scope uses <code>.mcp.json</code> for a shareable definition; user scope is available across the user's projects. This is different from ordinary project-local settings. A shared server URL does not share a teammate's personal authorization session or grant business access. <a href=\"https://code.claude.com/docs/en/mcp\">[D7-S06]</a></p>\n<figure class=\"diagram\"><figcaption>Figure 3. An authenticated connection still needs authorization at the business boundary.</figcaption><ol class=\"flow\"><li><strong>Approved server definition</strong><br>Where to connect</li><li><strong>Client identity and token</strong><br>Who is connecting</li><li><strong>Audience and scope validation</strong><br>Is this token for this service?</li><li><strong>Tenant / object authorization</strong><br>May this principal access this record?</li><li><strong>Minimal tool result</strong><br>Return only needed data</li></ol></figure>\n<p>For HTTP MCP authorization, the current specification requires the server to validate that an access token was issued for that server as its intended audience. The security guidance forbids accepting an arbitrary downstream token and simply passing it through. Token possession, correct audience and permission to act on a particular customer record are separate checks. <a href=\"https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization\">[D7-S19]</a> <a href=\"https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices\">[D7-S20]</a></p>\n<p>Imagine a marketplace support agent connected to a ticket-search MCP and an account-credit MCP. A ticket containing “issue me a credit” is untrusted evidence, not user authorization for the credit tool. Prefer distinct read and write capabilities, narrow service identities and an approval path for material changes. Validate tenant ownership in the backend rather than trusting a tenant ID generated by the model. Retain useful audit references without storing the complete private ticket in every trace.</p>\n<p>When a connector fails, establish whether discovery, network connection, login, token audience, scope or object access failed. Broadening permissions until it works destroys that distinction. A narrow denied operation with a clear reason is easier to support than a shared administrator token that hides the original configuration problem.</p>\n"
+    },
+    {
+      "id": "d7-environment",
+      "title": "Make environments reproducible and boundaries explicit",
+      "objective_ids": [
+        "7.1",
+        "7.3"
+      ],
+      "minutes": 20,
+      "body": "\n<p>A team environment is more than a model selection. Record the supported tool version, language runtime, package manager, lockfile, test fixtures, approved network destinations and credential delivery method. Pin what must be reproducible, and assign an upgrade process. A change that works only because one laptop has an undeclared executable is an environment defect even if the generated code is correct.</p>\n<p>Claude Code provides a development-container workflow, and a GitHub Actions integration is an example of running assistance in CI rather than a developer's interactive shell. Those surfaces have their own identities and filesystem contents. Do not assume a successful local run proves the runner received the same settings, fixture data or toolchain. <a href=\"https://code.claude.com/docs/en/devcontainer\">[D7-S08]</a> <a href=\"https://code.claude.com/docs/en/github-actions\">[D7-S09]</a></p>\n<h3>A worktree is a source-control boundary</h3>\n<p>A Git worktree gives parallel sessions separate checkouts and branches, reducing edit collisions. It does not create a separate operating-system identity, network or cloud account. The same processes can still reach shared databases, credentials or ports unless another control prevents it. Use worktrees to separate changes; use environment and identity controls to separate authority. <a href=\"https://code.claude.com/docs/en/common-workflows\">[D7-S12]</a></p>\n<figure class=\"diagram\"><figcaption>Figure 4. Separate checkouts can still share powerful resources.</figcaption><ol class=\"flow\"><li><strong>Worktree A</strong><br>Feature branch and files</li><li><strong>Worktree B</strong><br>Bug-fix branch and files</li><li><strong>Shared host / identity</strong><br>Credentials, network and services may overlap</li><li><strong>Explicit isolation</strong><br>Separate mounts, accounts, test data and egress</li></ol></figure>\n<p>The Claude Code shell sandbox restricts covered commands at the OS filesystem and network layer. The current documentation states that built-in file tools, local MCP servers and hooks operate outside that shell boundary. Configure the relevant tool policies and protect those additional processes separately. “Sandbox enabled” is a statement about a defined boundary, not proof that every integration is confined. Platform support also differs; verify the operating system actually used. <a href=\"https://code.claude.com/docs/en/sandboxing\">[D7-S07]</a></p>\n<h3>Worked case: an AI reviewer on a pull request</h3>\n<p>Suppose a team wants CI to explain risky changes. The pull request's text and files are untrusted input. Run review with the minimum repository privileges and a synthetic or read-only environment. Avoid giving the reviewer a deployment credential merely because its job runs in the deployment repository. Ensure the workflow does not execute untrusted branch code with privileged secrets. GitHub's security guidance specifically treats untrusted workflow input and secret access as separate concerns. <a href=\"https://docs.github.com/en/actions/reference/security/secure-use\">[D7-S10]</a></p>\n<p>A container narrows some boundaries only when its mounts, process privileges and network are configured accordingly. Mounting the developer's home folder or host control socket can undermine the intended isolation. A test credential should be scoped, short-lived where supported, and revoked through an owner-managed process. Do not place production secrets in committed settings, an instruction file, a fixture or a pasted troubleshooting transcript.</p>\n<p>For team rollout, create a short smoke path: open the approved project, verify loaded configuration, inspect a harmless file, run the intended local check and observe a denied or prompting operation using dummy data. Repeat on the supported IDE and runner surfaces. Record gaps honestly. A reproducible failure is useful evidence; silently disabling a control to make onboarding green creates a support problem that will return during an incident.</p>\n"
+    },
+    {
+      "id": "d7-verification-loop",
+      "title": "Use AI to accelerate a verifiable engineering loop",
+      "objective_ids": [
+        "7.2"
+      ],
+      "minutes": 22,
+      "body": "\n<p>The most useful workflow is small enough that its assumptions can be checked. Start with the user-visible behavior, inspect the relevant code and callers, identify a failure example, make a focused change, run an appropriate check and review the resulting diff. The assistant can help at every step. The responsibility to define acceptance and authorize side effects remains with the team.</p>\n<figure class=\"diagram\"><figcaption>Figure 5. Evidence closes the loop; confident prose does not.</figcaption><ol class=\"flow\"><li><strong>Contract</strong><br>Outcome, examples, constraints</li><li><strong>Explore</strong><br>Relevant callers and existing patterns</li><li><strong>Change</strong><br>Smallest complete edit</li><li><strong>Verify</strong><br>Observe the required behavior</li><li><strong>Challenge</strong><br>Independent counterexample review</li><li><strong>Handoff</strong><br>Evidence, limits and owner</li></ol></figure>\n<p>Anthropic's current best-practice guidance emphasizes giving Claude a runnable verification signal and showing evidence such as command output or observed application behavior. It also describes independent review as a way to challenge the implementing agent's conclusions. These are useful workflow practices, not guarantees that any particular model will find all defects. <a href=\"https://code.claude.com/docs/en/best-practices\">[D7-S11]</a></p>\n<h3>A prompt that gives the model something to prove</h3>\n<pre><code>Outcome: one logical checkout must create at most one charge,\neven when the provider commits and its reply is lost.\nRead the retry caller and provider adapter first.\nUse the offline fixture; do not contact a payment service.\nShow a failing business invariant, make a focused fix,\nthen run the check and report the actual exit status.\nPreserve tenant separation and reject a changed amount\nfor the same operation. Do not weaken the assertions.</code></pre>\n<p>This prompt supplies failure semantics and an observable invariant. “Make retries robust” leaves the assistant to guess which errors are retryable and what must remain stable. The stronger prompt also makes independent review possible: another person can look for a counterexample without needing the original conversation.</p>\n<h3>Choose verification by consequence</h3>\n<p>For a typo, inspect the result. For a parser or state transition, use a compact fixture that distinguishes correct from incorrect behavior. For money or authorization, include a meaningful rejected case and assert that rejection caused no side effect. For an Android interaction, inspect the actual screen path and assert the intended user outcome using stable identifiers where available. For a production change, use the team's real deployment and rollback checks. More tests are useful only when they resolve a real uncertainty.</p>\n<p>A test that calculates its expected value by calling the same helper it is checking can repeat the defect. Instead, write the invariant in business terms. The lab's expected “one order charges 1,200 cents once” is independent of how a key is generated. A fresh reviewer should inspect surrounding code, not just the changed lines: a perfect helper can be called with a fresh operation ID on every retry and still produce duplicates.</p>\n<p>Use independence deliberately. Give a reviewer the task contract, diff, relevant context and evidence, and ask it to challenge authorization, partial failure, duplicate delivery and stale state. Avoid feeding it only the implementer's persuasive explanation. A second model is still fallible and may share assumptions, so a concrete counterexample or an independently executed check is stronger than two agreeing summaries.</p>\n<p><a href=\"templates/domain-07/review-and-measure.md\" download>Download the review and measurement worksheet</a>. At handoff, state what changed, why, which commands actually ran, what was observed and what remains unverified. Keep the result reproducible after the chat is gone. That is developer enablement: reducing the next engineer's uncertainty, not merely generating today's code faster.</p>\n"
+    },
+    {
+      "id": "d7-measurement",
+      "title": "Measure net productivity without confusing activity with value",
+      "objective_ids": [
+        "7.2"
+      ],
+      "minutes": 22,
+      "body": "\n<p>Generated lines, accepted suggestions and prompt counts describe activity. They do not establish that a team delivered a useful change faster or with less risk. The assistant might shorten initial implementation while increasing review, rework or incident load. Measure the whole workflow and preserve quality constraints; otherwise a productivity target can reward moving work onto someone else's queue.</p>\n<h3>What current industry research actually says</h3>\n<p>METR's July 2025 randomized experiment involved 16 experienced open-source developers completing 246 tasks in repositories they knew well. With early-2025 AI assistance allowed, completion took 19% longer on average. The authors describe it as a snapshot in a specific setting, not a universal verdict on coding agents. <a href=\"https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/\">[D7-S13]</a></p>\n<p>METR's February 2026 update reports later results consistent with possible speedup, but emphasizes selection effects and measurement difficulties. Developers and tasks were increasingly selected out of AI-disallowed work; parallel-agent use also complicated time measurement. The authors regard the data as weak evidence for the size of the change. Do not present the 2025 slowdown as today's guaranteed outcome or the later estimates as a universal reversal. <a href=\"https://metr.org/blog/2026-02-24-uplift-update/\">[D7-S14]</a></p>\n<p>DORA's 2025 report characterizes AI as an amplifier of existing organizational strengths and weaknesses. That supports investigating the surrounding system: task clarity, feedback speed, review capacity and dependable environments. It does not supply a causal percentage that can be pasted into every business case. <a href=\"https://dora.dev/research/2025/dora-report/\">[D7-S15]</a></p>\n<h3>Worked arithmetic: a faster first draft can yield a small net gain</h3>\n<div class=\"table-wrap\"><table><thead><tr><th>Comparable task, illustrative mean</th><th>Baseline</th><th>AI-assisted</th></tr></thead><tbody><tr><td>Initial implementation</td><td>70 min</td><td>45 min</td></tr><tr><td>Review</td><td>15 min</td><td>25 min</td></tr><tr><td>Rework</td><td>5 min</td><td>15 min</td></tr><tr><td>Total engineer effort</td><td>90 min</td><td>85 min</td></tr></tbody></table></div>\n<p class=\"equation\">Net effort reduction = (90 − 85) ÷ 90 = 5.56%</p>\n<p>These are invented teaching values. The initial implementation reduction is 35.71%, but the net reduction is only 5.56%, before training, tool and support costs. Neither value is cash saved unless the organization changes spending or uses the capacity productively. Also separate active engineer effort from elapsed delivery time: waiting three hours for review can dominate a small coding improvement.</p>\n<figure class=\"diagram\"><figcaption>Figure 6. Count work that moves downstream, not only work that disappears from drafting.</figcaption><ol class=\"flow\"><li><strong>Build</strong><br>Planning, prompting, coding</li><li><strong>Review</strong><br>Independent checking effort</li><li><strong>Rework</strong><br>Corrections before acceptance</li><li><strong>Operations</strong><br>Defects and support after release</li><li><strong>User outcome</strong><br>Successful behavior at acceptable risk</li></ol></figure>\n<p>Design a small pilot around comparable tasks, recorded complexity and a fixed completion definition. Include review time, a follow-up window for escaped defects, severity, tool cost and developer experience. Where feasible, assign assistance before work starts rather than letting people put only easy tasks in the assisted bucket. Record missing and abandoned tasks. Compare uncertainty and variation, not just two attractive averages.</p>\n<p>A useful decision might be “continue AI-assisted fixture creation for this service; revise authorization-change workflow because review burden rose.” It need not be “AI everywhere” or “AI nowhere.” Keep a stopping rule for unacceptable defects and a human owner for interpreting the data. The exam skill is selecting a defensible workflow under constraints; the practical skill is finding out whether it improves your own team's outcomes.</p>\n"
+    },
+    {
+      "id": "d7-debugging",
+      "title": "Debug the failing layer with discriminating evidence",
+      "objective_ids": [
+        "7.3"
+      ],
+      "minutes": 24,
+      "body": "\n<p>“The AI failed” is a symptom label. A useful diagnosis identifies which layer produced the wrong result and what observation would distinguish competing causes. Start with one failed user operation, its timestamp, deployment version and correlation identifiers. Preserve the input's relevant structure while removing sensitive content. Change one explanatory variable at a time whenever possible.</p>\n<div class=\"table-wrap\"><table><thead><tr><th>Symptom</th><th>Competing explanation</th><th>Useful discriminating observation</th></tr></thead><tbody>\n<tr><td>One laptop cannot search</td><td>Runtime, path, installation or configuration</td><td>Approved binary version, working directory, loaded sources</td></tr>\n<tr><td>All requests are rejected</td><td>Authentication, scope, rate limit or provider fault</td><td>Error category, request IDs, account context, official status</td></tr>\n<tr><td>Answer cites an old policy</td><td>Retrieval version, filtering or generation error</td><td>Retrieved source IDs, dates, access verdict and supplied evidence</td></tr>\n<tr><td>Tool says success, action missing</td><td>Transport success versus business failure</td><td>Response schema, application status and external system state</td></tr>\n<tr><td>Duplicate external action</td><td>Retry, callback redelivery or reconciliation defect</td><td>Stable operation ID, attempt IDs and provider records</td></tr>\n</tbody></table></div>\n<p>Claude Code documents <code>claude doctor</code> for installation/configuration checks and <code>/mcp</code> for server status. Claude API errors carry categories and request identifiers useful for provider-side investigation. Preserve identifiers and timing through an approved private support path; do not substitute the model's explanation for the actual response. <a href=\"https://code.claude.com/docs/en/troubleshooting\">[D7-S18]</a> <a href=\"https://platform.claude.com/docs/en/api/errors\">[D7-S16]</a></p>\n<h3>HTTP 200 is one observation, not the whole outcome</h3>\n<p>A fictional booking endpoint returns HTTP 200 with <code>{\"status\":\"rejected\",\"reason\":\"slot_taken\"}</code>. The transport exchanged a valid response. The requested booking did not happen. Another endpoint returns <code>status: pending</code>; completion requires later polling or a callback. An agent that announces success immediately has collapsed accepted, pending and completed states. Define and validate the application schema, terminal state and expected external effect.</p>\n<p>Streaming adds another boundary: an initial successful HTTP response can be followed by an error event. Client behavior must consider the complete stream contract rather than treating the first status line as final success. The API's current error documentation calls out errors during streaming. <a href=\"https://platform.claude.com/docs/en/api/errors\">[D7-S16]</a></p>\n<h3>Worked case: the lost reply that creates a duplicate</h3>\n<figure class=\"diagram\"><figcaption>Figure 7. External state and the caller’s knowledge diverge when the reply is lost.</figcaption><ol class=\"flow\"><li><strong>Attempt A</strong><br>Send the business intent with key K.</li><li><strong>Provider commits</strong><br>The charge exists externally; its reply is lost.</li><li><strong>Client times out</strong><br>The caller knows the outcome is uncertain, not that the action failed.</li></ol><p><strong>Decision point: the following branches are alternative retry choices.</strong></p><div class=\"two-col\"><div class=\"callout\"><strong>Preserve the business intent → retry with K</strong><p>Under this toy provider’s stated contract, it returns the existing result. One logical intent still has one charge.</p></div><div class=\"warning\"><strong>Create a fresh key → retry with K2</strong><p>The provider sees a new operation. A second charge can occur even though the client only wanted to recover the first reply.</p></div></div><p class=\"small\">A real integration must verify the provider’s idempotency lifetime, conflict handling and reconciliation contract. These branches describe the offline fixture.</p></figure>\n<p>The right fix is not merely “retry fewer times.” Preserve the identity of the business intent across attempts, scope it to the tenant and operation, reject conflicting payload reuse and reconcile uncertain outcomes. Transport attempt IDs should vary for tracing; the business operation ID should remain stable. If a provider offers an idempotency contract, inspect its retention window and conflict behavior. Once that window expires, a blind retry may no longer deduplicate.</p>\n<p>In production, persist intent and reconciliation state durably, make concurrent admission atomic, and verify the provider's actual contract. The offline lab deliberately omits these production mechanisms to isolate the root cause. Its assertion checks the business effect, so changing log messages or catching every exception cannot make the defect disappear. This is the debugging habit to transfer to your projects: prove what happened outside the agent's narrative.</p>\n"
+    },
+    {
+      "id": "d7-operations",
+      "title": "Operate incidents with bounded authority and a safe evidence trail",
+      "objective_ids": [
+        "7.3",
+        "7.1"
+      ],
+      "minutes": 20,
+      "body": "\n<p>During an incident, urgency makes broad tool authority tempting. Keep investigation and intervention explicit. Read-only observation can establish impact and likely cause; a write action can change evidence, duplicate an external effect or expand the blast radius. Agree in advance which reversible containment actions the on-call role may perform and which require incident-command approval. The appropriate boundary depends on the system and existing operating policy.</p>\n<p>A proposed nutrition assistant returns stale meal recommendations after an index rollout. First inspect the deployment, source versions, index routing and request traces using synthetic or authorized sanitized examples. A model upgrade is premature if retrieval supplied last month's records. Likewise, a local credential failure should not be labeled a provider outage, and a broad provider outage should not be “fixed” by repeatedly rotating application secrets.</p>\n<h3>Contain, diagnose, recover, reconcile</h3>\n<p>Containment might temporarily return a deterministic search result, disable a risky write tool or route a high-impact request to an existing human queue. State the user impact: reduced capability, slower responses or unavailable actions. Do not silently announce normal operation while using a degraded path. Diagnosis then tests the strongest competing hypotheses with discriminating evidence. Recovery requires an observed safe user outcome, followed by reconciliation of pending or partially completed operations.</p>\n<p>Retries are also load. During a rate-limited or overloaded dependency incident, unbounded retries can amplify the failure. Use a bounded retry budget for eligible errors, appropriate delay and jitter, and an overall deadline. Do not retry authorization failures by changing identities, and do not repeat uncertain writes without the operation's idempotency/reconciliation contract. Error category and business semantics determine the response; “all errors are transient” is an unsafe simplification.</p>\n<h3>Correlate events without collecting everything</h3>\n<p>Claude Code's current monitoring documentation supports OpenTelemetry and a <code>prompt.id</code> correlation attribute for related events. Content logging is separately controlled and can expose prompts, tool results or model output when enabled. Keep the smallest evidence needed for diagnosis, apply access and retention controls, and verify exporter fields on the deployed version. Token totals or tool counts alone do not establish a successful user operation. <a href=\"https://code.claude.com/docs/en/monitoring-usage\">[D7-S17]</a></p>\n<div class=\"warning\"><p><strong>Support bundles need inspection:</strong> runtime dumps may contain secrets even when their filename sounds technical. Claude Code specifically warns that a heap snapshot can contain conversation strings and credentials. Prefer a minimal synthetic reproducer, relevant versions, timestamps, error categories and request IDs; manually inspect what you share. <a href=\"https://code.claude.com/docs/en/troubleshooting\">[D7-S18]</a></p></div>\n<p><a href=\"templates/domain-07/incident-runbook.md\" download>Download the incident worksheet</a>. Fill in the incident owner, affected journey, scope of impact, approved observations, write approvals, rollback criteria and backlog reconciliation. Keep raw private payloads out of a public issue. The worksheet intentionally asks for both transport and business outcomes so a healthy HTTP dashboard cannot conceal an application failure.</p>\n<p>After recovery, choose a small prevention change tied to the cause: a version-routing assertion, a stable-key regression, a clearer error category or a missing runbook step. Record an owner and verification date. “Improve the prompt” is not an adequate corrective action when the failure came from a stale index, credential scope or duplicate external write. Operational enablement means the next responder can reach the same diagnosis with less uncertainty.</p>\n"
+    },
+    {
+      "id": "d7-lab",
+      "title": "Practical lab: reproduce, fix and review a retry defect",
+      "objective_ids": [
+        "7.1",
+        "7.2",
+        "7.3"
+      ],
+      "minutes": 45,
+      "body": "<p>The exercise applies observable verification and independent review from the documented development workflow; its provider simulation and assertions are original teaching fixtures. <a href=\"https://code.claude.com/docs/en/best-practices\">D7-S11</a></p>\n\n<p>This lab is fully offline and uses only Python 3.9+ standard-library modules. It makes no network calls, writes no files and moves no real money. Download the five files together into a new exercise folder. The buggy mode intentionally fails; fixed mode contains the reference behavior. The business setting is a marketplace checkout, but the same uncertainty occurs in ticket creation, notification delivery and other external side effects.</p>\n<p><a href=\"templates/domain-07/lab.py\" download>lab.py</a> · <a href=\"templates/domain-07/CLAUDE.md\" download>CLAUDE.md</a> · <a href=\"templates/domain-07/settings.example.json\" download>settings.example.json</a> · <a href=\"templates/domain-07/review-and-measure.md\" download>review-and-measure.md</a> · <a href=\"templates/domain-07/incident-runbook.md\" download>incident-runbook.md</a></p>\n<h3>Step 1 — State the invariant before reading the implementation</h3>\n<p>Write: one tenant's logical order must create at most one charge for its agreed amount, including a lost reply and duplicate client delivery. A different tenant's order must remain independent. Reusing the same intent with a changed amount must be rejected without a new charge. This contract is stronger than “the function eventually returns success.” Expected outcome: you can explain what the test must prove without mentioning the key-generation algorithm.</p>\n<h3>Step 2 — Reproduce the red result</h3>\n<pre><code>python3 lab.py buggy</code></pre>\n<p>Expected outcome: a nonzero exit and an assertion saying one business intent created three charges instead of one. The first attempt commits and loses its reply; a retry uses a new key; a repeated client delivery uses another new key. Inspect the provider's state and the caller together. The failure is intentional teaching evidence, not a broken installation. Do not remove the assertion to obtain a green result.</p>\n<h3>Step 3 — Trace identity across attempts</h3>\n<p>Read <code>Checkout.pay</code> and <code>Provider.charge</code>. Identify the business identity tuple, the attempt counter and the point where the simulated timeout occurs. Sketch a sequence with “committed externally” before “reply lost.” Explain why the caller cannot conclude that nothing happened. Predict which identifier should remain stable and which should change before running the reference.</p>\n<h3>Step 4 — Verify the reference fix and rejected cases</h3>\n<pre><code>python3 lab.py fixed</code></pre>\n<p>Expected outcome: exit zero with <code>PASS: one intent/one charge, tenant scope, payload conflict, money validation</code>. The check observes the number and total amount of provider-side charges, tests a second tenant, rejects conflicting amount reuse, and rejects zero, negative, fractional and boolean money input. These are business and trust-boundary properties; they do not assert a particular hash string.</p>\n<h3>Step 5 — Challenge the fix as a reviewer</h3>\n<p>Use the review worksheet without the implementer's narrative. Ask what happens after a process restart, simultaneous calls, a provider deduplication expiry or a permanently unknown result. Expected outcome: record that this in-memory single-process toy does not solve those production cases. Propose durable intent storage, atomic admission and provider reconciliation as additional requirements. Do not claim the toy is a payment library or that local tests establish a provider's guarantee.</p>\n<h3>Step 6 — Transfer one idea into a project proposal</h3>\n<p>Choose a synthetic task in Quiet Hours, NutriMind or a marketplace project. Identify the actual caller, state transition, external side effect and verification command only after inspecting that repository. Draft a small task contract, an evidence-based workflow and a rollback or recovery note. If using Claude Code, review the supplied instructions and inert settings example against your installed release; keep production credentials out of the exercise. Expected outcome: a reproducible proposal another engineer can review without your chat history.</p>\n<div class=\"callout\"><p><strong>Acceptance:</strong> you can reproduce the expected red and green runs, explain the unknown-outcome retry, distinguish instruction from enforcement, identify the lab's persistence and concurrency limits, and hand off a project-specific verification plan. Finish by answering the checks below and explaining why the attractive alternatives fail. This is preparation for architectural judgment, not a prediction of your live exam score.</p></div>\n"
+    }
+  ],
+  "checks": [
+    {
+      "id": "d7-check-01",
+      "question": "An organization denies Read(./secrets/**). A developer adds an allow for that path in project-local settings and sees the call still blocked. Which action best resolves the legitimate need to debug a parsing defect?",
+      "options": [
+        "Add the same allow to the session settings because session scope sits above project-local configuration.",
+        "Use a sanitized fixture or request a reviewed policy change, then verify the loaded effective sources.",
+        "Move the allow into CLAUDE.md so the model receives a more specific instruction for this debugging task.",
+        "Clear the project settings file and keep the local allow, retaining the organization policy unchanged."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Ordinary settings precedence does not let a session allow defeat a matching managed deny; permission entries have their own evaluation rules.",
+        "Correct. This preserves the legitimate debugging goal while respecting the enforced boundary and checking whether the intended policy actually loaded.",
+        "CLAUDE.md provides behavioral guidance and cannot grant a tool permission that the client denies.",
+        "Removing a lower-scope file does not remove the organization deny and may discard other useful team controls."
+      ]
+    },
+    {
+      "id": "d7-check-02",
+      "question": "A team runs a long security check as an async PostToolUse hook after a deployment command. The deployment completed before the check rejected it. What is the best architectural correction?",
+      "options": [
+        "Have the background hook return a denial field and a more explicit explanation of the prohibited deployment.",
+        "Use exit code 2 from PostToolUse so the deployment result is discarded before the model sees it.",
+        "Move the requirement into a release gate that waits for the check before the effect can be authorized.",
+        "Keep the timing but add a second background hook to verify that the first rejection reached the model."
+      ],
+      "correct": 2,
+      "explanations": [
+        "An async completion cannot retroactively block an action that already happened, regardless of the wording or denial field.",
+        "PostToolUse observes an already executed action; its exit status is not an undo mechanism.",
+        "Correct. A required preventive control must complete before the irreversible effect; test its failure behavior on the actual execution surface.",
+        "Confirming delivery of a rejection improves observability but leaves the effect-before-validation defect intact."
+      ]
+    },
+    {
+      "id": "d7-check-03",
+      "question": "An approved project skill lists allowed-tools: Read Grep. A reviewer concludes the skill can never call Bash. Which interpretation is most accurate for current Claude Code?",
+      "options": [
+        "The list pre-approves specified tools for the invoking turn; it does not itself remove other tools, which remain subject to policy.",
+        "The list is a hard tool allowlist for the whole session, so Bash becomes available only after the user clears the conversation.",
+        "The list changes the process sandbox, so Bash may run but cannot reach files outside the skill directory.",
+        "The list documents preferences only; invoking a skill cannot affect whether a specified tool prompts for approval."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correct. Distinguish pre-approval from tool removal and from OS access. Managed rules can constrain the grant.",
+        "This conflates a turn-scoped pre-approval with a session-wide restrictive allowlist.",
+        "Skill frontmatter is not a filesystem or network sandbox configuration.",
+        "The documented field affects permission prompting; it is more than descriptive text, although other controls still apply."
+      ]
+    },
+    {
+      "id": "d7-check-04",
+      "question": "A teammate receives a committed .mcp.json definition for a ticket service but cannot access tickets. Another developer proposes committing their OAuth token alongside the definition. What is the best next step?",
+      "options": [
+        "Use user scope for the shared definition so every developer inherits the maintainer's established authorization.",
+        "Pass the ticket API token through the MCP service unchanged to avoid separate audience checks.",
+        "Copy only a refresh token because a refresh token is not used directly for ticket retrieval.",
+        "Have each authorized principal authenticate, then verify the MCP audience, scope and ticket-level access separately."
+      ],
+      "correct": 3,
+      "explanations": [
+        "A configuration scope controls where a definition is available; it does not legitimately transfer another principal's identity.",
+        "Token passthrough bypasses the intended audience boundary and is explicitly forbidden by MCP security guidance.",
+        "Refresh tokens are sensitive credentials; committing one creates continuing access risk rather than solving authorization correctly.",
+        "Correct. A shared endpoint definition and personal authorization are separate. Backend object authorization must still hold."
+      ]
+    },
+    {
+      "id": "d7-check-05",
+      "question": "Two coding sessions use separate worktrees. Both can reach the same production database through an inherited environment credential. What does the worktree separation establish?",
+      "options": [
+        "External writes are isolated because branches have separate working directories and separate change histories.",
+        "File-edit collisions are reduced; separate identities, mounts and network controls are still needed for external authority.",
+        "The sessions cannot share secrets unless a secret file is committed to both branches.",
+        "Only the first session can use the credential because Git locks serialize authenticated subprocesses."
+      ],
+      "correct": 1,
+      "explanations": [
+        "A source-control checkout does not partition the database or the authenticated account.",
+        "Correct. Worktrees separate source files and branches, not every host resource or service privilege.",
+        "Environment credentials and other host resources can be shared without any secret being committed.",
+        "Git coordination does not serialize arbitrary authenticated database operations. Both sessions can still use their inherited database credential simultaneously."
+      ]
+    },
+    {
+      "id": "d7-check-06",
+      "question": "A comparable-task pilot reports baseline effort of 70 minutes implementation, 15 review and 5 rework. Assisted effort is 45, 25 and 15 minutes respectively. Before adoption overhead, which conclusion is justified?",
+      "options": [
+        "Implementation improved by 35.71%, so the same percentage can be reported as total engineering capacity saved.",
+        "Net effort improved by 5.56%; review and rework increased, so quality and downstream costs still need examination.",
+        "Net effort improved by 5 minutes, so payroll spending falls by the same proportion without a staffing decision.",
+        "Total effort improved by 16.67% because the comparison should exclude rework from both workflows."
+      ],
+      "correct": 1,
+      "explanations": [
+        "The initial implementation reduction ignores work transferred into review and rework.",
+        "Correct. Totals are 90 and 85 minutes: (90−85)/90 = 5.56%. That is a task-level effort estimate, not a universal business effect.",
+        "Time capacity and cash expenditure are different; unchanged payroll does not automatically fall when a task is faster.",
+        "The proposed exclusion removes a material consequence of the workflow and yields a misleading comparison."
+      ]
+    },
+    {
+      "id": "d7-check-07",
+      "question": "A manager cites METR's 2025 slowdown as proof that coding agents cannot improve this year's team productivity. Which response best represents the primary evidence?",
+      "options": [
+        "The later METR estimates establish a universal speedup, so the earlier randomized evidence can now be discarded.",
+        "The 2025 experiment involved experienced developers, so its percentage applies directly to every senior developer today.",
+        "The early result is specific to its setting; the 2026 update notes selection and measurement limits, so run a quality-controlled local pilot.",
+        "The research is irrelevant because only code-generation benchmarks can measure the effect of AI-assisted development."
+      ],
+      "correct": 2,
+      "explanations": [
+        "The update explicitly cautions that selection effects limit inference about the magnitude of later speedup.",
+        "Experience alone does not make tool versions, tasks, environments and workflows interchangeable.",
+        "Correct. Preserve both studies' limits and evaluate the actual task population and full workflow rather than promising a universal effect.",
+        "Real-world experiments provide complementary evidence; benchmarks and workplace outcomes answer related but different questions."
+      ]
+    },
+    {
+      "id": "d7-check-08",
+      "question": "A checkout provider creates a charge but its reply is lost. The client retries with a newly generated idempotency key and obtains another success. What should the regression establish?",
+      "options": [
+        "One stable tenant-scoped business intent creates one charge despite timeout and duplicate delivery; conflicting payload reuse is rejected.",
+        "The retry count remains below three and every successful retry produces a distinct request identifier.",
+        "The retry response returns HTTP 200 and the client catches TimeoutError without displaying an exception.",
+        "The key-generation function returns a hash with the expected character length for every attempted charge."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correct. This tests the external business invariant, tenant separation and conflict behavior independently of the implementation algorithm.",
+        "Bounded retries and unique attempt IDs are useful, but neither prevents duplicate business effects.",
+        "A smooth transport and user interface can hide duplicate charges; exception handling alone is not the required outcome.",
+        "A correctly formatted hash can still identify the wrong unit of work or change on every retry."
+      ]
+    },
+    {
+      "id": "d7-check-09",
+      "question": "A booking tool returns HTTP 200 with status=pending. The assistant tells the customer the reservation is confirmed. What is the most direct correction?",
+      "options": [
+        "Use a larger model to improve interpretation while retaining the current tool-result success classification.",
+        "Treat all 2xx responses as eventual success and make the confirmation wording more cautious.",
+        "Retry the booking immediately with a fresh operation ID to obtain a terminal response more quickly.",
+        "Validate application states, wait or reconcile until a terminal result, and report the verified booking outcome."
+      ],
+      "correct": 3,
+      "explanations": [
+        "The integration must represent pending versus completed states; a model change leaves the incorrect contract intact.",
+        "Accepted or pending work may fail later; transport success is not a guarantee of eventual business completion.",
+        "A fresh write can create duplicates and does not resolve the original operation's uncertainty.",
+        "Correct. The agent should ground its user-visible claim in the application contract and verified external state."
+      ]
+    },
+    {
+      "id": "d7-check-10",
+      "question": "An incident investigator has a minimal synthetic reproducer, request IDs and a heap snapshot from a failed agent session. What is the best support handoff?",
+      "options": [
+        "Attach the complete snapshot to a public issue because process internals are more diagnostic than synthetic data.",
+        "Upload the snapshot after removing its filename's user name; credentials are not stored in executable memory.",
+        "Send the inspected minimal reproducer and necessary sanitized metadata through the approved channel, excluding the heap snapshot.",
+        "Replace every request ID with a random value and share the uninspected transcript so support can infer the timeline."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Heap snapshots can contain conversations and credentials; public attachment can disclose sensitive data.",
+        "Renaming does not remove the sensitive strings contained inside a process snapshot.",
+        "Correct. Preserve useful correlation evidence while minimizing and inspecting the data shared through the authorized support path.",
+        "Randomizing required correlation IDs can destroy diagnostic value, while an uninspected transcript may still expose private content."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "D7-S01",
+      "title": "Claude Code settings and precedence",
+      "url": "https://code.claude.com/docs/en/settings",
+      "used_for": "Scope, ordinary key precedence, merged lists, loaded-source verification."
+    },
+    {
+      "id": "D7-S02",
+      "title": "Claude Code project memory",
+      "url": "https://code.claude.com/docs/en/memory",
+      "used_for": "CLAUDE.md is behavioral context, not a hard policy boundary."
+    },
+    {
+      "id": "D7-S03",
+      "title": "Claude Code permissions",
+      "url": "https://code.claude.com/docs/en/permissions",
+      "used_for": "Deny/ask/allow ordering, scoped tool rules and indirect process limitations."
+    },
+    {
+      "id": "D7-S04",
+      "title": "Claude Code hooks reference",
+      "url": "https://code.claude.com/docs/en/hooks",
+      "used_for": "PreToolUse, PostToolUse, exit 2 and background timing."
+    },
+    {
+      "id": "D7-S05",
+      "title": "Claude Code skills",
+      "url": "https://code.claude.com/docs/en/skills",
+      "used_for": "On-demand content, invocation and allowed-tools semantics."
+    },
+    {
+      "id": "D7-S06",
+      "title": "Claude Code MCP connections",
+      "url": "https://code.claude.com/docs/en/mcp",
+      "used_for": "MCP local/project/user scopes and their storage."
+    },
+    {
+      "id": "D7-S07",
+      "title": "Claude Code sandboxing",
+      "url": "https://code.claude.com/docs/en/sandboxing",
+      "used_for": "Shell process restrictions and tools/processes outside that boundary."
+    },
+    {
+      "id": "D7-S08",
+      "title": "Claude Code development containers",
+      "url": "https://code.claude.com/docs/en/devcontainer",
+      "used_for": "Reproducible tool environments and container boundary considerations."
+    },
+    {
+      "id": "D7-S09",
+      "title": "Claude Code GitHub Actions",
+      "url": "https://code.claude.com/docs/en/github-actions",
+      "used_for": "AI assistance as an actual CI integration, with a separate runner context."
+    },
+    {
+      "id": "D7-S10",
+      "title": "GitHub Actions secure use reference",
+      "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+      "used_for": "Untrusted input, runner privileges and secret exposure concerns."
+    },
+    {
+      "id": "D7-S11",
+      "title": "Claude Code best practices",
+      "url": "https://code.claude.com/docs/en/best-practices",
+      "used_for": "Concrete verification evidence, exploration and independent review."
+    },
+    {
+      "id": "D7-S12",
+      "title": "Claude Code common workflows",
+      "url": "https://code.claude.com/docs/en/common-workflows",
+      "used_for": "Worktree sessions and plan-first workflow examples."
+    },
+    {
+      "id": "D7-S13",
+      "title": "METR early-2025 developer productivity experiment",
+      "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "used_for": "RCT design, 16 developers/246 tasks and observed 19% longer completion time."
+    },
+    {
+      "id": "D7-S14",
+      "title": "METR February 2026 experiment-design update",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "used_for": "Later estimates, selection effects and uncertainty about effect size."
+    },
+    {
+      "id": "D7-S15",
+      "title": "DORA State of AI-assisted Software Development 2025",
+      "url": "https://dora.dev/research/2025/dora-report/",
+      "used_for": "AI as an amplifier of the underlying organizational system."
+    },
+    {
+      "id": "D7-S16",
+      "title": "Claude API errors",
+      "url": "https://platform.claude.com/docs/en/api/errors",
+      "used_for": "Error classification, request identifiers and streaming caveats."
+    },
+    {
+      "id": "D7-S17",
+      "title": "Claude Code monitoring",
+      "url": "https://code.claude.com/docs/en/monitoring-usage",
+      "used_for": "OpenTelemetry correlation and content logging exposure."
+    },
+    {
+      "id": "D7-S18",
+      "title": "Claude Code troubleshooting",
+      "url": "https://code.claude.com/docs/en/troubleshooting",
+      "used_for": "doctor, MCP status and sensitive heap-dump warning."
+    },
+    {
+      "id": "D7-S19",
+      "title": "MCP 2026-07-28 authorization specification",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+      "used_for": "Token audience validation for HTTP authorization."
+    },
+    {
+      "id": "D7-S20",
+      "title": "MCP 2026-07-28 security best practices",
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+      "used_for": "Token passthrough and confused-deputy risks."
+    },
+    {
+      "id": "D7-S21",
+      "title": "Claude Code managed settings",
+      "url": "https://code.claude.com/docs/en/managed-settings",
+      "used_for": "Organization enforcement and verification across delivery surfaces."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Effective configuration",
+      "definition": "The combined, actually loaded settings and policies that determine behavior for a particular session and surface."
+    },
+    {
+      "term": "Instruction versus enforcement",
+      "definition": "Instructions influence model behavior; enforcement is implemented by a client, backend or execution boundary."
+    },
+    {
+      "term": "Permission scope",
+      "definition": "The context in which a configuration or tool grant applies; ordinary settings and MCP use distinct scope models."
+    },
+    {
+      "term": "Progressive disclosure",
+      "definition": "Loading a compact discovery description first and detailed procedures or references only when needed."
+    },
+    {
+      "term": "Token audience",
+      "definition": "The resource server for which an access token was issued; accepting the wrong audience breaks an authorization boundary."
+    },
+    {
+      "term": "Worktree",
+      "definition": "A separate Git checkout used to separate source changes; it is not an operating-system sandbox."
+    },
+    {
+      "term": "Business operation ID",
+      "definition": "A stable identity for one intended business action, preserved across transport attempts and duplicate deliveries."
+    },
+    {
+      "term": "Idempotency",
+      "definition": "Repeated execution of the same logical request does not create additional unintended effects under a defined contract."
+    },
+    {
+      "term": "Unknown outcome",
+      "definition": "The caller lacks confirmation of whether an external effect committed, as when a reply is lost after processing."
+    },
+    {
+      "term": "Discriminating observation",
+      "definition": "Evidence chosen because it helps distinguish competing explanations for a failure."
+    },
+    {
+      "term": "Net productivity",
+      "definition": "Useful accepted outcomes relative to total effort and cost, including review, rework and operational consequences."
+    },
+    {
+      "term": "Reconciliation",
+      "definition": "Comparing intended and actual external state and resolving pending, missing or duplicate effects safely."
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild the two portable sections and check repository navigation."""
+"""Rebuild the portable sections and check repository navigation."""
 from html.parser import HTMLParser
 from pathlib import Path
 import subprocess
@@ -44,13 +44,13 @@ def verify():
                 assert unquote(url.fragment) in parsed[target].ids, ('Missing fragment', path, href)
     assert len(list((ROOT / 'learning').glob('ep*.html'))) == 11
     assert not list(ROOT.glob('ep*.html')), 'Episode pages belong only in learning/'
-    assert len(parsed) == 45
+    assert len(parsed) == 49
     assert not list(ROOT.rglob('*.pdf')), 'The official PDF must not be distributed'
     assert not (ROOT / 'raw').exists() and not (ROOT / 'wiki').exists()
-    print('PASS: 44 rendered HTML pages plus exam template, local assets, six exam sets, section links and public artifact boundaries; no root episode files.')
+    print('PASS: 48 rendered HTML pages plus exam template, three study sections, local assets, six exam sets and public artifact boundaries; no root episode files.')
 
 
 if __name__ == '__main__':
-    for section in ('learning', 'mock-exams/ccar-p'):
+    for section in ('learning', 'mock-exams/ccar-p', 'deep-dives'):
         subprocess.run([sys.executable, str(ROOT / section / 'build.py')], check=True)
     verify()

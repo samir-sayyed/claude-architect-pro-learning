@@ -1,20 +1,25 @@
 # Claude Architect Professional — Learning & Practice
 
-Independent visual learning pages and six original, timed CCAR-P mock exams.
+Independent visual learning pages, practical domain tutorials and six original, timed CCAR-P mock exams.
 
-**[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP. After extraction, open `index.html` for the learning pages or `sets.html` for the mock collection in a modern browser.
+**[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP. After extraction, open `index.html` for either learning collection or `sets.html` for the mocks in a modern browser.
 
 | Section | Open | Offline download |
 |---|---|---|
 | Eleven episode learning pages | [Course index](learning/index.html) | [Learning ZIP](learning/claude-architect-pro-learning-pages.zip) |
+| Deep practical learning for Domains 5–7 | [Domain learning path](deep-dives/index.html) | [Complete domain ZIP](deep-dives/domain-05-07-learning.zip) |
 | Six mock sets, 63 questions / 120 minutes each | [Choose a set](mock-exams/ccar-p/sets.html) | [All-sets ZIP](mock-exams/ccar-p/ccarp-professional-all-sets.zip) |
 
 ## Repository layout
 
 ```text
-index.html                 Home page linking both sections
-build.py                   Rebuild both sections and verify local navigation
+index.html                 Home page linking all three sections
+build.py                   Rebuild all sections and verify local navigation
 learning/                  Episode pages, course data, generator, previews and ZIP
+deep-dives/                Domains 5–7: detailed tutorials, labs, templates and research
+  content/                 Original structured teaching content, one file per domain
+  research/                Dated primary-source evidence and limitations
+  templates/domain-05/ ... domain-07/  Practical reusable artifacts and synthetic labs
 mock-exams/
   ccar-p/                  Set 01, shared generator/runtime, research and set catalogue
     sets/set-02/ ... set-06/  Each: question data, timed HTML, coverage, print/key, research
@@ -27,6 +32,12 @@ The root `index.html` opens the study home. The course index and all eleven epis
 Each episode includes a concept map, process flow, decision table, worked example and checklist. The collection has 55 core takeaways and 39 source-linked slide detail cards. Episode 11 includes an editable cost calculator with illustrative rates. See [course details and attribution](learning/README.md).
 
 Source credits: [Peace Of Code's supplied playlist](https://youtube.com/playlist?list=PLPsBalbS2-zs) and [aakash1999's companion decks/code](https://github.com/aakash1999/claude-certified-architect-professional/tree/f710b2975e297b12f839dda071231448523e43a3). The notes synthesize selected material; original decks and full transcripts are not included.
+
+## Deep practical domain learning
+
+[Domains 5–7](deep-dives/index.html) teach governance, safety and risk; stakeholder communication and lifecycle; and developer productivity and operational enablement. The modules map all 13 relevant objective bullets in the supplied Professional guide, with detailed mechanisms, tricky distinctions, real industry evidence, original project scenarios, diagrams, synthetic labs and reusable templates. Thirty decision checks explain every option. Interactive review-capacity and event-budget examples make assumptions explicit.
+
+Researched 13 October 2026 against first-party technical sources and regulator guidance. Practical project application comes first; exam preparation follows from the objective coverage. Proposed NutriMind-, marketplace- and Android-inspired examples are teaching exercises, not claims about deployed apps. See [evidence and limits](deep-dives/README.md) and the source records within each module. Download the [complete offline bundle](deep-dives/domain-05-07-learning.zip) or [templates alone](deep-dives/templates.zip).
 
 ## Mock exam
 
@@ -44,7 +55,7 @@ Difficulty is intentionally demanding but has not been calibrated against the li
 
 ## Rebuild and check
 
-Python 3 is sufficient to rebuild both sections; no third-party packages are needed.
+Python 3 is sufficient to rebuild all sections; no third-party packages are needed.
 
 ```sh
 python3 build.py
@@ -54,6 +65,7 @@ Run the mock's logic checks with Node.js:
 
 ```sh
 node mock-exams/ccar-p/test.js
+node deep-dives/test.js
 ```
 
 To serve the full collection locally:

@@ -1,0 +1,484 @@
+{
+  "domain": 6,
+  "title": "Stakeholder Communication & Lifecycle Management",
+  "weight": 14,
+  "summary": "Turn an AI idea into an evidence-backed service: discover the real work, negotiate constraints, make defensible architecture decisions, define service promises and transfer operating responsibility across the full lifecycle.",
+  "objectives": [
+    "Conduct structured discovery and requirement gathering",
+    "Communicate architectural decisions and trade-offs",
+    "Manage stakeholder feedback loops and expectation alignment (including SLAs)",
+    "Document architectures and provide implementation guidance",
+    "Support lifecycle phases (discovery, design, handoff, monitoring, iteration)"
+  ],
+  "sections": [
+    {
+      "id": "d6-discovery",
+      "title": "Discover the work before specifying the AI",
+      "objective_ids": [
+        "6.1"
+      ],
+      "minutes": 16,
+      "body": "<p>Domain 6 is the discipline of making an AI system useful, understandable and operable by people who did not build it. The central skill is turning an ambiguous request into decisions that someone can implement, measure and own. The official guide allocates 14% to this domain; its five objectives span discovery, decisions, feedback, documentation and the service lifecycle.</p>\n<div class=\"callout\"><strong>Project convention.</strong> The nutrition assistant, agricultural labour marketplace and enterprise support copilot below are hypothetical extensions inspired by familiar product types. Their workflows, numbers and constraints are teaching fixtures, not claims about NutriMind, Krishi Mazdoor or any existing repository. All numerical targets are examples to negotiate and validate.</div>\n<h3>The feature request hides a job and a failure</h3>\n<p>A stakeholder says, “Add a nutrition chatbot.” That tells you an interface, not the problem. Ask them to walk through their last difficult meal-planning task: what started it, which information was missing, who checked the result, and what happened next? Observe a complete attempt. A user may already find recipes quickly but struggle to reconcile an allergy, a budget and the ingredients at home. A chatbot that produces recipes faster leaves the hard work untouched.</p>\n<p>Discovery should include the existing service, support staff, offline steps and users who need assistance. GOV.UK's discovery guidance explicitly includes users with disabilities and low digital skills. This is useful design evidence beyond government contexts. <a href=\"https://www.gov.uk/service-manual/user-research/user-research-in-discovery\">D6-S01</a></p>\n<figure class=\"diagram\"><figcaption>From a vague feature to a falsifiable service hypothesis</figcaption><ol class=\"flow\"><li><strong>Observe:</strong> A user spends 18 minutes checking whether a meal fits household constraints.</li><li><strong>Explain:</strong> Ingredient substitutions require three disconnected searches.</li><li><strong>Hypothesize:</strong> A source-backed draft with visible constraints reduces checking work.</li><li><strong>Bound:</strong> No diagnosis, medication changes or automatic shopping purchase.</li><li><strong>Test:</strong> Compare completed, safe plans and total user checking time against the current journey.</li><li><strong>Decide:</strong> If checking time rises or essential constraints fail, revise the design before expanding.</li></ol></figure>\n<h3>A practical discovery conversation</h3>\n<ul><li><strong>Outcome:</strong> What must the person accomplish, and who receives the benefit?</li><li><strong>Frequency and variation:</strong> How often does the task occur? What changes by language, season, disability, connectivity or account role?</li><li><strong>Consequences:</strong> Which mistakes are inconvenient, costly, irreversible or dangerous?</li><li><strong>Evidence:</strong> Which records or observations establish the current failure rate and effort?</li><li><strong>Authority:</strong> Who may act, who can approve an exception, and who owns an unresolved case?</li><li><strong>Alternatives:</strong> Could a clearer form, search filter or deterministic calculation solve the bottleneck?</li></ul>\n<div class=\"example\"><h3>Worked case: a voice assistant for farm hiring</h3><p>A sponsor wants voice-based matching because farmers dislike typing. Interviewing only farmers would miss the labourer's problem: unclear wages, travel distance and whether work is genuinely confirmed. Observe both sides. A useful initial requirement might be “read back wage, location and date in the chosen language before either party commits.” The evidence could reveal that a structured confirmation screen plus optional speech is enough. Voice generation alone does not establish agreement.</p></div>\n<p>Record discoveries as observations, hypotheses and unresolved questions separately. “Three observed users misread the date” is evidence. “All rural users prefer voice” is an unsupported generalization. A discovery brief should make that distinction visible. The first deliverable is a shared account of the work, including a baseline and the uncertainty that the next experiment must reduce.</p>"
+    },
+    {
+      "id": "d6-requirements",
+      "title": "Turn competing expectations into an acceptance contract",
+      "objective_ids": [
+        "6.1",
+        "6.2",
+        "6.3"
+      ],
+      "minutes": 15,
+      "body": "<p>Requirements are not all equivalent. A <strong>constraint</strong> defines the feasible designs: tenant isolation, an approved deployment region, a staffed review process or an absolute prohibition on autonomous payment. An <strong>acceptance criterion</strong> turns a need into an observable pass condition. An <strong>optimization goal</strong> ranks feasible choices, such as lower cost or faster responses. A <strong>hypothesis</strong> is a belief awaiting evidence. Mixing these categories makes a cheap but prohibited design appear attractive.</p>\n<div class=\"table-wrap\"><table><caption>Example discovery statements converted into reviewable requirements</caption><thead><tr><th>Statement</th><th>Classification</th><th>Evidence or test</th></tr></thead><tbody><tr><td>Support drafts must never retrieve another tenant's tickets.</td><td>Constraint</td><td>Cross-tenant negative tests and access-control verification.</td></tr><tr><td>Agents need a useful draft quickly.</td><td>Acceptance criterion to clarify</td><td>Define “useful,” eligible cases, timing boundary and a tail-latency threshold.</td></tr><tr><td>The larger model will reduce handling time.</td><td>Hypothesis</td><td>Representative pilot measuring correction and end-to-end handling time.</td></tr><tr><td>Among passing designs, minimize monthly operating cost.</td><td>Optimization goal</td><td>Include inference, operations, human review and expected incident work.</td></tr></tbody></table></div>\n<h3>Map people who carry different consequences</h3>\n<p>The buyer wants lower cost; the support agent wants fewer corrections; the customer wants resolution; security wants limited authority; operations wants a recoverable service. Affected people may have no purchasing power. In a labour marketplace, a worker whose booking is cancelled is a stakeholder even if only the farm pays the platform. Include accessibility and language needs in the primary journey rather than as optional polish.</p>\n<p>NIST AI RMF calls for documented accountability, stakeholder context and roles in human-AI oversight. It is voluntary guidance, not a certification that makes a design compliant. Its lifecycle functions are iterative, not a mandatory one-way checklist. <a href=\"https://airc.nist.gov/airmf-resources/airmf/5-sec-core/\">D6-S03</a></p>\n<h3>Give decisions an owner and a boundary</h3>\n<p>Use a small responsibility table. The product owner accepts usefulness targets and scope; the domain expert owns the content rubric; engineering owns implementation; operations accepts operating readiness; the designated risk owner decides residual-risk exceptions within their authority. RACI can help: responsible does the work, accountable owns the decision, consulted contributes expertise, informed receives the outcome. Prefer one accountable decision owner for each explicit decision; “everyone approved the slide deck” is not an exception policy.</p>\n<figure class=\"diagram\"><figcaption>Resolve a disagreement without averaging away a constraint</figcaption><ol class=\"flow\"><li><strong>Conflict:</strong> Product requests automatic booking; operations requires confirmation.</li><li><strong>Classify:</strong> Is confirmation a binding policy, a user need or a negotiable preference?</li><li><strong>If binding:</strong> Eliminate designs that bypass it; document the authority and reason.</li><li><strong>If negotiable:</strong> Compare observable benefit and failure consequences with affected users.</li><li><strong>Decide:</strong> Accountable owner records scope, evidence, remaining uncertainty and review trigger.</li><li><strong>Verify:</strong> A test exercises the rejected path as well as the accepted path.</li></ol></figure>\n<p>An acceptance contract can be concise: “For an authenticated support agent, draft a policy-grounded reply to an eligible ticket; never send it; show source versions; route missing-policy cases to the named queue; capture review time.” This identifies actor, task, boundary, evidence and fallback. Add owners and measurable thresholds in the SLO document. A promise becomes implementable when its failure path is also specified.</p>\n<p>For exam scenarios, locate the unresolved decision. More interviews help when requirements are unclear; they do not replace an already-required launch authorization. A better model does not remove a conflicting policy. A detailed design is premature while nobody has accepted responsibility for the consequence it creates.</p>"
+    },
+    {
+      "id": "d6-tradeoffs",
+      "title": "Compare architectures with feasibility, economics and uncertainty",
+      "objective_ids": [
+        "6.2"
+      ],
+      "minutes": 18,
+      "body": "<p>Architecture is choosing which work the system should do, how much authority it needs and which failures the organization can absorb. Anthropic distinguishes fixed workflows from agents that dynamically direct tools and recommends adding complexity when simpler approaches fail to meet the task. That is an architecture starting point, not a rule that agents are always inappropriate. <a href=\"https://www.anthropic.com/engineering/building-effective-agents\">D6-S04</a></p>\n<h3>Filter constraints before ranking options</h3>\n<div class=\"example\"><h3>Worked case: support drafting architecture</h3><p>Assume an independently reviewed pilot measures these configurations on the same task mix. Acceptance requires at least 94% rubric correctness and p95 end-to-end latency at most 4 seconds; approved-region deployment is mandatory. Monthly cost includes review effort and operations. Treat the point estimates as provisional until sample size and uncertainty are assessed.</p>\n<div class=\"table-wrap\"><table><caption>Hypothetical measured options; all figures are instructional</caption><thead><tr><th>Option</th><th>Correctness</th><th>p95 latency</th><th>Monthly cost</th><th>Approved region?</th></tr></thead><tbody><tr><td>A: deterministic retrieval plus a draft</td><td>95%</td><td>3.6 s</td><td>$1,600</td><td>Yes</td></tr><tr><td>B: iterative tool-using agent</td><td>97%</td><td>7.4 s</td><td>$2,600</td><td>Yes</td></tr><tr><td>C: compact model and retrieval</td><td>92%</td><td>2.1 s</td><td>$900</td><td>Yes</td></tr><tr><td>D: optimized managed service</td><td>96%</td><td>3.1 s</td><td>$1,400</td><td>No</td></tr><tr><td>E: revised retrieval workflow</td><td>95%</td><td>3.2 s</td><td>$1,500</td><td>Yes</td></tr></tbody></table></div>\n<p>B fails latency, C fails correctness and D fails the region constraint. E dominates A on these measured dimensions: equal correctness, faster and cheaper. Choose E provisionally if the evidence is trustworthy and there are no omitted material constraints. A weighted score that rewards D's price cannot compensate for its prohibited region. If E relies on an unstaffed operational dependency, add that constraint and reconsider.</p></div>\n<h3>Pareto trade-offs and sensitivity</h3>\n<p>A choice is Pareto-dominated when another feasible choice is at least as good on all relevant dimensions and better on one. If one design is more accurate but slower, neither necessarily dominates: the accountable owner must accept the trade-off. The frontier depends on what you measured. Omitted maintainability, migration cost or review capacity can reverse a conclusion.</p>\n<p>Now test the economics. Suppose 8,000 cases occur monthly; adoption is 60%; gross handling-time savings are 4 minutes per adopted case, but corrections add 1 minute. Net capacity released is 8,000 × 0.60 × (4 − 1) / 60 = <strong>240 staff-hours</strong>. At an internal planning rate of $25/hour, that is $6,000 of capacity value. Subtract $1,500 operating cost to obtain $4,500 of modeled net value. This is not $4,500 cash saved unless staffing, overtime or spending actually changes.</p>\n<p>If adoption is 30% instead, capacity is 120 hours and the same planning model yields $1,500 net value. If correction time rises to 3 minutes at 30% adoption, capacity is only 40 hours, worth $1,000 against $1,500 cost: modeled net value becomes −$500. This sensitivity is often more decision-useful than another decimal place in token pricing. GOV.UK's benefits guidance distinguishes cashable benefits and recommends testing assumptions and adoption ranges. <a href=\"https://www.gov.uk/service-manual/measuring-success/measuring-service-benefits\">D6-S02</a></p>\n<h3>Measure the causal claim</h3>\n<p>A before/after improvement may coincide with a new support policy, easier seasonal cases or extra staffing. When practical and appropriate, use a controlled rollout with predeclared assignment, outcome window and guardrails. If assignment is by team, account for shared learning rather than pretending each ticket is independent. Report adoption separately from the effect of offering the tool. Comparing enthusiastic adopters with reluctant non-users confounds the tool with user differences.</p>\n<p>Communicate a recommendation as “E meets the stated gates on the measured sample; its value depends strongly on correction time and adoption; pilot with these stop conditions.” That statement is more useful than “E is best” because it tells stakeholders what new evidence could change the decision.</p>"
+    },
+    {
+      "id": "d6-decisions",
+      "title": "Explain decisions in a form different audiences can act on",
+      "objective_ids": [
+        "6.2",
+        "6.4"
+      ],
+      "minutes": 12,
+      "body": "<p>Communicating architecture means preserving the reason for a choice and the action expected from the reader. A diagram shows relationships; an architecture decision record explains why those relationships were chosen. AWS's ADR guidance identifies context, decision and consequences as core content, and preserves accepted decisions through superseding records. Use that lifecycle to retain historical reasoning instead of silently rewriting it. <a href=\"https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html\">D6-S05</a></p>\n<h3>One decision, three useful views</h3>\n<ul><li><strong>Sponsor view:</strong> Expected outcome, cost range, scope, material risks and the decision required.</li><li><strong>Builder view:</strong> Interfaces, state transitions, authorization, timeouts, versions and acceptance tests.</li><li><strong>Operator view:</strong> Symptoms, dependencies, dashboards, allowed mitigation and escalation ownership.</li></ul>\n<p>These are views of the same contract. If the sponsor hears “automatic refunds” while the implementation permits only drafts, alignment has failed even if each document is polished. Trace each business promise to the implementation boundary that enforces it.</p>\n<figure class=\"diagram\"><figcaption>Decision record lifecycle with an explicit reconsideration path</figcaption><ol class=\"flow\"><li><strong>Proposed:</strong> Owner describes a specific decision and viable alternatives.</li><li><strong>Review:</strong> Stakeholders challenge evidence, constraints and consequences.</li><li><strong>Accepted or rejected:</strong> Record authority, date and rationale; unresolved evidence stays visible.</li><li><strong>Implemented:</strong> Link contracts and checks that demonstrate the accepted behavior.</li><li><strong>Trigger occurs:</strong> A policy change, dependency retirement or SLO miss challenges the assumptions.</li><li><strong>Superseded:</strong> A new reviewed record replaces the decision while preserving the old reasoning.</li></ol></figure>\n<div class=\"example\"><h3>A compact ADR for the hiring marketplace</h3><p><strong>Decision:</strong> AI extracts a proposed booking from the conversation; deterministic code validates wage, date and availability; both parties confirm before commitment. <strong>Reason:</strong> Natural-language entry is useful, but a fluent extraction is insufficient proof of agreement. <strong>Alternatives:</strong> A structured form is simpler but slower for some users; automatic agent booking has more authority than the approved scope permits. <strong>Consequence:</strong> A pending state and reminder workflow are required. <strong>Review trigger:</strong> Confirmation abandonment exceeds the agreed threshold or the support burden makes the workflow unsustainable.</p></div>\n<h3>Communicate uncertainty without hiding behind it</h3>\n<p>Use “observed,” “estimated” and “unknown” precisely. An observed p95 from a small English-only pilot is not a global performance guarantee. A modeled saving is not audited revenue. For a significant unknown, specify the smallest next experiment, its owner and a decision date. “Needs more research” without a bounded question does not help a sponsor choose.</p>\n<p>Keep a decision log that links the outcome hypothesis, ADR, release bundle and evidence. When a team member asks why the assistant cannot directly book workers, they should find the original consequence analysis rather than a mysterious prohibition in a prompt. Accepted constraints should also be discoverable in code review and testing, where future changes can accidentally erase them.</p>\n<p>The downloadable ADR template is intentionally short. A template is successful when someone can challenge its reasoning and reproduce its decision; filling every field with generic reassurance does not create architectural evidence.</p>"
+    },
+    {
+      "id": "d6-service-levels",
+      "title": "Define service promises that survive real traffic",
+      "objective_ids": [
+        "6.3",
+        "6.4"
+      ],
+      "minutes": 24,
+      "body": "<p>An <strong>SLI</strong> is a measured service property. An <strong>SLO</strong> is its target over a defined window. An <strong>SLA</strong> is a service agreement with stated consequences and terms. Google SRE emphasizes that the consequence distinguishes an SLA from an internal target. Business and legal owners negotiate contractual terms; engineers provide evidence about feasibility and measurement. <a href=\"https://sre.google/sre-book/service-level-objectives/\">D6-S06</a></p>\n<p>For AI, a fast HTTP 200 can contain a fabricated answer, a tool failure or an unusable draft. Define good events from the user's task. Google SRE's good-event ratio and distinction between a measurement specification and its implementation are useful foundations. <a href=\"https://sre.google/workbook/implementing-slos/\">D6-S07</a> The following contract is an original example, not a vendor guarantee.</p>\n<div class=\"table-wrap\"><table><caption>Example support-copilot service contract</caption><thead><tr><th>Measure</th><th>Explicit denominator and boundary</th><th>Illustrative target</th></tr></thead><tbody><tr><td>Availability</td><td>Authenticated, in-scope draft attempts that return a usable response or approved fallback / all such attempts, including dependency failures.</td><td>≥99.5%, rolling 28 days</td></tr><tr><td>Latency</td><td>In-scope attempts completed within 4 seconds from accepted request to final usable response / all in-scope attempts. Timeouts fail.</td><td>≥95%, rolling 28 days</td></tr><tr><td>Answer correctness</td><td>Reviewed drafts meeting the versioned rubric / reviewed answered cases, using a predeclared representative sample.</td><td>≥94%, weekly sample; show uncertainty</td></tr><tr><td>Answer coverage</td><td>Eligible attempts receiving an answer / all eligible attempts. Report abstentions separately.</td><td>Negotiated by task and risk</td></tr><tr><td>Escalation timeliness</td><td>Escalations accepted by a qualified human within 30 minutes / all required escalations during stated service hours.</td><td>≥99%, rolling 28 days</td></tr></tbody></table></div>\n<h3>Correctness, coverage and useful completion answer different questions</h3>\n<p>In 1,000 eligible cases, suppose a system answers 600 and 570 answers are correct. Conditional answer correctness is 570/600 = <strong>95%</strong>. Answer coverage is 600/1,000 = <strong>60%</strong>. Correct answers per eligible case are 570/1,000 = <strong>57%</strong>. A second design can increase correctness by refusing difficult cases while leaving more work for humans. Evaluate both coverage and the safety and delay of the fallback. Do not label the remaining 40% “failures” automatically: some abstentions are exactly the intended behavior.</p>\n<p>A useful current industry example is Fin's metric documentation: resolution, involvement, automation, procedure handoff and assumed resolution have different definitions. Its resolution measure can include an assumed resolution; an outcome can include a configured handoff. These are product definitions, not universal proof that an issue was solved. Before comparing providers, align the underlying events, denominator, time window and confirmation rule. <a href=\"https://www.intercom.com/help/en/articles/7022438-reporting-metrics-attributes\">D6-S09</a></p>\n<h3>Tail latency is not average latency</h3>\n<p>If 95 of 100 completed requests take 2 seconds and five take 20 seconds, the mean is 2.9 seconds, while those five users experience 20 seconds. Under the nearest-rank convention, p95 is the 95th ordered value: 2 seconds; p99 is 20 seconds. A p95 target allows up to roughly 5% above that boundary; a p99 or hard timeout captures a different concern. State the quantile convention and count timeouts. Averaging per-server p95 values does not produce the global p95; aggregate events or a suitable histogram.</p>\n<h3>Worked error budget and burn rate</h3>\n<p>Suppose exactly 20,000 eligible attempts occur in a completed 28-day window with a 99.5% availability target. The allowed bad-event budget is 20,000 × 0.005 = <strong>100 events</strong>. If 40 fail, 40% is spent and 60 remain. This request-based budget is not “a fixed number of downtime minutes”: the answer changes with traffic and the chosen measurement unit.</p>\n<p>During a two-hour incident, 500 attempts occur and 20 fail. The short-window bad rate is 4%; burn rate relative to the 0.5% budget rate is 4/0.5 = <strong>8×</strong>. That incident uses 20 events, or 20% of the illustrative final-window budget. Burn rate does not mean the monthly budget is already exhausted. It says failures are arriving faster than the allowed proportion; alert decisions should consider duration, volume and consequence. <a href=\"https://sre.google/workbook/alerting-on-slos/\">D6-S19</a></p>\n<p>Define the response policy before arguing over a miss: who can halt a rollout, when reliability work takes priority, and when an exception expires. Google's published budget policy is an example of connecting SLO consumption to engineering priorities; its thresholds are examples, not mandatory settings for your app. <a href=\"https://sre.google/workbook/error-budget-policy/\">D6-S08</a></p>\n<div class=\"warning\"><strong>Dependencies and queues remain your user's experience.</strong> A model provider's uptime promise is not an end-to-end application SLA. Retrieval, authentication, your network and human review can fail independently or share failures. If 60 reviews arrive per hour but the team can complete 45, backlog grows by 15/hour under those simplifying assumptions. A fast model cannot fix that capacity gap. Agree on admission limits, overflow ownership, honest waiting estimates and a safe fallback before promising review deadlines.</div>"
+    },
+    {
+      "id": "d6-feedback",
+      "title": "Build a feedback loop that learns instead of flattering the dashboard",
+      "objective_ids": [
+        "6.3",
+        "6.5"
+      ],
+      "minutes": 17,
+      "body": "<p>Feedback has several meanings: a user preference, a factual correction, a safety incident, an operational symptom or a request to change policy. These require different authority. A user can report an incorrect wage; that does not authorize the system to alter a confirmed booking or redefine the minimum wage policy. Route feedback to the owner who can validate and act on it.</p>\n<p>GOV.UK recommends combining user research with performance data and segmenting results rather than reading an overall average in isolation. <a href=\"https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service\">D6-S18</a> An AI service additionally needs evidence about the answer and the resulting action. Anthropic's eval guidance describes deterministic, model-based and human graders; model judgments require calibration, and reading transcripts helps detect broken graders as well as model mistakes. <a href=\"https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents\">D6-S10</a></p>\n<figure class=\"diagram\"><figcaption>A feedback loop with an admission boundary</figcaption><ol class=\"flow\"><li><strong>Collect:</strong> User reports, sampled successes, abstentions, abandoned tasks and operational events.</li><li><strong>Triage:</strong> Is this an urgent harmful behavior, a content issue, a usability problem or a preference?</li><li><strong>Validate:</strong> Authorized reviewer checks evidence and applies the current rubric.</li><li><strong>Admit:</strong> Approved, minimized examples enter a versioned evaluation set; raw feedback cannot overwrite policy.</li><li><strong>Change and test:</strong> Fix the right layer and run both new and regression cases.</li><li><strong>Close:</strong> Verify impact, record the release and explain the outcome to the relevant audience.</li></ol></figure>\n<h3>The selection-bias trap</h3>\n<div class=\"example\"><h3>Worked case: “CSAT improved, so launch”</h3><p>A nutrition pilot receives 90 positive ratings from 100 respondents: 90%. A new release receives 95 positives from 100: 95%. That looks better. But in the first release 200 users were offered a rating prompt; in the second, only 110 users saw it, predominantly after an accepted recommendation. The response opportunity changed. Neither percentage establishes an improvement across all users.</p><p>Preserve the prompt exposure rule, track offered and submitted ratings, sample abstentions and abandonments, and compare like-for-like task groups. Investigate whether the new release hid the rating prompt after difficult outcomes. A controlled experiment with predeclared analysis provides stronger evidence than selecting happy users. Qualitative interviews can explain the mechanism, but do not make a biased denominator representative.</p></div>\n<h3>Label governance is an engineering concern</h3>\n<p>Write a rubric with examples of correct, incorrect, appropriately abstained and insufficient-evidence outputs. Have independent reviewers label a shared sample before relying on the dataset. Disagreement may mean the policy is ambiguous, the evidence is missing or the rubric penalizes a valid answer. Adjudicate the reason, record the rubric version and preserve a difficult holdout set. If the policy genuinely changes, distinguish a new standard from a regression against the old one.</p>\n<p>Do not feed every thumbs-up into shared memory or treat an agent's own summary as verified truth. A malicious report can seed a false policy; a well-meaning correction may apply to a different region or date. Record source, scope, reviewer, effective date and retention. Use the least sensitive evidence that can reproduce the failure; identifiers in a public bug report create a separate problem.</p>\n<h3>Close the organizational loop</h3>\n<p>Give stakeholders a compact recurring report: outcome and denominator; key segments; uncertainty; budget and queue state; material incidents; changes shipped; decisions needed. Separate “we received feedback” from “we verified and acted on feedback.” A support lead should see whether escalations are being resolved, not only whether the model created a ticket.</p>\n<p>Feedback can also invalidate the product direction. If users consistently distrust an invisible recommendation, improve the explanation and controls, then measure whether the workflow helps. Do not spend every iteration tuning tone while the core handoff remains unusable. The loop is complete when a person can understand what changed and the service demonstrates that the original issue is reduced.</p>"
+    },
+    {
+      "id": "d6-handoff",
+      "title": "Document the service so another team can operate it",
+      "objective_ids": [
+        "6.4",
+        "6.5"
+      ],
+      "minutes": 18,
+      "body": "<p>Handoff is a transfer of usable capability and accepted responsibility. A folder of diagrams is insufficient if the receiving team cannot access the evidence, execute mitigation or restore the approved configuration. Google's SRE engagement guidance uses a production-readiness review before accepting operating responsibility. Adapt the principle to your project's size; a small team can perform a short, concrete readiness rehearsal. <a href=\"https://sre.google/sre-book/evolving-sre-engagement-model/\">D6-S11</a></p>\n<h3>Four views that answer four different questions</h3>\n<ul><li><strong>Context view:</strong> Who uses the service, what it promises and which external systems it depends on.</li><li><strong>Request and data view:</strong> Where identity, content, decisions and side effects cross boundaries.</li><li><strong>Deployment view:</strong> Where components run, what is versioned, and how configuration and secrets are delivered.</li><li><strong>Operational view:</strong> How to detect failure, limit impact, recover and establish that recovery worked.</li></ul>\n<figure class=\"diagram\"><figcaption>Support draft sequence and the boundaries a builder must implement</figcaption><ol class=\"flow\"><li><strong>Agent UI → application:</strong> Send authenticated ticket reference and task, not a client-chosen tenant override.</li><li><strong>Application → retrieval:</strong> Derive tenant and role from trusted identity; fetch authorized, versioned policy evidence.</li><li><strong>Application → model:</strong> Supply the approved task, bounded evidence and draft-only capability.</li><li><strong>Validation decision:</strong> If required evidence is missing or output invalid, route to the documented fallback.</li><li><strong>Application → reviewer:</strong> Show draft, citations, limitations and source versions; do not send externally.</li><li><strong>Reviewer → existing human-operated send system:</strong> The person checks current authority and state before sending through their separate approved system; the copilot still has no send capability.</li></ol></figure>\n<p>This sequence tells an implementer where trust changes. Add interface contracts: required fields, maximum sizes, idempotency where side effects exist, application-level success states, deadlines, retries, cancellation and error codes. A 200 transport response with <code>status: \"failed\"</code> must not be represented as a completed user action. Document what happens when a dependency is slow, a user changes role or a workflow resumes after a deployment.</p>\n<div class=\"example\"><h3>Worked case: the handoff is “complete” but recovery is impossible</h3><p>The agricultural marketplace has an architecture document, an on-call rota and a rollback procedure. During a rehearsal, the backup operator can read the dashboard but cannot decrypt the last approved release bundle. The release remains unready for that operating model. Grant the required scoped recovery access, test it under the receiving role and record the result. Asking the original developer to stay reachable is a temporary workaround, not evidence that the handoff works.</p></div>\n<h3>A minimum readiness rehearsal</h3>\n<p>The receiving operator should locate the current owner, detect a seeded failure, identify the release and affected cohort, disable the risky capability, restore a known-good bundle, reconcile pending work and confirm the expected user behavior. Exercise escalation to a domain expert as well as infrastructure recovery. In a nutrition assistant, a content-policy failure can require disabling recommendations while leaving food logging available.</p>\n<p>Training should include the limits of the system. A reviewer must know which source wins when facts conflict, when to abstain, and how to challenge the draft. A runbook should say what the responder may do without additional approval and when to contact an accountable owner. Avoid placing credentials in it; reference the approved access process.</p>\n<p>An industry illustration is Thomson Reuters' first-party customer account, which describes expert validation and use of an established enterprise deployment stack for CoCounsel. The transferable lesson is that domain expertise and operating integration sit alongside model capability. The account is vendor-published; it does not establish a universal accuracy rate or current model recommendation. <a href=\"https://claude.com/customers/thomson-reuters\">D6-S12</a></p>\n<p>Accept the handoff only when the receiving team can demonstrate the required actions. Acknowledging an email or attending a walkthrough establishes receipt, not operational readiness. The downloadable handoff template turns that distinction into observable checks.</p>"
+    },
+    {
+      "id": "d6-rollout",
+      "title": "Treat the AI behavior bundle as a release",
+      "objective_ids": [
+        "6.3",
+        "6.4",
+        "6.5"
+      ],
+      "minutes": 17,
+      "body": "<p>An application can change its behavior without a code deployment. Editing the policy corpus, reranker, system prompt, tool schema or permission configuration can produce a different service. Version the parts needed to explain and reproduce a result. A model ID alone cannot identify which instructions and evidence the user received.</p>\n<pre><code>release_id: support-draft-2026-10-13-r1\napplication_commit: 7e9c2ab\nmodel_route: approved-route-v3\nprompt_bundle: support-prompts-v8\nretrieval_index: policies-2026-10-10\nembedding_configuration: embedding-config-v2\ntool_contracts: ticket-read-v4\npermissions: support-draft-only-v2\nevaluation_dataset: support-regression-v12\nrubric: support-quality-v5\nrollback_bundle: support-draft-2026-10-06-r2</code></pre>\n<p>These are illustrative identifiers, not runnable vendor settings. Record immutable references where possible and enough sanitized provenance to diagnose the request later. Include routing and feature flags; a name such as “latest” can drift. A content release may require a compatible index snapshot, so reverting only a prompt may not restore the previous behavior.</p>\n<h3>Different evidence at different release stages</h3>\n<figure class=\"diagram\"><figcaption>Promote only when the current stage supplies the missing evidence</figcaption><ol class=\"flow\"><li><strong>Offline:</strong> Run representative, adversarial and regression cases against a fixed bundle. Failure → repair and rerun.</li><li><strong>Shadow:</strong> Compare proposals on live-shaped inputs without executing duplicate user actions. Sensitive-data rules still apply.</li><li><strong>Limited pilot:</strong> Use an approved cohort, staffed fallback and explicit stop conditions.</li><li><strong>Canary or experiment:</strong> Limit exposure, compare the approved metrics and inspect important segments.</li><li><strong>Promotion decision:</strong> If safety, quality, capacity and service gates hold with sufficient evidence, expand deliberately.</li><li><strong>Rollback or retire:</strong> Stop exposure on a material gate failure; preserve evidence and reconcile actions already taken.</li></ol></figure>\n<p>Google's canary guidance emphasizes representative population and duration. A few successful morning requests cannot establish performance during evening peak load or for another language. Overlapping changes can contaminate the signal. <a href=\"https://sre.google/workbook/canarying-releases/\">D6-S14</a> A canary limits blast radius; an A/B experiment estimates a comparative effect under an assignment scheme. One rollout can serve both purposes, but neither label guarantees adequate sample size or valid inference.</p>\n<div class=\"example\"><h3>Current industry example: evaluated releases in customer support</h3><p>In August 2026, Fin announced Evals and Releases: changes to content, procedures and guidance can be bundled, evaluated in simulations, rolled out gradually or in an A/B test, monitored and rolled back. This is a concrete current example of treating AI behavior as a managed release. It is first-party product documentation; its automated grades and commercial claims still need validation for a customer's own task. <a href=\"https://www.intercom.com/blog/announcing-evals-and-releases\">D6-S13</a></p></div>\n<p>Rollback has limits. Reverting a model cannot unsend a message, undo a payment or erase advice already acted on. Distinguish configuration rollback from business compensation. Before rollout, define how pending tasks are pinned or migrated, how duplicate actions are prevented, and who reconciles completed side effects. A safe switch to draft-only mode can be more valuable than a technically successful revert that leaves ambiguous commitments.</p>\n<p>Plan dependency migration before a deadline. Claude's model-deprecation documentation states that retired models are unavailable, and partner-operated platforms can have different schedules. Track the exact platform, model and announced date in your inventory, then evaluate a replacement bundle early enough to test quality, permissions, cost and rollback. Do not copy an old model name from a case study into a new deployment. <a href=\"https://platform.claude.com/docs/en/about-claude/model-deprecations\">D6-S15</a></p>"
+    },
+    {
+      "id": "d6-lifecycle",
+      "title": "Manage incidents, iteration and retirement as product work",
+      "objective_ids": [
+        "6.5",
+        "6.3"
+      ],
+      "minutes": 16,
+      "body": "<p>A lifecycle is a set of continuing responsibilities, not a launch checklist. Discovery establishes a need; design makes assumptions explicit; handoff transfers operating capability; monitoring finds deviations; iteration tests a response; retirement closes obligations. A change in users, regulation, economics or model availability can reopen discovery while the service remains live.</p>\n<div class=\"table-wrap\"><table><caption>Useful exit evidence for each lifecycle phase</caption><thead><tr><th>Phase</th><th>Evidence needed to move on</th><th>Typical false confidence</th></tr></thead><tbody><tr><td>Discovery</td><td>Observed journey, baseline, scope, stakeholders and risk owner.</td><td>A sponsor approved a feature list.</td></tr><tr><td>Design</td><td>Feasible alternatives, contracts, threat boundaries and evaluation plan.</td><td>A diagram includes every fashionable component.</td></tr><tr><td>Handoff</td><td>Receiving team demonstrates detection, mitigation and recovery.</td><td>The runbook was emailed.</td></tr><tr><td>Monitoring</td><td>User-level metrics, segment checks, queue health and accountable response.</td><td>The API uptime dashboard is green.</td></tr><tr><td>Iteration</td><td>Versioned change, regression evidence and measured outcome.</td><td>One complained-about answer looks better.</td></tr><tr><td>Retirement</td><td>Users migrated or informed; pending work reconciled; access and information obligations closed.</td><td>The model endpoint was disabled.</td></tr></tbody></table></div>\n<h3>Incident communication changes with the audience</h3>\n<p>During a bad release, begin with confirmed impact: affected functions, time window, exposed cohort, active mitigation and the next update time. Separate a suspected cause from a verified one. Operators need actionable diagnostics; customers need the practical consequence and available path; executives need material impact and decisions. Neither an unexplained token-limit error nor an overconfident “everything is fine” helps the affected user.</p>\n<p>For a hypothetical nutrition recommendation incident, keep safe logging features available if possible, disable the affected advice path, preserve minimized evidence and route impacted cases to the defined process. State what is known about the affected recommendations. Do not claim that reverting the prompt has repaired advice already delivered. The exact notification and professional response obligations depend on the service and jurisdiction; Domain 5 covers how to establish those requirements.</p>\n<p>Google's postmortem guidance focuses on contributing conditions and owned corrective actions rather than blaming individuals. Define triggers beforehand, then connect actions to verifiable outcomes. <a href=\"https://sre.google/sre-book/postmortem-culture/\">D6-S16</a> “Improve the prompt” is weak when an unreviewed policy publication caused the incident. A useful action might require versioned approval of policy changes and a regression case that proves the forbidden path is blocked.</p>\n<h3>Retirement does not end responsibility for existing state</h3>\n<figure class=\"diagram\"><figcaption>A retirement decision closes user and information obligations</figcaption><ol class=\"flow\"><li><strong>Inventory:</strong> Identify users, API clients, scheduled tasks, pending cases, data stores and credentials.</li><li><strong>Replacement decision:</strong> How will the underlying need be met, and who owns the transition?</li><li><strong>Drain:</strong> Stop admitting new work while completing, migrating or explicitly cancelling existing commitments.</li><li><strong>Communicate:</strong> Give users and integrations an actionable transition path and dates.</li><li><strong>Protect and dispose:</strong> Apply approved retention, legal-hold and deletion rules across derived data and backups.</li><li><strong>Verify closure:</strong> Revoke unused access, test redirects and restoration controls, and record the remaining owner.</li></ol></figure>\n<p>GOV.UK retirement guidance explicitly considers remaining user needs, API migration and continued protection of information. <a href=\"https://www.gov.uk/service-manual/agile-delivery/retiring-your-service\">D6-S17</a> For an AI system, inventory more than the primary database: embeddings, uploaded files, traces, evaluation examples, exported reports and workflow memory may hold related information. A backup restore must not silently reactivate a retired workflow or resurrect records that the approved deletion process removed; define the restoration procedure with the information owner.</p>\n<p>Keep unresolved appeals, refunds, bookings or professional review cases assigned during retirement. Deleting the system while those commitments remain can increase risk even though no new model calls occur. NIST likewise includes safe decommissioning in lifecycle governance. <a href=\"https://airc.nist.gov/airmf-resources/airmf/5-sec-core/\">D6-S03</a> Retirement succeeds when people can complete the transition and the remaining responsibilities have an owner.</p>"
+    },
+    {
+      "id": "d6-lab",
+      "title": "Hands-on lab: make a release decision from evidence",
+      "objective_ids": [
+        "6.1",
+        "6.2",
+        "6.3",
+        "6.4",
+        "6.5"
+      ],
+      "minutes": 45,
+      "body": "<p>The exercise applies explicit good-event definitions and measurement boundaries discussed in the SRE guidance; its CSV, thresholds and expected results are original teaching fixtures. <a href=\"https://sre.google/workbook/implementing-slos/\">D6-S07</a></p>\n<p>This lab uses only synthetic files and standard Python. It exercises the stakeholder work around an AI service without needing an API key, real personal data or a running model. The fixtures are deliberately small and deterministic: they test your reasoning and arithmetic, not statistical confidence about production.</p>\n<p>Download the <a href=\"templates/domain-06/discovery-brief.md\" download>discovery brief</a>, <a href=\"templates/domain-06/architecture-decision-record.md\" download>ADR</a>, <a href=\"templates/domain-06/service-level-contract.md\" download>service-level contract</a>, <a href=\"templates/domain-06/handoff-and-retirement.md\" download>handoff/runbook</a>, <a href=\"templates/domain-06/release-fixtures.csv\" download>release fixtures</a> and <a href=\"templates/domain-06/measure.py\" download>measurement script</a>. Put them in one local folder. The CSV contains 20 eligible cases for release A and 20 for release B, with instructor-supplied labels. <code>delivered</code> means a usable response or approved fallback reached the user; <code>answered</code> means the service produced a draft; <code>escalated</code> means human review was required. An unavailable initial attempt can still be reviewed later. Each fixture either answers or escalates; a real service may have a richer state model.</p>\n<h3>1. Define the need and acceptance authority</h3>\n<p><strong>Action:</strong> Select the support copilot, nutrition draft assistant or hiring proposal workflow. In the discovery brief, write the current task, a measurable outcome, one stakeholder conflict and a consequential action outside scope. For this exercise, use the support-copilot fixture targets below. <strong>Expected result:</strong> A reader can tell who benefits and what is forbidden. <strong>Check:</strong> Each constraint has an owner and an observable test; each uncertain benefit is marked as a hypothesis.</p>\n<h3>2. Define the measurement contract before calculating</h3>\n<p><strong>Action:</strong> Record these teaching gates: availability ≥95%; completion within 4 seconds ≥90% of all attempts; conditional answer correctness ≥92%; required escalation accepted within 30 minutes =100%; critical violations =0. Coverage is reported, not optimized in isolation. An unavailable response fails the latency test. <strong>Expected result:</strong> No denominator is inferred from a chart label. <strong>Check:</strong> Timeouts, abstentions and slow escalations remain in their defined populations.</p>\n<h3>3. Calculate the fixture results</h3>\n<p><strong>Action:</strong> Use the downloaded <code>measure.py</code>, or save the code below with that name beside the CSV, and run <code>python3 measure.py</code>. No package installation is required. Labels are pre-reviewed fixtures; a real service would need representative sampling, uncertainty and grader validation.</p>\n<pre><code>import csv\nfrom collections import defaultdict\n\nreleases = defaultdict(list)\nwith open(\"release-fixtures.csv\", newline=\"\", encoding=\"utf-8\") as stream:\n    for row in csv.DictReader(stream):\n        releases[row[\"release\"]].append(row)\n\ndef flag(row, name):\n    return row[name] == \"1\"\n\ndef percent(numerator, denominator):\n    return round(100 * numerator / denominator, 2) if denominator else None\n\nfor release, rows in sorted(releases.items()):\n    answered = [r for r in rows if flag(r, \"answered\")]\n    escalated = [r for r in rows if flag(r, \"escalated\")]\n    good = sum(flag(r, \"answer_correct\") for r in answered)\n    metrics = {\n        \"availability\": percent(sum(flag(r, \"delivered\") for r in rows), len(rows)),\n        \"within_4s\": percent(sum(flag(r, \"delivered\") and\n            int(r[\"latency_ms\"]) &lt;= 4000 for r in rows), len(rows)),\n        \"coverage\": percent(len(answered), len(rows)),\n        \"correctness\": percent(good, len(answered)),\n        \"timely_review\": percent(sum(int(r[\"review_delay_min\"]) &lt;= 30\n            for r in escalated), len(escalated)),\n        \"critical_violations\": sum(flag(r, \"critical_violation\") for r in rows),\n    }\n    print(release, metrics)\n    expected = {\n        \"A\": {\"availability\": 95.0, \"within_4s\": 90.0, \"coverage\": 80.0,\n              \"correctness\": 93.75, \"timely_review\": 100.0, \"critical_violations\": 0},\n        \"B\": {\"availability\": 100.0, \"within_4s\": 95.0, \"coverage\": 90.0,\n              \"correctness\": 88.89, \"timely_review\": 50.0, \"critical_violations\": 1},\n    }\n    assert metrics == expected[release]\nassert set(releases) == {\"A\", \"B\"}\n</code></pre>\n<h3>4. Write the decision and challenge the attractive headline</h3>\n<p><strong>Action:</strong> Complete an ADR comparing A and B. B is faster and answers more cases, but misses correctness, escalation timeliness and the zero-critical-violation gate. A passes these fixture gates. <strong>Expected result:</strong> Hold B and investigate the failed dimensions. <strong>Check:</strong> The ADR does not average away a critical violation or claim that 20 rows certify A for production. Identify which larger, segmented evaluation and operational evidence is still missing.</p>\n<h3>5. Rehearse a handoff failure</h3>\n<p><strong>Action:</strong> Ask a peer to act as the receiving operator, or review from that role yourself. Seed this tabletop condition: the current release fails the safety gate and the backup operator cannot access the rollback bundle. Fill the runbook with detection, allowed containment, access remediation and verification steps. <strong>Expected result:</strong> The team blocks promotion until recovery access is tested. <strong>Check:</strong> Every consequential response has an owner, and disabling a feature includes a path for pending cases.</p>\n<h3>6. Plan iteration and retirement</h3>\n<p><strong>Action:</strong> Add a release bundle identifier, a regression case for each B failure, a feedback admission rule and a retirement inventory. Explain what happens to open escalations, derived data and restored backups. <strong>Expected result:</strong> A compact delivery pack another person can inspect. <strong>Check:</strong> A reviewer can trace the original need through acceptance criteria, release evidence and recovery responsibility. Once that chain is coherent, substitute a sanitized sample from your own project and reassess the targets with the actual owners.</p>"
+    }
+  ],
+  "checks": [
+    {
+      "id": "d6-check-01",
+      "question": "A farm-hiring sponsor funds a voice assistant to increase confirmed jobs. Farmers interviewed so far prefer voice, but support logs show disputes about wage and start date, and no workers or users needing assistance have been observed. What is the strongest next discovery step?",
+      "options": [
+        "Specify a voice-first architecture from the farmers’ preference, then collect worker feedback during public rollout.",
+        "Run a speech-recognition benchmark in the two most common languages before revisiting the service requirements.",
+        "Observe end-to-end booking journeys across farmers, workers and access needs, and establish where agreement fails.",
+        "Set confirmed-job volume as the sole success metric and compare it with the month before the voice launch."
+      ],
+      "correct": 2,
+      "explanations": [
+        "The preference is relevant but the sample excludes people who bear the booking consequences; public rollout is premature.",
+        "Speech quality may matter later, but it does not explain wage/date disagreements or establish the actual bottleneck.",
+        "This examines the task and affected people, gives the disputes a measurable baseline and can change the proposed solution.",
+        "Volume alone misses disputed or unusable bookings; a before/after comparison also leaves seasonality and policy changes unresolved."
+      ]
+    },
+    {
+      "id": "d6-check-02",
+      "question": "An approved support workflow requires human review before every external answer. The model now creates 60 review tasks/hour; staffed capacity is 45/hour. A stakeholder asks for a 30-minute review SLA without changing staffing. Which recommendation best aligns the promise with the operating constraints?",
+      "options": [
+        "Limit admitted work, agree an overflow path and measure queue delay while negotiating capacity and the proposed commitment.",
+        "Keep all admissions and measure the SLA only for cases that a reviewer opens within the first ten minutes.",
+        "Auto-send the lowest-risk drafts when the queue reaches 45, and classify the policy change as a latency optimization.",
+        "Replace the model with a faster one and retain the existing admission and review rules during the next measurement period."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Arrival exceeds service capacity by 15 tasks/hour under the stated assumptions; admission, overflow and ownership make the promise reviewable.",
+        "Excluding waiting cases changes the denominator to hide exactly the user experience the promise is meant to protect.",
+        "The mandatory review boundary is already approved; operational pressure is not authority to bypass it.",
+        "Faster draft generation does not increase human review capacity and may worsen the backlog if it increases arrival volume."
+      ]
+    },
+    {
+      "id": "d6-check-03",
+      "question": "A team requires correctness ≥94%, p95 latency ≤4 seconds and approved-region deployment. A, B, C and E use the approved region. Option A scores 95%, 3.6 s, $1,600/month; B scores 97%, 7.4 s, $2,600; C scores 92%, 2.1 s, $900; D scores 96%, 3.1 s, $1,400 outside the approved region; E scores 95%, 3.2 s, $1,500 within it. Assuming comparable evidence and no omitted constraints, which recommendation is justified?",
+      "options": [
+        "D, because its improvement in correctness, latency and cost compensates for the deployment-region exception.",
+        "B, because higher correctness should receive the greatest weight when selecting an AI architecture.",
+        "A, because a deterministic workflow is preferable even when another feasible workflow improves both cost and latency.",
+        "E, because it meets every gate and dominates A on the measured latency and cost dimensions."
+      ],
+      "correct": 3,
+      "explanations": [
+        "A binding deployment constraint cannot be offset by a weighted score without authorized modification of that constraint.",
+        "B violates the agreed latency gate; prioritizing correctness does not make it feasible under this contract.",
+        "A is feasible, but there is no stated advantage that justifies its additional cost and latency over E.",
+        "E is feasible and better than A on two measured dimensions with equal correctness; uncertainty still needs validation before deployment."
+      ]
+    },
+    {
+      "id": "d6-check-04",
+      "question": "An accepted ADR chose draft-only support replies because external sending was outside the approved scope. A new signed policy permits sending after a specified approval step. The team wants to preserve why the old architecture existed while enabling the new behavior. What should it do?",
+      "options": [
+        "Replace the accepted ADR’s rationale with the new policy and leave its original acceptance date unchanged.",
+        "Create a reviewed ADR for the changed scope, link the evidence and mark the earlier decision superseded when accepted.",
+        "Keep the old ADR as binding and implement the new permission only in the system prompt until the next annual review.",
+        "Append the policy to a release note and treat the existing tests as evidence that the new approval step is enforced."
+      ],
+      "correct": 1,
+      "explanations": [
+        "This makes the historical record suggest that a newly permitted behavior was always approved and conceals the earlier reasoning.",
+        "A superseding decision preserves history and makes changed authority, consequences and implementation checks explicit.",
+        "A prompt exception leaves the accepted architecture and actual authority inconsistent; it is not a reviewed implementation contract.",
+        "A release note records a change but does not resolve the decision or establish tests for a newly introduced approval path."
+      ]
+    },
+    {
+      "id": "d6-check-05",
+      "question": "On the same 1,000 eligible cases, release A answers 600 with 570 correct; release B answers 400 with 388 correct. A sponsor says B is unambiguously better because correctness rose from 95% to 97%. What is the most defensible response?",
+      "options": [
+        "Recommend B because higher conditional correctness proves more eligible users received correct answers.",
+        "Recommend A because every abstention should be counted as an incorrect answer regardless of the task policy.",
+        "Combine correctness and coverage into an equal-weight score without asking stakeholders how fallback work is handled.",
+        "Report correctness, coverage and fallback outcomes together; B has fewer correct answers per eligible case despite higher conditional correctness."
+      ],
+      "correct": 3,
+      "explanations": [
+        "B produces 388 correct answers versus A’s 570; conditioning on answered cases hides the change in coverage.",
+        "A safe, required abstention can be a successful policy outcome; its usefulness depends on the fallback and consequence.",
+        "Weights encode stakeholder preferences and risk; an arbitrary average can conceal unacceptable fallback delay or harm.",
+        "A is 57% correct answers per eligible case and B is 38.8%; the appropriate choice also depends on safe abstention and review capacity."
+      ]
+    },
+    {
+      "id": "d6-check-06",
+      "question": "A customer proposes a 99.9% end-to-end SLA because the selected model provider advertises that availability. The application also depends on authentication, retrieval and an internal review queue. Only the model API is currently monitored. What should the architect do before accepting the commitment?",
+      "options": [
+        "Adopt the provider target but exclude authentication, retrieval and review failures from the customer dashboard.",
+        "Define user-level service boundaries and measurement, validate dependency and fallback behavior, then negotiate terms with the responsible owners.",
+        "Multiply the published component targets and present the result as a guaranteed application availability figure.",
+        "Adopt a tighter internal 99.95% target and redundant model endpoints, then accept the customer SLA from the design alone."
+      ],
+      "correct": 1,
+      "explanations": [
+        "This promises an end-to-end experience while excluding its known failure paths from measurement and accountability.",
+        "Application evidence, explicit terms and accountable business/operational agreement are needed; an upstream promise alone is insufficient.",
+        "Even an independence-based estimate needs justified assumptions and comparable event definitions; it is not a contractual guarantee.",
+        "A tighter internal target and redundancy can help, but neither proves end-to-end behavior or addresses the unmeasured review and retrieval paths."
+      ]
+    },
+    {
+      "id": "d6-check-07",
+      "question": "A completed window contains 50,000 eligible attempts and an availability SLO of 99.8%. Thirty attempts failed before an incident; the incident adds 10 failed attempts among 2,000 attempts. Which statement is correct?",
+      "options": [
+        "The total budget is 100 failures; 60 remain after the incident, whose short-window burn rate is 2.5×.",
+        "The total budget is 100 failures; 70 remain after the incident, whose short-window burn rate is 2.5×.",
+        "The total budget is 200 failures; 160 remain after the incident, whose short-window burn rate is 5×.",
+        "The total budget is 100 failures; 60 remain after the incident, whose short-window burn rate is 10×."
+      ],
+      "correct": 0,
+      "explanations": [
+        "50,000 × 0.002 = 100; 100 − 30 − 10 = 60. Incident bad rate 0.5% divided by allowed 0.2% is 2.5×.",
+        "Seventy was the remaining budget before the ten additional failures; the burn-rate calculation itself is correct.",
+        "The allowed bad proportion is 0.2%, not 0.4%, and the incident rate must be compared with that 0.2% proportion.",
+        "Ten failures consume 10% of this final-window budget, but the burn rate is a ratio of failure rates, not a failure count."
+      ]
+    },
+    {
+      "id": "d6-check-08",
+      "question": "A new nutrition-assistant release reports 95% positive ratings versus 90% previously. The old prompt offered ratings after every completed session; the new prompt appears mainly after an accepted suggestion. Both charts use only submitted ratings. What is the strongest interpretation?",
+      "options": [
+        "The equal number of submitted ratings makes the comparison representative despite the changed exposure rule.",
+        "The improvement establishes higher recommendation accuracy, although further evidence is needed for latency.",
+        "The changed feedback opportunity creates selection bias; preserve exposure rules and investigate non-responding and difficult journeys.",
+        "The result should be discarded permanently because voluntary ratings can never contribute useful service evidence."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Equal sample sizes do not remove selection bias when different types of users are invited or choose to respond.",
+        "Positive ratings measure a respondent’s experience, not independently established factual or safety correctness.",
+        "The sampled population changed; exposure, response and journey evidence are needed before attributing the difference to the release.",
+        "Ratings are useful with clear limitations and complementary evidence; the problem is the unsupported comparative conclusion."
+      ]
+    },
+    {
+      "id": "d6-check-09",
+      "question": "A receiving team has the architecture document, dashboards and runbook for an AI booking proposal service. During rehearsal its backup operator detects a bad release but cannot decrypt the approved rollback bundle. The original developer can perform the rollback. What is the best handoff decision?",
+      "options": [
+        "Accept the handoff because a working developer recovery path proves the service can be restored.",
+        "Keep ownership transfer conditional until receiving-role recovery access and the full restoration procedure are tested.",
+        "Transfer responsibility immediately and list the missing access as routine documentation debt for the next sprint.",
+        "Grant the receiving team unrestricted production administrator access so future recovery needs no further testing."
+      ],
+      "correct": 1,
+      "explanations": [
+        "This preserves dependence on the person handing over the service and does not demonstrate the receiving team’s operating capability.",
+        "The failed rehearsal identifies a concrete readiness gap; scoped access plus a successful receiving-role test addresses it.",
+        "Responsibility without the means to recover creates an avoidable operational gap even if the documents are complete.",
+        "Broad access adds unnecessary authority and still does not prove that the approved bundle and pending workflows restore correctly."
+      ]
+    },
+    {
+      "id": "d6-check-10",
+      "question": "A farm marketplace retires an AI matching feature next month. Some bookings await confirmation; its embeddings and evaluation examples include user-derived data. The primary app will continue. Which retirement plan best completes the lifecycle?",
+      "options": [
+        "Disable the model endpoint and delete the feature’s repository; keep all data indefinitely in case it helps future development.",
+        "Remove all user-derived records immediately, including records subject to an approved retention obligation, before notifying users.",
+        "Redirect the UI to the remaining app and close every pending booking automatically to reduce transition effort.",
+        "Assign pending cases, communicate the transition, inventory derived stores and apply approved retention, access revocation and restore controls."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Endpoint shutdown does not resolve commitments or justify indefinite retention; removing code also removes useful operational history.",
+        "Immediate blanket deletion can violate legitimate retention or hold requirements; the approved information policy governs disposition.",
+        "A redirect alone does not meet pending booking needs, and automatic closure may misrepresent existing commitments.",
+        "This preserves user continuity and closes information and operating obligations across the system, including restoration after retirement."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "D6-S01",
+      "title": "GOV.UK: User research in discovery",
+      "url": "https://www.gov.uk/service-manual/user-research/user-research-in-discovery",
+      "used_for": "Research current journeys, offline steps and users with access needs."
+    },
+    {
+      "id": "D6-S02",
+      "title": "GOV.UK: Measuring the benefits of your service",
+      "url": "https://www.gov.uk/service-manual/measuring-success/measuring-service-benefits",
+      "used_for": "Baselines, alternative solutions, cashable benefits and sensitivity analysis."
+    },
+    {
+      "id": "D6-S03",
+      "title": "NIST AI RMF Core, version 1.0",
+      "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+      "used_for": "Voluntary lifecycle framework: accountability, stakeholder context, feedback and decommissioning."
+    },
+    {
+      "id": "D6-S04",
+      "title": "Anthropic: Building effective agents",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "used_for": "Choose complexity based on task evidence; workflows versus dynamic agents."
+    },
+    {
+      "id": "D6-S05",
+      "title": "AWS Prescriptive Guidance: Architectural decision record process",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html",
+      "used_for": "ADRs preserve context, decision and consequences; accepted records are superseded rather than rewritten."
+    },
+    {
+      "id": "D6-S06",
+      "title": "Google SRE: Service level objectives",
+      "url": "https://sre.google/sre-book/service-level-objectives/",
+      "used_for": "SLI, SLO and SLA distinctions; promises depend on business consequences."
+    },
+    {
+      "id": "D6-S07",
+      "title": "Google SRE Workbook: Implementing SLOs",
+      "url": "https://sre.google/workbook/implementing-slos/",
+      "used_for": "User-centered good-event ratios, measurement boundaries, windows and stakeholder agreement."
+    },
+    {
+      "id": "D6-S08",
+      "title": "Google SRE Workbook: Example error budget policy",
+      "url": "https://sre.google/workbook/error-budget-policy/",
+      "used_for": "An agreed policy connects reliability consumption to engineering priorities."
+    },
+    {
+      "id": "D6-S09",
+      "title": "Intercom/Fin: Reporting metrics and attributes",
+      "url": "https://www.intercom.com/help/en/articles/7022438-reporting-metrics-attributes",
+      "used_for": "Current distinction between involvement, resolution, automation, assumed resolution and procedure handoff."
+    },
+    {
+      "id": "D6-S10",
+      "title": "Anthropic: Demystifying evals for AI agents",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "used_for": "Outcome checks, model/human graders, calibration, transcript review and regression evaluation."
+    },
+    {
+      "id": "D6-S11",
+      "title": "Google SRE: Evolving the SRE engagement model",
+      "url": "https://sre.google/sre-book/evolving-sre-engagement-model/",
+      "used_for": "Production readiness review and explicit acceptance of operating responsibility."
+    },
+    {
+      "id": "D6-S12",
+      "title": "Anthropic customer account: Thomson Reuters",
+      "url": "https://claude.com/customers/thomson-reuters",
+      "used_for": "First-party account of expert validation and integration with an existing enterprise operating stack; historical model names are not current recommendations."
+    },
+    {
+      "id": "D6-S13",
+      "title": "Fin: Announcing Evals and Releases, 13 August 2026",
+      "url": "https://www.intercom.com/blog/announcing-evals-and-releases",
+      "used_for": "Current first-party example of bundling changes, simulations, gradual/A-B rollout, monitoring and rollback; product claims are not independent outcome evidence."
+    },
+    {
+      "id": "D6-S14",
+      "title": "Google SRE Workbook: Canarying releases",
+      "url": "https://sre.google/workbook/canarying-releases/",
+      "used_for": "Canary population, duration, representative traffic and overlapping-change limitations."
+    },
+    {
+      "id": "D6-S15",
+      "title": "Claude Platform Docs: Model deprecations",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+      "used_for": "Model lifecycle and platform-specific retirement schedules require planned migration."
+    },
+    {
+      "id": "D6-S16",
+      "title": "Google SRE: Postmortem culture",
+      "url": "https://sre.google/sre-book/postmortem-culture/",
+      "used_for": "Pre-agreed incident review triggers, contributing causes and owned corrective action."
+    },
+    {
+      "id": "D6-S17",
+      "title": "GOV.UK: Retiring your service",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/retiring-your-service",
+      "used_for": "Meet remaining user needs, notify consumers, redirect journeys and maintain information protection."
+    },
+    {
+      "id": "D6-S18",
+      "title": "GOV.UK: How to set performance metrics for your service",
+      "url": "https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service",
+      "used_for": "Hypotheses, context, segmenting results and combining qualitative and quantitative evidence."
+    },
+    {
+      "id": "D6-S19",
+      "title": "Google SRE Workbook: Alerting on SLOs",
+      "url": "https://sre.google/workbook/alerting-on-slos/",
+      "used_for": "Burn rate connects short-window failures to budget consumption; alert design balances speed and noise."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Acceptance criterion",
+      "definition": "An observable condition used to decide whether a stated need is met."
+    },
+    {
+      "term": "Constraint",
+      "definition": "A binding boundary that a feasible design must satisfy; it cannot be offset by a better score elsewhere."
+    },
+    {
+      "term": "Baseline",
+      "definition": "Measured current task performance, with a defined population and observation period, used to assess change."
+    },
+    {
+      "term": "Outcome hypothesis",
+      "definition": "A testable claim that a proposed change will improve a user or business result through a stated mechanism."
+    },
+    {
+      "term": "Pareto dominance",
+      "definition": "One feasible choice is at least as good on every relevant measured dimension and better on at least one."
+    },
+    {
+      "term": "Sensitivity analysis",
+      "definition": "Recalculate a decision under plausible changes to uncertain assumptions, such as adoption or correction effort."
+    },
+    {
+      "term": "ADR",
+      "definition": "Architecture decision record: a reviewed account of a significant choice, its context, alternatives and consequences."
+    },
+    {
+      "term": "SLI",
+      "definition": "Service level indicator: an explicitly defined measurement of service behavior from a stated observation boundary."
+    },
+    {
+      "term": "SLO",
+      "definition": "Service level objective: a target for a defined indicator, population and time window."
+    },
+    {
+      "term": "SLA",
+      "definition": "Service level agreement: negotiated service terms including defined consequences for specified misses."
+    },
+    {
+      "term": "Error budget",
+      "definition": "The allowed amount of bad service within an SLO’s defined population and window."
+    },
+    {
+      "term": "Burn rate",
+      "definition": "Observed bad-event proportion divided by the SLO’s allowed bad-event proportion over a stated observation window."
+    },
+    {
+      "term": "Conditional correctness",
+      "definition": "Correctness measured among cases receiving an answer; interpret alongside answer coverage and fallback outcomes."
+    },
+    {
+      "term": "Answer coverage",
+      "definition": "The proportion of eligible cases that receive an answer, distinct from whether those answers are correct."
+    },
+    {
+      "term": "Selection bias",
+      "definition": "Systematic differences between observed cases and the population a conclusion is meant to describe."
+    },
+    {
+      "term": "Release bundle",
+      "definition": "Versioned references to the code, models, prompts, retrieval, tools, permissions and evaluation evidence that define AI behavior."
+    },
+    {
+      "term": "Canary rollout",
+      "definition": "A limited-exposure deployment used to detect problems before wider promotion; it requires appropriate traffic and gates."
+    },
+    {
+      "term": "Operational readiness",
+      "definition": "Demonstrated ability and accepted ownership to detect, contain, recover and verify a service under its intended operating model."
+    },
+    {
+      "term": "Decommissioning",
+      "definition": "Planned removal of a service or capability while resolving user needs, pending work, access and information obligations."
+    }
+  ]
+}
