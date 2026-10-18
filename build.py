@@ -44,10 +44,10 @@ def verify():
                 assert unquote(url.fragment) in parsed[target].ids, ('Missing fragment', path, href)
     assert len(list((ROOT / 'learning').glob('ep*.html'))) == 11
     assert not list(ROOT.glob('ep*.html')), 'Episode pages belong only in learning/'
-    assert len(parsed) == 65
+    assert len(parsed) == 75
     assert not list(ROOT.rglob('*.pdf')), 'The official PDF must not be distributed'
     assert not (ROOT / 'raw').exists() and not (ROOT / 'wiki').exists()
-    print('PASS: 64 rendered HTML pages plus exam template, four study sections, local assets, nine exam sets and public artifact boundaries; no root episode files.')
+    print('PASS: 74 rendered HTML pages plus exam template, four study sections, local assets, eleven exam sets and public artifact boundaries; no root episode files.')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 # Claude Architect Professional — Learning & Practice
 
-Independent visual learning pages, practical domain tutorials and nine original, timed CCAR-P mock exams across two collections.
+Independent visual learning pages, practical domain tutorials and eleven original, timed CCAR-P mock exams across two collections.
 
 **[Open the home page](index.html)** after cloning or downloading the repository. Each section also has its own portable ZIP. After extraction, open `index.html` for either learning collection or `sets.html` for the mocks in a modern browser.
 
@@ -9,7 +9,7 @@ Independent visual learning pages, practical domain tutorials and nine original,
 | Eleven episode learning pages | [Course index](learning/index.html) | [Learning ZIP](learning/claude-architect-pro-learning-pages.zip) |
 | Deep practical learning for Domains 5–7 | [Domain learning path](deep-dives/index.html) | [Complete domain ZIP](deep-dives/domain-05-07-learning.zip) |
 | Six research-based mock sets, 63 questions / 120 minutes each | [Choose a set](mock-exams/ccar-p/sets.html) | [All-sets ZIP](mock-exams/ccar-p/ccarp-professional-all-sets.zip) |
-| Three video companion sets, 63 questions / 120 minutes each | [Choose a companion](mock-exams/core-concept-learning/sets.html) | [Video companion ZIP](mock-exams/core-concept-learning/core-concept-companions.zip) |
+| Five video companion sets, 63 questions / 120 minutes each | [Choose a companion](mock-exams/core-concept-learning/sets.html) | [Video companion ZIP](mock-exams/core-concept-learning/core-concept-companions.zip) |
 
 ## Repository layout
 
@@ -22,7 +22,7 @@ deep-dives/                Domains 5–7: detailed tutorials, labs, templates an
   research/                Dated primary-source evidence and limitations
   templates/domain-05/ ... domain-07/  Practical reusable artifacts and synthetic labs
 mock-exams/
-  core-concept-learning/   Three original video companion exams and timestamped source maps
+  core-concept-learning/   Five original video companion exams and timestamped source maps
   ccar-p/                  Set 01, shared generator/runtime, research and set catalogue
     sets/set-02/ ... set-06/  Each: question data, timed HTML, coverage, print/key, research
 ```
@@ -83,6 +83,6 @@ Independent educational material, unaffiliated with Anthropic or the credited so
 
 ## Video companion exams
 
-Three additional original 63-question sets cover concepts across all ten [Core Concept Learning playlist videos](https://www.youtube.com/playlist?list=PLNyAiuHx7c5c). Start at `mock-exams/core-concept-learning/sets.html`. Each explanation includes timestamped conceptual credit and supporting primary sources. Original source questions, transcripts and the official PDF are not distributed. See the collection README and research notes for evidence and limits.
+Five original 63-question video companion sets cover concepts across all ten [Core Concept Learning playlist videos](https://www.youtube.com/playlist?list=PLNyAiuHx7c5c). Sets 01–03 combine videos; new Sets 04 and 05 each cover every question chapter from their corresponding video using original cases. Start at `mock-exams/core-concept-learning/sets.html`. Each explanation includes timestamped conceptual credit and supporting primary sources. Original source questions, transcripts and the official PDF are not distributed. See the collection README and research notes for evidence and limits.
 
 Rebuild: `python3 mock-exams/core-concept-learning/build.py`; verify runtime: `node mock-exams/core-concept-learning/test.js`.

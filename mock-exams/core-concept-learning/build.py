@@ -4,6 +4,9 @@ import json
 import re
 from collections import Counter
 from html import escape as esc
+from html.parser import HTMLParser
+from urllib.parse import unquote, urlsplit
+import posixpath
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
@@ -12,6 +15,8 @@ SHARED = ROOT.parent / 'ccar-p'
 VIDEOS = json.loads((ROOT / 'videos.json').read_text())
 CSS = (SHARED / 'exam.css').read_text()
 JS = (SHARED / 'exam.js').read_text()
+FORM_SOURCES = {1:{1:21,2:21,3:21}, 2:{4:21,5:21,6:21}, 3:{7:16,8:16,9:16,10:15}, 4:{4:63}, 5:{5:63}}
+FORM_SPANS = {1:'Source exams 01–03 · mixed companion', 2:'Source exams 04–06 · mixed companion', 3:'Source exams 07–10 · mixed companion', 4:'Video 04 only · one original question per source chapter', 5:'Video 05 only · one original question per source chapter'}
 
 def table(headers, rows):
     return '<div class="table-wrap"><table><thead><tr>' + ''.join('<th scope="col">'+esc(str(h))+'</th>' for h in headers) + '</tr></thead><tbody>' + ''.join('<tr>'+''.join('<td>'+str(c)+'</td>' for c in row)+'</tr>' for row in rows) + '</tbody></table></div>'
@@ -36,17 +41,35 @@ def validate(data, n):
     assert len({q['id'] for q in qs})==63
     all_obj={o['id'] for d in data['domains'] for o in d['objectives']}
     assert {o for q in qs for o in q['objectives']}==all_obj
-    expected={1:{1:21,2:21,3:21},2:{4:21,5:21,6:21},3:{7:16,8:16,9:16,10:15}}[n]
+    expected=FORM_SOURCES[n]
     assert Counter(q['video_evidence']['video'] for q in qs)==expected
+    if n in (4,5):
+        starts={int(c['start']) for c in VIDEOS['videos'][n-1]['chapters'] if re.match(r'Q\d+\s*[·:—–-]',c['title'])}
+        assert len(starts)==63 and {q['video_evidence']['start'] for q in qs}==starts
     assert sum(bool(q.get('exhibit')) for q in qs)>=6
     assert len(data['drills'])==3
     assert Counter(d['type'] for d in data['drills'])=={'matrix':2,'matching':1}
     assert all(len(d['rows'])==5 for d in data['drills'])
+    for drill in data['drills']:
+        allowed=['Yes','No'] if drill['type']=='matrix' else drill['choices']
+        assert all(row['answer'] in allowed and row['why'] for row in drill['rows'])
+        if drill['type']=='matching': assert len({row['answer'] for row in drill['rows']})<5
     for q in qs:
         assert len(q['options'])==(4 if q['select']==1 else 5)
         assert all(isinstance(o['correct'],bool) for o in q['options'])
         assert sum(o['correct'] for o in q['options'])==q['select']
         assert q['stem'] and q['decision'] and all(o['why'] for o in q['options'])
+        assert len({o['text'] for o in q['options']})==len(q['options'])
+        if q.get('exhibit'):
+            x=q['exhibit']; assert x['headers'] and x['rows']
+            assert all(len(row)==len(x['headers']) for row in x['rows'])
+        if n in (4,5):
+            assert q['id'].startswith(f'CCL{n:02d}-Q')
+            for word,count in [('TWO',2),('THREE',3)]:
+                if re.search(r'(?:which|select)\s+'+word+r'\b',q['stem'],re.I): assert q['select']==count, q['id']
+            assert 55<=len(q['stem'].split())<=110
+            assert 35<=len(q['decision'].split())<=60
+            assert all(14<=len(o['text'].split())<=26 and 15<=len(o['why'].split())<=35 for o in q['options'])
         assert all(o.startswith(str(q['domain'])+'.') for o in q['objectives'])
         ev=q['video_evidence']; v=VIDEOS['videos'][ev['video']-1]
         chapters=[c for c in v['chapters'] if int(c['start'])==ev['start'] and re.match(r'Q\d+\s*[·:—–-]',c['title'])]
@@ -64,11 +87,14 @@ def render(data, n):
     html=html.replace('Professional Mock Exam',label).replace('FORM A',label.upper()).replace('Form A',label)
     html=html.replace('<a class="btn" href="ccarp-professional-mock.zip" download>Download offline pack</a>','<a class="btn" href="../../sets.html">Choose a video set</a>')
     html=html.replace('Original questions informed by the attached official guide, current primary documentation and ten public candidate reports across six platforms.','Original scenarios based on concepts across the Core Concept Learning playlist, checked against primary documentation. Each explanation credits the relevant video chapter. These questions do not reproduce the source practice bank.')
+    if n in (4,5):
+        html=html.replace('based on concepts across the Core Concept Learning playlist', 'based on Video '+f'{n:02d}'+' of the Core Concept Learning playlist, with one fresh question per source chapter')
     html=html.replace('researched 11 October 2026','researched 18 October 2026')
     html=html.replace('Independent original practice · researched', 'Concept credits: <a href="https://www.youtube.com/@coreconceptlearning">Core Concept Learning</a> · Independent original practice · researched')
     html=html.replace('<nav aria-label="Reference pages">','<nav aria-label="Reference pages"><a href="../../sets.html">All video sets</a>')
     html=html.replace('These formats are reported by candidates; they are supplemental and excluded from the 63-question score.', 'These optional learning exercises are excluded from the 63-question score.')
     html=html.replace('Practice reported formats.', 'Practice additional formats.').replace('Yes/No and repeatable-option matching come from public candidate reports;', 'Yes/No and repeatable-option matching are optional learning exercises;')
+    assert not any(marker in html for marker in ('__CSS__','__DATA__','__JS__','__DOMAIN_BARS__'))
     (dest/'index.html').write_text(html)
     intro='<p class="eyebrow">'+label+'</p><h2>Inspect the evidence.</h2><div class="actions"><a class="btn primary" href="index.html">Start timed exam</a><a class="btn" href="questions.html">Print questions</a><a class="btn" href="answer-key.html">Answer key · spoilers</a><a class="btn" href="research.html">Research & credits</a></div>'
     rows=[]
@@ -91,20 +117,48 @@ def render(data, n):
     research='<h1>Concepts, evidence, credit.</h1><p>We reviewed complete English captions and chapter metadata for all ten videos. These are materially original scenarios with new constraints and distractors, not transcripts or reproductions of the channel’s questions. Every scored question maps a general concept to an actual source chapter and to supporting documentation. The guide source opens the official certification directory; the supplied July 2026 PDF is not hosted or redistributed here.</p><p>The source videos are unofficial practice walkthroughs. Their suggested raw targets do not establish an official passing conversion. Live-exam equivalence is unverified. Product-specific claims were checked against primary sources on 18 October 2026; example rates and configurations are fictional unless explicitly attributed.</p><p><a href="../../research/set-'+f'{n:02d}'+'.md">Read the research notes and corrections</a></p>'+table(['Question','Objectives','Video chapter','Concept'],evidence)+'<h2>Supporting sources.</h2><ul>'+''.join('<li><a href="'+esc(s['url'],quote=True)+'">'+esc(s['title'])+'</a></li>' for s in data['sources'].values())+'</ul>'
     (dest/'research.html').write_text(frame(label+' · Research',intro+research))
 
+
+def verify_archive(path):
+    class Links(HTMLParser):
+        def __init__(self):
+            super().__init__(); self.links=[]; self.ids=[]
+        def handle_starttag(self, tag, attrs):
+            attrs=dict(attrs)
+            if 'id' in attrs: self.ids.append(attrs['id'])
+            key='href' if tag=='a' else 'src' if tag in ('img','script') else None
+            if key in attrs: self.links.append(attrs[key])
+    with ZipFile(path) as archive:
+        names=set(archive.namelist()); pages={}
+        for name in names:
+            assert archive.read(name)==(ROOT/name).read_bytes()
+            if name.endswith('.html'):
+                page=Links(); page.feed(archive.read(name).decode()); pages[name]=page
+                assert len(page.ids)==len(set(page.ids)), name
+        for name,page in pages.items():
+            for link in page.links:
+                url=urlsplit(link)
+                if url.scheme or url.netloc: continue
+                target=posixpath.normpath(posixpath.join(posixpath.dirname(name),unquote(url.path))) if url.path else name
+                assert target in names, ('Missing offline target',name,link)
+                if url.fragment and target in pages:
+                    assert unquote(url.fragment) in pages[target].ids, (name,link)
+        assert len(pages)==26
+
 if __name__=='__main__':
-    forms=[json.loads((ROOT/'content'/f'set-{n:02d}.json').read_text()) for n in (1,2,3)]
-    assert len({d['version'] for d in forms})==3
-    assert len({q['stem'] for d in forms for q in d['questions']})==189
-    for n,data in enumerate(forms,1): validate(data,n); render(data,n)
+    forms=[json.loads((ROOT/'content'/f'set-{n:02d}.json').read_text()) for n in FORM_SOURCES]
+    assert len({d['version'] for d in forms})==5
+    assert len({q['stem'] for d in forms for q in d['questions']})==315
+    for n,data in enumerate(forms,1):
+        assert (ROOT/'research'/f'set-{n:02d}.md').is_file()
+        validate(data,n); render(data,n)
     cards=''
-    for n,span in [(1,'01–03'),(2,'04–06'),(3,'07–10')]:
-        cards+='<article class="note"><p class="eyebrow">Video companion '+f'{n:02d}'+'</p><h2>Decide under competing constraints.</h2><p>Concepts from source exams '+span+' · 63 original questions · 120 minutes · all 38 objectives · independent saved progress.</p><div class="actions"><a class="btn primary" href="sets/set-'+f'{n:02d}'+'/index.html">Start set '+str(n)+'</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/blueprint.html">Coverage</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/research.html">Sources & chapter map</a></div></article>'
-    body='<p class="eyebrow">Core Concept Learning · video companion collection</p><h1>Watch the reasoning.<br>Test the transfer.</h1><p class="lead">Three original full-length practice exams, grounded in concepts across all ten playlist videos. Close alternatives, numerical trade-offs and an explanation for every option.</p><div class="facts"><span><strong>189</strong> questions</span><span><strong>10</strong> source videos</span><span><strong>38</strong> objectives per set</span></div>'+cards+'<h2>Credit to the original teacher.</h2><p>Conceptual source: <a href="'+VIDEOS['channel_url']+'">'+esc(VIDEOS['channel'])+'</a> · <a href="'+VIDEOS['playlist']+'">'+esc(VIDEOS['title'])+'</a>. Please support the original videos. No affiliation or endorsement is implied. Full source transcripts, original questions and slides are not distributed.</p>'+table(['Video','Source','Duration'],[[str(v['number']),'<a href="'+v['url']+'">'+esc(v['title'])+'</a>',str(v['duration']//60)+' minutes'] for v in VIDEOS['videos']])+'<p class="note">Independent practice. Difficulty is demanding but has not been calibrated against the live exam. Raw scores do not predict the official scaled result. Each sitting includes 38 single-answer, 21 select-two and four select-three items; three supplemental drills are unscored. All exam pages work offline; external sources require internet.</p>'
-    (ROOT/'sets.html').write_text(frame('Core Concept Learning · Three video companion exams',body,'sets.html'))
+    for n,span in FORM_SPANS.items():
+        cards+='<article id="set-'+f'{n:02d}'+'" class="note"><p class="eyebrow">Video companion '+f'{n:02d}'+'</p><h2>Decide under competing constraints.</h2><p>'+span+' · 63 original questions · 120 minutes · all 38 objectives · independent saved progress.</p><div class="actions"><a class="btn primary" href="sets/set-'+f'{n:02d}'+'/index.html">Start set '+str(n)+'</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/blueprint.html">Coverage</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/research.html">Sources & chapter map</a></div></article>'
+    body='<p class="eyebrow">Core Concept Learning · video companion collection</p><h1>Watch the reasoning.<br>Test the transfer.</h1><p class="lead">Five original full-length practice exams. Sets 01–03 combine concepts across the playlist; new Sets 04 and 05 each follow one video, chapter by chapter. Close alternatives, numerical trade-offs and an explanation for every option.</p><div class="facts"><span><strong>315</strong> questions</span><span><strong>10</strong> source videos</span><span><strong>38</strong> objectives per set</span></div><div class="actions"><a class="btn primary" href="#set-04">New Set 04 · Video 04</a><a class="btn primary" href="#set-05">New Set 05 · Video 05</a></div>'+cards+'<h2>Credit to the original teacher.</h2><p>Conceptual source: <a href="'+VIDEOS['channel_url']+'">'+esc(VIDEOS['channel'])+'</a> · <a href="'+VIDEOS['playlist']+'">'+esc(VIDEOS['title'])+'</a>. Please support the original videos. No affiliation or endorsement is implied. Full source transcripts, original questions and slides are not distributed.</p>'+table(['Video','Source','Duration'],[[str(v['number']),'<a href="'+v['url']+'">'+esc(v['title'])+'</a>',str(v['duration']//60)+' minutes'] for v in VIDEOS['videos']])+'<p class="note">Independent practice. Difficulty is demanding but has not been calibrated against the live exam. Raw scores do not predict the official scaled result. Each sitting includes 38 single-answer, 21 select-two and four select-three items; three supplemental drills are unscored. All exam pages work offline; external sources require internet.</p>'
+    (ROOT/'sets.html').write_text(frame('Core Concept Learning · Five video companion exams',body,'sets.html'))
     paths=[ROOT/'sets.html',ROOT/'README.md',ROOT/'videos.json']+list((ROOT/'sets').rglob('*'))+list((ROOT/'research').glob('*.md'))
     with ZipFile(ROOT/'core-concept-companions.zip','w',ZIP_DEFLATED) as z:
         for p in sorted(p for p in paths if p.is_file()):
             info=ZipInfo(p.relative_to(ROOT).as_posix(),(2026,10,18,0,0,0)); info.compress_type=ZIP_DEFLATED; z.writestr(info,p.read_bytes())
-    with ZipFile(ROOT/'core-concept-companions.zip') as z:
-        assert all(z.read(name)==(ROOT/name).read_bytes() for name in z.namelist())
-    print('PASS: three original forms, 189 questions, all objectives, exact timestamp mappings, 16 rendered pages and byte-verified offline pack.')
+    verify_archive(ROOT/'core-concept-companions.zip')
+    print('PASS: five original forms, 315 questions, all objectives, exact timestamp mappings, complete single-video coverage for Sets04–05, 26 rendered pages and byte-verified offline pack.')

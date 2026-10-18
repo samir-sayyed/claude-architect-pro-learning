@@ -3,15 +3,15 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const core=require('../ccar-p/exam.js');
-const paths=[1,2,3].map(n=>'content/set-'+String(n).padStart(2,'0')+'.json');
+const paths=[1,2,3,4,5].map(n=>'content/set-'+String(n).padStart(2,'0')+'.json');
 const forms=paths.map(path=>JSON.parse(fs.readFileSync(__dirname+'/'+path,'utf8')));
-assert.equal(new Set(forms.map(d=>d.version)).size,3);
+assert.equal(new Set(forms.map(d=>d.version)).size,5);
 const oldPaths=['exam-data.json',...Array.from({length:5},(_,i)=>'sets/set-'+String(i+2).padStart(2,'0')+'/exam-data.json')];
 const oldForms=oldPaths.map(p=>JSON.parse(fs.readFileSync(__dirname+'/../ccar-p/'+p,'utf8')));
-assert.equal(new Set([...oldForms,...forms].map(d=>d.version)).size,9);
+assert.equal(new Set([...oldForms,...forms].map(d=>d.version)).size,11);
 const allQuestions=[...oldForms,...forms].flatMap(d=>d.questions);
-assert.equal(new Set(allQuestions.map(q=>q.id)).size,567);
-assert.equal(new Set(allQuestions.map(q=>q.stem.toLowerCase().replace(/\W+/g,' ').trim())).size,567);
+assert.equal(new Set(allQuestions.map(q=>q.id)).size,693);
+assert.equal(new Set(allQuestions.map(q=>q.stem.toLowerCase().replace(/\W+/g,' ').trim())).size,693);
 const storageKeys=new Set();
 for (const data of forms) {
 const perfect=Object.fromEntries(data.questions.map(q=>[q.id,q.options.flatMap((o,i)=>o.correct?[i]:[])]));
@@ -54,5 +54,5 @@ assert.match(el('result-note').textContent,/Time expired/);
 assert.equal(el('top-submit').hidden,true);
 for(const other of forms.filter(d=>d.version!==data.version)) assert.equal(core.validate(attempt,other),false);
 }
-assert.equal(storageKeys.size,3);
-console.log('PASS: all 3 video forms: 189 perfect/empty scoring cases, exact sets, selection limits, invalid/cross-form states, isolated storage and expiry auto-submission.');
+assert.equal(storageKeys.size,5);
+console.log('PASS: all 5 video forms: 315 perfect/empty scoring cases, exact sets, selection limits, invalid/cross-form states, isolated storage and expiry auto-submission.');
