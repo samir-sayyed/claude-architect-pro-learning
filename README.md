@@ -45,6 +45,8 @@ Researched 13 October 2026 against first-party technical sources and regulator g
 
 The six forms contain **378 original questions**, including 315 added across Sets 02–06. [Choose a set](mock-exams/ccar-p/sets.html). Set 01 retains the original question bank. Each mock covers all 38 objectives in the supplied official CCAR-P guide v1.0, effective July 2026. Each allocates 63 scored questions across seven domains, with single-answer and multiple-response items, saved progress, a continuous 120-minute clock, flags, domain diagnostics and explanations for every option. Candidate-reported Yes/No and matching formats are supplemental, unscored drills.
 
+**18 October wording revision:** Original Sets 04–06 now use clearer, shorter stems and choices while preserving the architectural decisions, answer keys, full explanations and saved-attempt compatibility. Sets 01–03 and all five video companions are unchanged. See the [mock collection notes](mock-exams/ccar-p/README.md#wording-revision--18-october-2026).
+
 - [Objective coverage](mock-exams/ccar-p/blueprint.html)
 - [Research, credits and limitations](mock-exams/ccar-p/research.html)
 - [Printable questions](mock-exams/ccar-p/questions.html)

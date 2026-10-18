@@ -24,6 +24,14 @@ In the full repository or `ccarp-professional-all-sets.zip`, open **[sets.html](
 
 The [12 October research refresh](research-refresh-2026-10-12.md) distinguishes newly inspected October accounts, rechecked earlier testimony, promotional interests and exclusions. Each new set includes its own `research-addendum.md`, five HTML pages and `exam-data.json`. New forms each contain at least five exhibits, checked calculations and unique supplemental drills.
 
+## Wording revision · 18 October 2026
+
+Sets 04–06 have been edited for readability: all 189 stems and all 831 answer choices use shorter, more direct wording. Average stem length fell from approximately 63 to 32 words; choices average approximately 11 words rather than 20. Length is a diagnostic, not a minimum authoring requirement.
+
+The architectural decisions, decisive constraints, numerical exhibits, correct choices, option order, all option explanations, source credits, objective coverage and supplemental drills are retained. A second editorial pass checked that concise choices still express the intended distinction and that correct answers do not routinely stand out as the longest option. This preserves the intended reasoning challenge; it does not establish live-exam difficulty equivalence.
+
+Sets 01–03 and all five Core Concept Learning companion forms remain unchanged. Existing attempt storage keys, question IDs and choice positions are retained because the scenarios and scoring are unchanged. Saved selections, flags, deadlines and submitted scores remain compatible; no reset or migration is required. The updated timed pages, print questions, answer keys and all-set offline ZIP contain the same revised wording.
+
 ## Scoring and timing
 
 Exact correct response sets earn one point. No partial credit or negative marking in this mock. Unanswered/incomplete items earn zero. This is a practice convention: the guide does not disclose the live exam’s partial-credit policy or raw-to-scaled conversion. **720/1,000 is a scaled passing standard, not a raw 72% cutoff.** No official pass/fail prediction is provided.

@@ -28,3 +28,10 @@ Legal scenarios stipulate the relevant approved obligation and scope rather than
 Assert-based author checks passed for item IDs/counts, domain allocation, all 38 objectives, correct-option counts, source references, unique options, rectangular exhibits, and arithmetic. All stems are 55–95 words and all options 14–28 words. Options and overall order are deterministically shuffled. A length-cue pass shortened 15 correct options without dropping constraints: a correct option is tied for longest or longest in 10/38 single-response items after the distinctness rewrites, rather than 24/38 before review. This is a heuristic, not psychometric validation. A subsequent competitor pass revised nine wrong options in S06Q03, Q32, and Q52 to replace extreme violations with plausible incomplete controls, biased outcome measures, and prematurely chosen retention policies. The generated browser experience and shared engine are verified by the integrating build/test process rather than a separate engine written for this form.
 
 No public feedback proves exact confidential-exam difficulty, fixed response quotas, raw-to-scaled conversion, or pass prediction. These are challenging original practice items, not an official or calibrated live-bank substitute.
+
+
+## Editorial revision — 18 October 2026
+
+All 63 stems and 277 choices were rewritten for clearer reading. Necessary scenario constraints and calculations remain; detailed reasoning remains in every post-submission option explanation. A separate review checked semantic consistency and answer-length cues. This edit preserves the existing decision, answer key, option positions, objective/source mapping, exhibits and drills. It introduces no new product or regulatory claims and does not redate the original research.
+
+The form version and question IDs remain stable, so existing selections, flags, timers and submitted scores remain compatible. Original Sets 01–03 and the five video companions were excluded from this revision. Intended architectural difficulty is retained through competing decisions; live-exam difficulty remains uncalibrated.

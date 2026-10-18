@@ -16,13 +16,18 @@ CSS=(ROOT/'exam.css').read_text()
 e=html.escape
 QUESTIONS=[D['questions'][i] for i in D['order']]
 
+def wording_note():
+    if not D.get('wording_revision'):return ''
+    scope='Sets 04–06 · ' if LABEL=='Six full-length sets' else ''
+    return '<p class="note"><strong>'+scope+'Wording refreshed · 18 October 2026.</strong> Shorter questions and choices, with the same scenarios, answer keys and detailed explanations. Existing saved progress and timers remain compatible.</p>'
+
 def table(headers,rows):
     return '<div class="table-wrap"><table><thead><tr>'+''.join(f'<th scope="col">{e(str(x))}</th>' for x in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join(f'<td>{x}</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table></div>'
 
 def frame(title,body):
     catalogue='<a href="../../sets.html">All six sets</a>' if ROOT!=BASE else ''
     date='11 October 2026' if LABEL=='Set 01' else '12 October 2026'
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · {LABEL}</title><style>{CSS}</style></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="index.html">The Architect’s Practice</a><nav aria-label="Reference pages">{catalogue}<a href="index.html">Take exam</a><a href="blueprint.html">Coverage</a><a href="research.html">Research</a></nav></header><main id="main" class="page document">{body}<footer class="footer">Independent original practice · CCAR-P · {LABEL} · researched {date} · no live exam questions used.<br><a href="index.html">Return to the timed exam</a></footer></main></body></html>'
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · {LABEL}</title><style>{CSS}</style></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="index.html">The Architect’s Practice</a><nav aria-label="Reference pages">{catalogue}<a href="index.html">Take exam</a><a href="blueprint.html">Coverage</a><a href="research.html">Research</a></nav></header><main id="main" class="page document">{wording_note()}{body}<footer class="footer">Independent original practice · CCAR-P · {LABEL} · researched {date} · no live exam questions used.<br><a href="index.html">Return to the timed exam</a></footer></main></body></html>'
 
 def sources(q):
     return ' · '.join(f'<a href="{e(D["sources"][s]["url"])}" target="_blank" rel="noopener">{e(D["sources"][s]["title"])}</a>' for s in q['sources'])
@@ -138,6 +143,8 @@ def build_form(root,label):
     verify_data()
     bars=''.join(f'<div class="blueprint-row"><div><span>{d["id"]}. {e(d["name"])}</span><strong>{d["weight"]}%</strong></div><div class="bar" aria-hidden="true"><span style="width:{d["weight"]*5}%"></span></div></div>' for d in D['domains'])
     template=(BASE/'template.html').read_text().replace('FORM A',LABEL.upper()).replace('Form A',LABEL)
+    if D.get('wording_revision'):
+        template=template.replace('<div class="instructions">',wording_note()+'<div class="instructions">')
     if ROOT!=BASE:
         template=template.replace('<title>CCAR-P · Professional Mock Exam</title>',f'<title>CCAR-P · {LABEL} · Professional Mock Exam</title>').replace('<nav aria-label="Reference pages">','<nav aria-label="Reference pages"><a href="../../sets.html">All six sets</a>').replace('href="ccarp-professional-mock.zip"','href="../../ccarp-professional-all-sets.zip"').replace('Download offline pack','Download all six sets').replace('ten public candidate reports across six platforms','public candidate reports with a dated evidence refresh').replace('11 October 2026','12 October 2026')
     page=template.replace('__CSS__',CSS).replace('__DOMAIN_BARS__',bars).replace('__DATA__',json.dumps(D,ensure_ascii=False).replace('</','<\\/')).replace('__JS__',(BASE/'exam.js').read_text())
