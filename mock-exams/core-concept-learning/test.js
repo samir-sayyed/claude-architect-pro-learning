@@ -1,0 +1,58 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const core=require('../ccar-p/exam.js');
+const paths=[1,2,3].map(n=>'content/set-'+String(n).padStart(2,'0')+'.json');
+const forms=paths.map(path=>JSON.parse(fs.readFileSync(__dirname+'/'+path,'utf8')));
+assert.equal(new Set(forms.map(d=>d.version)).size,3);
+const oldPaths=['exam-data.json',...Array.from({length:5},(_,i)=>'sets/set-'+String(i+2).padStart(2,'0')+'/exam-data.json')];
+const oldForms=oldPaths.map(p=>JSON.parse(fs.readFileSync(__dirname+'/../ccar-p/'+p,'utf8')));
+assert.equal(new Set([...oldForms,...forms].map(d=>d.version)).size,9);
+const allQuestions=[...oldForms,...forms].flatMap(d=>d.questions);
+assert.equal(new Set(allQuestions.map(q=>q.id)).size,567);
+assert.equal(new Set(allQuestions.map(q=>q.stem.toLowerCase().replace(/\W+/g,' ').trim())).size,567);
+const storageKeys=new Set();
+for (const data of forms) {
+const perfect=Object.fromEntries(data.questions.map(q=>[q.id,q.options.flatMap((o,i)=>o.correct?[i]:[])]));
+assert.equal(core.grade(data.questions,perfect).filter(g=>g.correct).length,63);
+assert.equal(core.grade(data.questions,{}).filter(g=>g.correct).length,0);
+const multi=data.questions.find(q=>q.select===2), single=data.questions.find(q=>q.select===1);
+const right=perfect[multi.id], wrong=multi.options.findIndex(o=>!o.correct);
+assert.equal(core.correct(multi,right.slice().reverse()),true);
+assert.equal(core.correct(multi,[right[0]]),false);
+assert.equal(core.correct(multi,[right[0],right[0]]),false);
+assert.equal(core.correct(multi,[right[0],wrong]),false);
+assert.equal(core.correct(multi,[...right,wrong]),false);
+assert.deepEqual(core.choose(multi,right,wrong,true),right);
+assert.deepEqual(core.choose(multi,right,right[0],false),[right[1]]);
+assert.deepEqual(core.choose(single,[],0,true),[0]);
+assert.deepEqual(core.choose(single,[0],1,true),[1]);
+assert.deepEqual(core.choose(single,[0],99,true),[0]);
+const attempt={version:data.version,started:1000,deadline:1000+data.minutes*60000,index:0,answers:perfect,flagged:[multi.id],submitted:null};
+assert.equal(core.validate(attempt,data),true);
+for(const patch of [{version:'old'},{index:-1},{index:63},{deadline:5},{answers:[]},{answers:{BAD:[0]}},{answers:{[multi.id]:[0,0]}},{answers:{[multi.id]:[99]}},{answers:{[multi.id]:[0,1,2]}},{flagged:['BAD']},{flagged:[multi.id,multi.id]},{submitted:2},{started:NaN}]) assert.equal(core.validate({...attempt,...patch},data),false,JSON.stringify(patch));
+assert.equal(core.remaining(120000,0),120);
+assert.equal(core.remaining(120000,119999),1);
+assert.equal(core.remaining(120000,120000),0);
+assert.equal(core.remaining(120000,130000),0);
+assert.equal(core.complete(multi,[right[0]]),false);
+assert.equal(core.complete(multi,right),true);
+// Expired saved sessions must auto-submit during startup without a resume click.
+const elements=new Map();
+function el(id){if(!elements.has(id))elements.set(id,{id,hidden:false,textContent:'',innerHTML:'',value:'',open:false,children:[],classList:{toggle(){},remove(){}},addEventListener(){},focus(){},close(){this.open=false;},setAttribute(){}});return elements.get(id);}
+el('exam-data').textContent=JSON.stringify(data);
+const screens=['welcome','sitting','overview','results'].map(el);
+let saved=JSON.stringify({...attempt,answers:{},deadline:attempt.deadline});
+const context={document:{getElementById:el,querySelectorAll:s=>s==='[data-screen]'?screens:[]},localStorage:{getItem:key=>{storageKeys.add(key);return saved;},setItem:(_,v)=>saved=v},window:{scrollTo(){}},Date:class extends Date{static now(){return attempt.deadline+1000;}},setInterval(){},setTimeout(){},console};
+vm.runInNewContext(fs.readFileSync(__dirname+'/../ccar-p/exam.js','utf8'),context);
+assert.equal(JSON.parse(saved).submitted,attempt.deadline+1000);
+assert.equal(el('results').hidden,false);
+assert.equal(el('sitting').hidden,true);
+assert.equal(el('raw-score').textContent,'0 / 63');
+assert.match(el('result-note').textContent,/Time expired/);
+assert.equal(el('top-submit').hidden,true);
+for(const other of forms.filter(d=>d.version!==data.version)) assert.equal(core.validate(attempt,other),false);
+}
+assert.equal(storageKeys.size,3);
+console.log('PASS: all 3 video forms: 189 perfect/empty scoring cases, exact sets, selection limits, invalid/cross-form states, isolated storage and expiry auto-submission.');
