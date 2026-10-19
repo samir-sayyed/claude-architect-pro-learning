@@ -24,13 +24,15 @@ In the full repository or `ccarp-professional-all-sets.zip`, open **[sets.html](
 
 The [12 October research refresh](research-refresh-2026-10-12.md) distinguishes newly inspected October accounts, rechecked earlier testimony, promotional interests and exclusions. Each new set includes its own `research-addendum.md`, five HTML pages and `exam-data.json`. New forms each contain at least five exhibits, checked calculations and unique supplemental drills.
 
-## Wording revision · 18 October 2026
+## Choice-balance revision · 19 October 2026
 
-Sets 04–06 have been edited for readability: all 189 stems and all 831 answer choices use shorter, more direct wording. Average stem length fell from approximately 63 to 32 words; choices average approximately 11 words rather than 20. Length is a diagnostic, not a minimum authoring requirement.
+Sets 04–06 retain their 18 October shorter stems and now use answer choices revised to reduce length cues. Original Sets 01–03 retain their question data and rendered pages. All five Core Concept Learning companions have a separate 19 October revision of stems and choices; see their collection notes.
 
-The architectural decisions, decisive constraints, numerical exhibits, correct choices, option order, all option explanations, source credits, objective coverage and supplemental drills are retained. A second editorial pass checked that concise choices still express the intended distinction and that correct answers do not routinely stand out as the longest option. This preserves the intended reasoning challenge; it does not establish live-exam difficulty equivalence.
+The architectural decisions, decisive constraints, numerical exhibits, correct choices, option order, all option explanations, source credits, objective coverage and supplemental drills are retained. Concise choices still express the intended distinction. There is no minimum option word count or padding rule. Across these three forms, stems retain a mean of 32.04 words; choices now average 12.87 words (11.16 before the balance pass).
 
-Sets 01–03 and all five Core Concept Learning companion forms remain unchanged. Existing attempt storage keys, question IDs and choice positions are retained because the scenarios and scoring are unchanged. Saved selections, flags, deadlines and submitted scores remain compatible; no reset or migration is required. The updated timed pages, print questions, answer keys and all-set offline ZIP contain the same revised wording.
+Existing attempt storage keys, question IDs and choice positions are retained because the scenarios and scoring are unchanged. Saved selections, flags, deadlines and submitted scores remain compatible; no reset or migration is required. The updated timed pages, print questions, answer keys and all-set offline ZIP contain the same revised choices. This is an editorial revision; the original research dates remain 11 and 12 October 2026.
+
+The content regression check evaluates the three revised original forms and, when present, the five sibling video companions tagged `choice_balance_revision`. For each form, correct and incorrect options have mean word-count and Unicode-codepoint character-count ratios between 0.95 and 1.05. Selecting only the longest or shortest required options, with uniform tie-breaking, must yield an expected exact-set score of at most 16/63 for either measure; uniform random exact-set selection yields 12/63. Tiny tied-choice and forced-wrong fixtures check the calculation. These are editorial shortcut diagnostics, not difficulty calibration or a live-exam prediction; the checks do not run in a live sitting.
 
 ## Scoring and timing
 
@@ -59,4 +61,4 @@ python3 build.py
 node test.js
 ```
 
-Edit the relevant `exam-data.json` for content (root is Set 01, new sets are under `sets/`); `template.html`, `exam.css` and `exam.js` for the experience. Build checks cover counts, allocation, objective coverage, required selections, citations, IDs, local links, standalone dependencies and ZIP byte matches. Node assertions cover all six forms: exact scoring, invalid and cross-form saved states, separate storage keys, selection limits and expiry auto-submission. Browser verification covers the catalogue, selection limits, save/resume isolation, submission, explanations and supplemental matching.
+Edit the relevant `exam-data.json` for content (root is Set 01, new sets are under `sets/`); `template.html`, `exam.css` and `exam.js` for the experience. Build checks cover counts, allocation, objective coverage, required selections, citations, IDs, local links, standalone dependencies and ZIP byte matches. Node assertions cover all six forms: exact scoring, invalid and cross-form saved states, separate storage keys, selection limits, expiry auto-submission and the revised-form editorial diagnostics above. Browser verification covers the catalogue, selection limits, save/resume isolation, submission, explanations and supplemental matching.

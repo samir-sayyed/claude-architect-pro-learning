@@ -35,8 +35,8 @@ This form allocates 11/8/12/10/9/9/4 questions to domains 1–7 and covers all 3
 Difficulty remains a deliberate design target, not a psychometrically validated equivalence to live CCAR-P or a pass prediction. Official guidance guarantees MC/MR, whereas supplemental matrix/matching formats are reported in limited public accounts and are not guaranteed on a future live form.
 
 
-## Editorial revision — 18 October 2026
+## Editorial revision — 19 October 2026
 
-All 63 stems and 277 choices were rewritten for clearer reading. Necessary scenario constraints and calculations remain; detailed reasoning remains in every post-submission option explanation. A separate review checked semantic consistency and answer-length cues. This edit preserves the existing decision, answer key, option positions, objective/source mapping, exhibits and drills. It introduces no new product or regulatory claims and does not redate the original research.
+The shorter stems from 18 October are retained. Answer choices have a further length-cue revision: the same decisive constraints, correct positions, detailed option explanations, decisions, exhibits, objective/source mapping and drills remain. No product or regulatory claim is added, and the original 12 October research date is unchanged.
 
-The form version and question IDs remain stable, so existing selections, flags, timers and submitted scores remain compatible. Original Sets 01–03 and the five video companions were excluded from this revision. Intended architectural difficulty is retained through competing decisions; live-exam difficulty remains uncalibrated.
+Form versions and question IDs remain stable, so existing selections, flags, timers and submitted scores remain compatible. Word and Unicode-codepoint option-length diagnostics compare correct and incorrect means and tie-aware longest/shortest-only exact-set expectations; they are editorial checks, not psychometric validation or live-exam predictions. Original Sets 01–03 retain their data and rendered pages. Video companions have their own 19 October editorial revision.

@@ -10,9 +10,15 @@ Open `sets.html` to choose a sitting. Each covers all 38 objectives in the suppl
 - Set 04: Video 04 only, one original question grounded in each of its 63 question chapters.
 - Set 05: Video 05 only, one original question grounded in each of its 63 question chapters.
 
-Sets 01–03 are mixed companions. Sets 04–05 begin single-video coverage without changing those earlier forms. No further sets are created until requested. Source chapters are conceptual references; the original questions and options are not reproduced.
+Sets 01–03 are mixed companions. Sets 04–05 provide single-video coverage. Source chapters are conceptual references; the original questions and options are not reproduced.
 
 The timer continues across reloads and closure. Storage is local to the browser and each form has a distinct version key. Use the printable questions if browser storage or scripting is unavailable. Option explanations, decisive constraints, primary sources and timestamped conceptual credits are available after submission; reference pages contain spoilers.
+
+## Wording revision · 19 October 2026
+
+All five existing forms use shorter stems and answer choices with reduced length cues. The same architectural decisions, answer keys, detailed explanations, option positions, numerical exhibits, objective coverage, source chapters and supplemental drills are retained. Versions and question IDs are stable: saved selections, flags, deadlines and submitted scores remain compatible. The timed pages, printable questions, answer keys and offline ZIP contain the same revised text. Across 315 items, stems average 36.99 words (66.64 before) and choices 15.84 words (20.64 before).
+
+The shared `../ccar-p/test.js` content check assesses each tagged companion’s correct/incorrect mean word and Unicode-codepoint character ratios (0.95–1.05) and expected exact-set scores from choosing only the longest or shortest options (at most 16/63 with uniform tie-breaking, compared with 12/63 for uniform random choice). These are editorial shortcut diagnostics, not difficulty calibration. There is no minimum option length or padding rule, and no diagnostic answers are exposed in a live sitting. Research and primary-source verification remain dated 18 October 2026.
 
 ## Attribution and limits
 

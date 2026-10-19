@@ -1,6 +1,6 @@
 # Single-video companion 04 — research and authorship record
 
-Checked 18 October 2026. This independent form has 63 original scored questions and three original unscored drills. It follows Video 04 only: each of its 63 question chapters is used exactly once as conceptual evidence. The earlier three mixed companions remain unchanged.
+Checked 18 October 2026. This independent form has 63 original scored questions and three original unscored drills. It follows Video 04 only: each of its 63 question chapters is used exactly once as conceptual evidence. The collection also includes three mixed-video companions.
 
 ## Evidence and scope
 
@@ -41,7 +41,7 @@ Arithmetic was recomputed separately from the prose. Fictional schedules and mea
 
 The new scenarios change mechanisms, state, constraints, data and alternatives. They do not reproduce the source bank. Existing questions were compared for repeated stems and mechanisms; two overly similar Set 05 cases were revised. A 12-word phrase comparison found no source-transcript matches in scored stems or options. This is a limited check, not a legal guarantee.
 
-Checks cover 63 unique IDs, all 38 objectives, domain counts 11/8/12/10/9/9/4, exact answer cardinality and format mix, all 63 distinct source Q chapter starts, matching source objectives, word ranges, rectangular exhibits, valid repeated-option matching drills, a mixed permutation and source-key resolution. Runtime tests cover perfect/empty scoring, incomplete multi-select sets, selection caps, invalid states, cross-form isolation and automatic submission after expiry. The offline build verifies byte equality plus every local link and fragment inside the archive. Browser checks confirmed that Set 04 starts, selects and flags a response, submits the expected score and resets its disposable QA attempt. Set 05 loaded with its own fresh state and correct single-video attribution.
+Checks cover 63 unique IDs, all 38 objectives, domain counts 11/8/12/10/9/9/4, exact answer cardinality and format mix, all 63 distinct source Q chapter starts, matching source objectives, nonempty text, rectangular exhibits, valid repeated-option matching drills, a mixed permutation and source-key resolution. Runtime tests cover perfect/empty scoring, incomplete multi-select sets, selection caps, invalid states, cross-form isolation and automatic submission after expiry. The offline build verifies byte equality plus every local link and fragment inside the archive. Browser checks confirmed that Set 04 starts, selects and flags a response, submits the expected score and resets its disposable QA attempt. Set 05 loaded with its own fresh state and correct single-video attribution.
 
 ## Exact chapter manifest
 
@@ -142,3 +142,9 @@ The guide entry is supplied blueprint metadata. Other entries identify the inspe
 - [Claude Platform: Tool use with prompt caching](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching)
 
 No live-exam content or official endorsement is claimed. Future product behavior and contracts may change. The user requested only these two additional forms; no later video-specific sets are generated.
+
+## Editorial revision — 19 October 2026
+
+All 63 stems and 277 answer choices have shorter, more direct wording with reduced length cues. The same architectural decisions, correct flags and positions, detailed explanations, exhibits, objectives, timestamped source chapters and drills remain. Form versions and question IDs are stable, preserving saved selections, flags, deadlines and submitted scores. This editorial pass does not redate the 18 October research or add technical claims.
+
+The shared content check uses correct/incorrect mean word and Unicode-codepoint character ratios plus tie-aware longest/shortest-only exact-set expectations. These are editorial shortcut diagnostics, not difficulty calibration; no minimum option length or padding rule applies.

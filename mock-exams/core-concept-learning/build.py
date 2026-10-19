@@ -18,6 +18,10 @@ JS = (SHARED / 'exam.js').read_text()
 FORM_SOURCES = {1:{1:21,2:21,3:21}, 2:{4:21,5:21,6:21}, 3:{7:16,8:16,9:16,10:15}, 4:{4:63}, 5:{5:63}}
 FORM_SPANS = {1:'Source exams 01–03 · mixed companion', 2:'Source exams 04–06 · mixed companion', 3:'Source exams 07–10 · mixed companion', 4:'Video 04 only · one original question per source chapter', 5:'Video 05 only · one original question per source chapter'}
 
+def wording_note(data):
+    if not data.get('wording_revision'): return ''
+    return '<p class="note"><strong>Wording and choices refreshed · 19 October 2026.</strong> Shorter questions and balanced choices preserve the same architectural decisions, answer keys and detailed explanations. Saved attempts and timers remain compatible.</p>'
+
 def table(headers, rows):
     return '<div class="table-wrap"><table><thead><tr>' + ''.join('<th scope="col">'+esc(str(h))+'</th>' for h in headers) + '</tr></thead><tbody>' + ''.join('<tr>'+''.join('<td>'+str(c)+'</td>' for c in row)+'</tr>' for row in rows) + '</tbody></table></div>'
 
@@ -58,7 +62,7 @@ def validate(data, n):
         assert len(q['options'])==(4 if q['select']==1 else 5)
         assert all(isinstance(o['correct'],bool) for o in q['options'])
         assert sum(o['correct'] for o in q['options'])==q['select']
-        assert q['stem'] and q['decision'] and all(o['why'] for o in q['options'])
+        assert q['stem'] and q['decision'] and all(o['text'] and o['why'] for o in q['options'])
         assert len({o['text'] for o in q['options']})==len(q['options'])
         if q.get('exhibit'):
             x=q['exhibit']; assert x['headers'] and x['rows']
@@ -67,9 +71,9 @@ def validate(data, n):
             assert q['id'].startswith(f'CCL{n:02d}-Q')
             for word,count in [('TWO',2),('THREE',3)]:
                 if re.search(r'(?:which|select)\s+'+word+r'\b',q['stem'],re.I): assert q['select']==count, q['id']
-            assert 55<=len(q['stem'].split())<=110
-            assert 35<=len(q['decision'].split())<=60
-            assert all(14<=len(o['text'].split())<=26 and 15<=len(o['why'].split())<=35 for o in q['options'])
+            assert len(q['stem'].split())<=110
+            assert len(q['decision'].split())<=60
+            assert all(len(o['text'].split())<=26 and len(o['why'].split())<=35 for o in q['options'])
         assert all(o.startswith(str(q['domain'])+'.') for o in q['objectives'])
         ev=q['video_evidence']; v=VIDEOS['videos'][ev['video']-1]
         chapters=[c for c in v['chapters'] if int(c['start'])==ev['start'] and re.match(r'Q\d+\s*[·:—–-]',c['title'])]
@@ -94,9 +98,10 @@ def render(data, n):
     html=html.replace('<nav aria-label="Reference pages">','<nav aria-label="Reference pages"><a href="../../sets.html">All video sets</a>')
     html=html.replace('These formats are reported by candidates; they are supplemental and excluded from the 63-question score.', 'These optional learning exercises are excluded from the 63-question score.')
     html=html.replace('Practice reported formats.', 'Practice additional formats.').replace('Yes/No and repeatable-option matching come from public candidate reports;', 'Yes/No and repeatable-option matching are optional learning exercises;')
+    html=html.replace('<div class="instructions">',wording_note(data)+'<div class="instructions">')
     assert not any(marker in html for marker in ('__CSS__','__DATA__','__JS__','__DOMAIN_BARS__'))
     (dest/'index.html').write_text(html)
-    intro='<p class="eyebrow">'+label+'</p><h2>Inspect the evidence.</h2><div class="actions"><a class="btn primary" href="index.html">Start timed exam</a><a class="btn" href="questions.html">Print questions</a><a class="btn" href="answer-key.html">Answer key · spoilers</a><a class="btn" href="research.html">Research & credits</a></div>'
+    intro=wording_note(data)+'<p class="eyebrow">'+label+'</p><h2>Inspect the evidence.</h2><div class="actions"><a class="btn primary" href="index.html">Start timed exam</a><a class="btn" href="questions.html">Print questions</a><a class="btn" href="answer-key.html">Answer key · spoilers</a><a class="btn" href="research.html">Research & credits</a></div>'
     rows=[]
     for d in data['domains']:
         for o in d['objectives']:
@@ -155,7 +160,8 @@ if __name__=='__main__':
     for n,span in FORM_SPANS.items():
         cards+='<article id="set-'+f'{n:02d}'+'" class="note"><p class="eyebrow">Video companion '+f'{n:02d}'+'</p><h2>Decide under competing constraints.</h2><p>'+span+' · 63 original questions · 120 minutes · all 38 objectives · independent saved progress.</p><div class="actions"><a class="btn primary" href="sets/set-'+f'{n:02d}'+'/index.html">Start set '+str(n)+'</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/blueprint.html">Coverage</a><a class="btn" href="sets/set-'+f'{n:02d}'+'/research.html">Sources & chapter map</a></div></article>'
     body='<p class="eyebrow">Core Concept Learning · video companion collection</p><h1>Watch the reasoning.<br>Test the transfer.</h1><p class="lead">Five original full-length practice exams. Sets 01–03 combine concepts across the playlist; new Sets 04 and 05 each follow one video, chapter by chapter. Close alternatives, numerical trade-offs and an explanation for every option.</p><div class="facts"><span><strong>315</strong> questions</span><span><strong>10</strong> source videos</span><span><strong>38</strong> objectives per set</span></div><div class="actions"><a class="btn primary" href="#set-04">New Set 04 · Video 04</a><a class="btn primary" href="#set-05">New Set 05 · Video 05</a></div>'+cards+'<h2>Credit to the original teacher.</h2><p>Conceptual source: <a href="'+VIDEOS['channel_url']+'">'+esc(VIDEOS['channel'])+'</a> · <a href="'+VIDEOS['playlist']+'">'+esc(VIDEOS['title'])+'</a>. Please support the original videos. No affiliation or endorsement is implied. Full source transcripts, original questions and slides are not distributed.</p>'+table(['Video','Source','Duration'],[[str(v['number']),'<a href="'+v['url']+'">'+esc(v['title'])+'</a>',str(v['duration']//60)+' minutes'] for v in VIDEOS['videos']])+'<p class="note">Independent practice. Difficulty is demanding but has not been calibrated against the live exam. Raw scores do not predict the official scaled result. Each sitting includes 38 single-answer, 21 select-two and four select-three items; three supplemental drills are unscored. All exam pages work offline; external sources require internet.</p>'
-    (ROOT/'sets.html').write_text(frame('Core Concept Learning · Five video companion exams',body,'sets.html'))
+    notice=wording_note(forms[0]) if all(data.get('wording_revision') for data in forms) else ''
+    (ROOT/'sets.html').write_text(frame('Core Concept Learning · Five video companion exams',notice+body,'sets.html'))
     paths=[ROOT/'sets.html',ROOT/'README.md',ROOT/'videos.json']+list((ROOT/'sets').rglob('*'))+list((ROOT/'research').glob('*.md'))
     with ZipFile(ROOT/'core-concept-companions.zip','w',ZIP_DEFLATED) as z:
         for p in sorted(p for p in paths if p.is_file()):

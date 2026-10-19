@@ -17,6 +17,9 @@ e=html.escape
 QUESTIONS=[D['questions'][i] for i in D['order']]
 
 def wording_note():
+    if D.get('choice_balance_revision'):
+        scope='Sets 04–06 · ' if LABEL=='Six full-length sets' else ''
+        return '<p class="note"><strong>'+scope+'Choices balanced · 19 October 2026.</strong> Clearer choices preserve the same architectural decisions, answer keys and detailed explanations. Saved attempts and timers remain compatible.</p>'
     if not D.get('wording_revision'):return ''
     scope='Sets 04–06 · ' if LABEL=='Six full-length sets' else ''
     return '<p class="note"><strong>'+scope+'Wording refreshed · 18 October 2026.</strong> Shorter questions and choices, with the same scenarios, answer keys and detailed explanations. Existing saved progress and timers remain compatible.</p>'

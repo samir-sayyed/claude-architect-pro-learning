@@ -49,7 +49,7 @@ The arithmetic for Q10, Q32, Q40, and Q52 was recomputed in independent Python a
 
 ## Validation performed
 
-Assertions checked 63 unique IDs; 120 minutes; domains 11/8/12/10/9/9/4; all 38 objectives; 38 single-answer four-option items, 21 select-two five-option items and four select-three five-option items; exact correct-option counts; 21 citations per video; source-ID resolution; exact Q-chapter start and matching objective; deterministic mixed permutation; six rectangular exhibits; three five-row drills; required word ranges; and no stray literal backslashes in stems or decisions. Correct-choice positions are deterministically shuffled independently for every item. Every selected chapter was manually chosen for its actual concept after rejecting automatic objective-only mapping.
+Assertions checked 63 unique IDs; 120 minutes; domains 11/8/12/10/9/9/4; all 38 objectives; 38 single-answer four-option items, 21 select-two five-option items and four select-three five-option items; exact correct-option counts; 21 citations per video; source-ID resolution; exact Q-chapter start and matching objective; deterministic mixed permutation; six rectangular exhibits; three five-row drills; nonempty text; and no stray literal backslashes in stems or decisions. Correct-choice positions are deterministically shuffled independently for every item. Every selected chapter was manually chosen for its actual concept after rejecting automatic objective-only mapping.
 
 ## Scored-item chapter manifest
 
@@ -140,3 +140,9 @@ Assertions checked 63 unique IDs; 120 minutes; domains 11/8/12/10/9/9/4; all 38 
 - [NIST AI RMF 1.0: trustworthiness, evaluation, transparency and human roles](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf)
 - [Claude Code: Best practices](https://code.claude.com/docs/en/best-practices)
 - [Claude Code: Sandboxing](https://code.claude.com/docs/en/sandboxing)
+
+## Editorial revision — 19 October 2026
+
+All 63 stems and 277 answer choices have shorter, more direct wording with reduced length cues. The same architectural decisions, correct flags and positions, detailed explanations, exhibits, objectives, timestamped source chapters and drills remain. Form versions and question IDs are stable, preserving saved selections, flags, deadlines and submitted scores. This editorial pass does not redate the 18 October research or add technical claims.
+
+The shared content check uses correct/incorrect mean word and Unicode-codepoint character ratios plus tie-aware longest/shortest-only exact-set expectations. These are editorial shortcut diagnostics, not difficulty calibration; no minimum option length or padding rule applies.

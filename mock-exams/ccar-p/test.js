@@ -50,3 +50,47 @@ for(const other of forms.filter(d=>d.version!==data.version)) assert.equal(core.
 }
 assert.equal(storageKeys.size,6);
 console.log('PASS: all 6 forms: 378 perfect/empty scoring cases, exact sets, selection limits, invalid/cross-form states, isolated storage and expiry auto-submission.');
+
+// Editorial shortcut diagnostics; these do not calibrate exam difficulty.
+function combinations(n,k){let count=1;for(let i=1;i<=k;i++)count=count*(n-i+1)/i;return count;}
+function extremeExpected(question,measure,longest){
+    const sizes=question.options.map(o=>measure(o.text));
+    const cutoff=[...sizes].sort((a,b)=>longest?b-a:a-b)[question.select-1];
+    const forced=sizes.flatMap((size,i)=>(longest?size>cutoff:size<cutoff)?[i]:[]);
+    const tied=sizes.flatMap((size,i)=>size===cutoff?[i]:[]);
+    if(forced.some(i=>!question.options[i].correct) || question.options.some((o,i)=>o.correct&&!forced.includes(i)&&!tied.includes(i)))return 0;
+    return 1/combinations(tied.length,question.select-forced.length);
+}
+const wordCount=text=>text.trim().split(/\s+/u).length;
+const characterCount=text=>Array.from(text).length;
+const tiedQuestion=(length,select)=>({select,options:Array.from({length},(_,i)=>({text:'tie',correct:i<select}))});
+for(const measure of [wordCount,characterCount]){
+    for(const longest of [true,false]){
+        assert.equal(extremeExpected(tiedQuestion(4,1),measure,longest),.25);
+        assert.equal(extremeExpected(tiedQuestion(5,2),measure,longest),.1);
+    }
+    assert.equal(extremeExpected({select:1,options:[{text:'short',correct:true},{text:'much longer',correct:false}]},measure,true),0);
+    assert.equal(extremeExpected({select:1,options:[{text:'much longer',correct:true},{text:'short',correct:false}]},measure,false),0);
+}
+assert.equal(characterCount('a😀'),2);
+const balanceForms=forms.slice(3);
+const companionRoot=__dirname+'/../core-concept-learning/sets';
+if(fs.existsSync(companionRoot))for(let n=1;n<=5;n++)balanceForms.push(JSON.parse(fs.readFileSync(companionRoot+`/set-${String(n).padStart(2,'0')}/exam-data.json`,'utf8')));
+const revised=balanceForms.filter(data=>data.choice_balance_revision);
+assert.equal(revised.length,balanceForms.length,'Every selected form needs the choice-balance revision tag');
+const epsilon=1e-12;
+for(const data of revised){
+    const randomExpected=data.questions.reduce((total,q)=>total+1/combinations(q.options.length,q.select),0);
+    assert.ok(Math.abs(randomExpected-12)<=epsilon,'Uniform random exact-set expectation must remain 12/63');
+    for(const [label,measure] of [['words',wordCount],['characters',characterCount]]){
+        const right=data.questions.flatMap(q=>q.options.filter(o=>o.correct).map(o=>measure(o.text)));
+        const wrong=data.questions.flatMap(q=>q.options.filter(o=>!o.correct).map(o=>measure(o.text)));
+        const ratio=(right.reduce((a,b)=>a+b,0)/right.length)/(wrong.reduce((a,b)=>a+b,0)/wrong.length);
+        assert.ok(ratio>=.95-epsilon&&ratio<=1.05+epsilon,`${data.version}: correct/incorrect mean ${label} ratio ${ratio}`);
+        for(const longest of [true,false]){
+            const expected=data.questions.reduce((total,q)=>total+extremeExpected(q,measure,longest),0);
+            assert.ok(expected<=16+epsilon,`${data.version}: ${longest?'longest':'shortest'}-only ${label} expectation ${expected}/63`);
+        }
+    }
+}
+if(revised.length)console.log(`PASS: ${revised.length} revised forms: word/codepoint mean ratios and tie-aware longest/shortest-only exact-set diagnostics.`);

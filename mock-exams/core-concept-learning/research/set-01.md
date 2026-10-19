@@ -132,4 +132,10 @@ All calculations were independently asserted with Python Decimal arithmetic. Num
 
 Self-checks: 63 unique items; domain counts 11/8/12/10/9/9/4; all 38 local objectives; 38 single-select four-option items, 21 select-two five-option items and four select-three five-option items; exactly 21 credits per video; source starts are exact question-chapter starts and match the primary objective; seven rectangular exhibits; three supplemental unscored drills (two independent matrices and one repeatable-choice matching exercise), five rows each. A deterministic shuffled order mixes domains.
 
-Every stem is 55–110 words, every option explanation 15–35 words and every decision explanation 35–60 words. Options stay within the intended concise range. Correct option is longest in only four of 38 single-select questions; deterministic key position distribution avoids one fixed answer slot. No escaped-apostrophe backslashes appear. Questions test plausible decisions with state, evidence, authority, denominator or experimental-unit constraints; difficulty has not been psychometrically calibrated.
+Stem and choice wording is concise; detailed option and decision explanations remain available after submission. Deterministic key position distribution avoids one fixed answer slot. No escaped-apostrophe backslashes appear. Questions test plausible decisions with state, evidence, authority, denominator or experimental-unit constraints; difficulty has not been psychometrically calibrated.
+
+## Editorial revision — 19 October 2026
+
+All 63 stems and 277 answer choices have shorter, more direct wording with reduced length cues. The same architectural decisions, correct flags and positions, detailed explanations, exhibits, objectives, timestamped source chapters and drills remain. Form versions and question IDs are stable, preserving saved selections, flags, deadlines and submitted scores. This editorial pass does not redate the 18 October research or add technical claims.
+
+The shared content check uses correct/incorrect mean word and Unicode-codepoint character ratios plus tie-aware longest/shortest-only exact-set expectations. These are editorial shortcut diagnostics, not difficulty calibration; no minimum option length or padding rule applies.

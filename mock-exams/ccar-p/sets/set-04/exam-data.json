@@ -320,17 +320,17 @@
           "why": "The warehouse bottleneck invalidates the assumed proportional gain."
         },
         {
-          "text": "Measure stage times, adoption and warehouse queues to test expansion's shipment-time effect.",
+          "text": "Measure stage times, adoption and warehouse queues to test whether expansion can speed shipments.",
           "correct": true,
           "why": "This tests the business bottleneck before expanding capability."
         },
         {
-          "text": "Expand one branch and use adoption as the main shipment-improvement measure.",
+          "text": "Expand categories in one branch and use adoption as the main evidence of shipment improvement.",
           "correct": false,
           "why": "Adoption alone cannot establish shipment-time improvement."
         },
         {
-          "text": "Compare larger-model entry accuracy before choosing additional categories.",
+          "text": "Compare larger-model entry accuracy to identify which product categories should receive expansion.",
           "correct": false,
           "why": "Accuracy does not test the shipment-time value hypothesis."
         }
@@ -352,27 +352,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Train on every correction and compare rework with the previous month.",
+          "text": "Train on each correction and compare rework with the month before the three changes.",
           "correct": false,
           "why": "Uncontrolled changes and time comparison preserve confounding."
         },
         {
-          "text": "Attribute the reduction to the assistant, citing simpler policy as supporting evidence.",
+          "text": "Attribute lower rework to the assistant, treating simpler policy as support for better guidance.",
           "correct": false,
           "why": "Simultaneous changes cannot establish assistant attribution."
         },
         {
-          "text": "Independently assess a stratified random proposal sample, including inexperienced investigators and nonresponders.",
+          "text": "Independently score a random sample across user groups, including novices and nonresponders.",
           "correct": true,
           "why": "This reduces voluntary-response bias and checks actual correctness."
         },
         {
-          "text": "Collect more voluntary ratings and report a narrower satisfaction confidence interval.",
+          "text": "Track more voluntary ratings after use and narrow the satisfaction score's confidence interval.",
           "correct": false,
           "why": "More selected responses preserve selection bias."
         },
         {
-          "text": "Compare policy-versioned cohorts, recording assistant exposure, training and rework with retention-approved identifiers.",
+          "text": "Track policy version, assistant use, training and rework in matched cohorts with approved IDs.",
           "correct": true,
           "why": "This makes competing explanations observable."
         }
@@ -432,27 +432,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Require structured findings with citations, unresolved assumptions and each domain's constraints.",
+          "text": "Require cited findings, unresolved assumptions and domain constraints in a shared output format.",
           "correct": true,
           "why": "Structured findings preserve constraints across independent outputs."
         },
         {
-          "text": "Let pricing merge all findings because it produces the commercial recommendation.",
+          "text": "Let pricing merge specialist findings because it owns the proposed commercial recommendation.",
           "correct": false,
           "why": "Commercial ownership does not resolve legal and safety authority."
         },
         {
-          "text": "Resolve or escalate conflicts at a synthesis gate before drafting the recommendation.",
+          "text": "Resolve or escalate cross-domain conflicts at a synthesis gate before drafting the recommendation.",
           "correct": true,
           "why": "The gate handles disagreement independently of timing."
         },
         {
-          "text": "Have workers edit one shared recommendation and avoid overwriting each other.",
+          "text": "Have all workers edit a shared recommendation, with instructions to preserve existing sections.",
           "correct": false,
           "why": "Shared mutable prose preserves race and ownership ambiguity."
         },
         {
-          "text": "Expand worker context so each independently drafts a complete recommendation.",
+          "text": "Expand context so each worker can independently draft the complete tender recommendation.",
           "correct": false,
           "why": "Duplicating conclusions does not define conflict resolution."
         }
@@ -474,22 +474,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Extract cited events, reconcile deterministically, then explain validated totals and exceptions.",
+          "text": "Extract cited events, apply reconciliation rules, then explain checked totals and exceptions.",
           "correct": true,
           "why": "Each step has an appropriate verifiable contract."
         },
         {
-          "text": "Use separate document agents and average their estimated discrepancies.",
+          "text": "Have invoice, shipment and note agents estimate quantities, then average their discrepancies.",
           "correct": false,
           "why": "Averaging does not implement authoritative reconciliation rules."
         },
         {
-          "text": "Have reviewers correct complete drafts and reuse the edits as examples.",
+          "text": "Have reviewers correct complete drafts and turn edits into examples for the existing prompt.",
           "correct": false,
           "why": "Review can help but preserves the opaque numerical boundary."
         },
         {
-          "text": "Generate two explanations and keep the one citing more documents.",
+          "text": "Reason twice over each discrepancy and keep the explanation citing the most source documents.",
           "correct": false,
           "why": "Citation count does not validate arithmetic consistency."
         }
@@ -512,22 +512,22 @@
       "select": 1,
       "options": [
         {
-          "text": "450 hours; recognize equivalent payroll savings once accuracy stabilizes.",
+          "text": "450 hours; recognize equivalent payroll savings once assisted-case accuracy becomes stable.",
           "correct": false,
           "why": "Accuracy alone does not change staffing expenditure."
         },
         {
-          "text": "450 hours; assess redeployment value separately because payroll spending is unchanged.",
+          "text": "450 hours; value redeployment separately because the pilot leaves payroll spending unchanged.",
           "correct": true,
           "why": "18000 × .75 × 2 / 60 = 450."
         },
         {
-          "text": "675 hours; assess redeployment value separately because payroll spending is unchanged.",
+          "text": "675 hours; value redeployment separately because the pilot leaves payroll spending unchanged.",
           "correct": false,
           "why": "This omits the additional verification minute."
         },
         {
-          "text": "600 hours; book payroll savings at the fully loaded rate.",
+          "text": "600 hours; recognize payroll savings by applying the current fully loaded hourly staff rate.",
           "correct": false,
           "why": "This ignores adoption and assumes nonexistent cash savings."
         }
@@ -579,7 +579,7 @@
           "why": "Detailed recommendations do not preserve evidence or authority."
         },
         {
-          "text": "Withhold purchase and contact capabilities; escalate exceptions to the authorized scientist.",
+          "text": "Keep purchase and contact tools unavailable; send exceptions to the scientist.",
           "correct": true,
           "why": "Capability boundaries enforce the agreed delegation."
         },
@@ -616,17 +616,17 @@
       "select": 1,
       "options": [
         {
-          "text": "Route to a category-specific writer, retaining the one-shot process.",
+          "text": "Route by grant category to a specialist writer, keeping one-shot drafting for each summary.",
           "correct": false,
           "why": "Routing may specialize tone but does not implement revision feedback."
         },
         {
-          "text": "Generate three independent drafts and send the median-length one.",
+          "text": "Generate three independent drafts and send the median-length response to the grant officer.",
           "correct": false,
           "why": "Median length does not measure rubric compliance."
         },
         {
-          "text": "Use bounded rubric-based revision, deterministic word checks and final link validation.",
+          "text": "Revise against the rubric within a call limit; check word count and evidence links in code.",
           "correct": true,
           "why": "Measurable feedback supports bounded iterative revision."
         },
@@ -692,27 +692,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Use offer volume as the main success measure while awaiting cancellation data.",
+          "text": "Use generated-offer volume as the main outcome until cancellations become observable.",
           "correct": false,
           "why": "Activity is not retention or margin value."
         },
         {
-          "text": "Compare retention and net margin across comparable accounts, with size slices and a defined observation window.",
+          "text": "Compare retention and margin in comparable accounts, with size slices and a fixed follow-up window.",
           "correct": true,
           "why": "This tests the business outcome against confounding."
         },
         {
-          "text": "Preserve discount controls while measuring manager effort and offer acceptance.",
+          "text": "Keep discount approval and policy checks; measure manager effort and offer acceptance.",
           "correct": true,
           "why": "This measures value within the authorized boundary."
         },
         {
-          "text": "Enable autonomous discounts when managers accept more drafts.",
+          "text": "Enable autonomous discounts when increased draft acceptance demonstrates acceptable commercial risk.",
           "correct": false,
           "why": "Draft acceptance does not authorize financial action."
         },
         {
-          "text": "Pilot only accounts already expected to renew and measure acceptance.",
+          "text": "Select accounts expected to renew and use their offer acceptance as expansion evidence.",
           "correct": false,
           "why": "Selection biases the evidence for retention impact."
         }
@@ -734,22 +734,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Marina: higher correctness within latency, with a small per-request cost increase.",
+          "text": "Marina: stronger correctness within latency warrants a modest per-request cost increase.",
           "correct": false,
           "why": "Marina exceeds the explicit budget gate."
         },
         {
-          "text": "Harbor: all gates pass, with the highest correctness among eligible candidates.",
+          "text": "Harbor: every gate passes, with the best correctness among feasible candidates.",
           "correct": true,
           "why": "Harbor passes all gates with best feasible correctness."
         },
         {
-          "text": "Jetty: lower cost leaves room for future prompt and retrieval improvements.",
+          "text": "Jetty: lower measured cost leaves operating budget for later prompt and retrieval tuning.",
           "correct": false,
           "why": "Jetty fails the explicit correctness gate."
         },
         {
-          "text": "Beacon: highest correctness, with only a small latency overrun.",
+          "text": "Beacon: strongest correctness improves trust despite a small completion-latency overrun.",
           "correct": false,
           "why": "Beacon fails the contractual latency gate."
         }
@@ -805,22 +805,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Escalate only responses below a self-reported confidence threshold.",
+          "text": "Keep the cheap classifier and escalate only when its reported confidence falls below a threshold.",
           "correct": false,
           "why": "Confidence is not calibrated to the failing slice."
         },
         {
-          "text": "Use the larger model to rewrite explanations while keeping original labels.",
+          "text": "Have the larger model rewrite explanations while keeping labels from the cheap classifier.",
           "correct": false,
           "why": "Explanations do not repair incorrect classification decisions."
         },
         {
-          "text": "Route identified multi-entity cases upward; evaluate routing misses and final slice quality.",
+          "text": "Route multi-entity records to the larger model; check missed routes and final quality in that slice.",
           "correct": true,
           "why": "This targets the measured failure and validates routing."
         },
         {
-          "text": "Replace the cheap model for every record based on the difficult-slice result.",
+          "text": "Replace the cheap model globally because the larger model improves the difficult held-out slice.",
           "correct": false,
           "why": "The evidence does not justify universal extra cost."
         }
@@ -843,27 +843,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Put historical examples last so recent matching text guides the answer.",
+          "text": "Put historical examples last so the most recent matching explanation guides policy handling.",
           "correct": false,
           "why": "Position cannot replace explicit evidence precedence."
         },
         {
-          "text": "Define evidence precedence and require citations or an insufficient-evidence response.",
+          "text": "Define policy precedence; require citations or an explicit insufficient-evidence response.",
           "correct": true,
           "why": "This establishes evidence precedence and abstention behavior."
         },
         {
-          "text": "Use high self-reported confidence to resolve uncertain eligibility.",
+          "text": "Use high self-reported confidence as permission to resolve uncertain eligibility questions.",
           "correct": false,
           "why": "Uncalibrated confidence cannot establish policy authority."
         },
         {
-          "text": "Separate instructions, trusted metadata and quoted sources; demonstrate conflict and missing-evidence cases.",
+          "text": "Separate instructions, policy metadata and source text; show conflict and missing-evidence examples.",
           "correct": true,
           "why": "This makes boundaries and edge behavior testable."
         },
         {
-          "text": "Request concise answers and let the model infer evidence handling.",
+          "text": "Request concise answers and let the model infer evidence rules from the available documents.",
           "correct": false,
           "why": "The required conflict behavior remains unspecified."
         }
@@ -886,17 +886,17 @@
       "select": 1,
       "options": [
         {
-          "text": "Use six random ordinary cases and request longer reasoning.",
+          "text": "Select six random ordinary cases and request fuller reasoning about notification conditions.",
           "correct": false,
           "why": "Random ordinary examples miss the identified boundary."
         },
         {
-          "text": "State conditions, mix boundary and ordinary examples, and test held-out cases with reordered examples.",
+          "text": "State conditions, mix boundary and ordinary cases, and test held-out cases under reordered examples.",
           "correct": true,
           "why": "This targets the boundary and measures order robustness."
         },
         {
-          "text": "Retrieve only the closest example and let similarity determine applicable conditions.",
+          "text": "Retrieve the closest example and let semantic similarity determine the governing policy conditions.",
           "correct": false,
           "why": "Similarity does not establish the authoritative rule."
         },
@@ -924,22 +924,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Keep all tool outputs and shorten system instructions.",
+          "text": "Keep every tool output and shorten system instructions when the conversation approaches capacity.",
           "correct": false,
           "why": "This trades away the behavioral contract first."
         },
         {
-          "text": "Restart after each tool call and ask the operator to repaste the incident.",
+          "text": "Restart after each tool call and have the operator supply the incident narrative before continuing.",
           "correct": false,
           "why": "This transfers state burden and invites inconsistent reconstruction."
         },
         {
-          "text": "Track stable IDs, evidence, rejected hypotheses and approval scope in structured, retrievable state.",
+          "text": "Keep structured state for IDs, evidence, rejected theories and approved scope; retrieve details as needed.",
           "correct": true,
           "why": "This preserves decision-relevant state with recoverable evidence."
         },
         {
-          "text": "Keep 20 recent messages and summarize older history around the latest theory.",
+          "text": "Keep 20 recent messages and summarize older history around the latest proposed explanation.",
           "correct": false,
           "why": "Recency loses binding facts and discarded hypotheses."
         }
@@ -961,27 +961,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Use discoverable, versioned Skills and load the relevant procedure when needed.",
+          "text": "Use Skills with reviewed versions; find and load only the procedure needed for the task.",
           "correct": true,
           "why": "Progressive loading reduces unused instruction context."
         },
         {
-          "text": "Put stable policy before account data and verify cache writes and reads in usage fields.",
+          "text": "Put shared policy before new account data; check actual cache writes and reads.",
           "correct": true,
           "why": "Stable prefixes permit measurable cache reuse."
         },
         {
-          "text": "Cache shared policy and account records together with a longer lifetime.",
+          "text": "Cache account records with shared policy and extend lifetime for cross-user reuse.",
           "correct": false,
           "why": "Dynamic account content disrupts common-prefix reuse."
         },
         {
-          "text": "Keep procedure titles and let the model reconstruct their steps.",
+          "text": "Keep procedure titles only and reconstruct specialist steps from model knowledge.",
           "correct": false,
           "why": "Discovery must lead to authoritative procedure content."
         },
         {
-          "text": "Always include the most-used procedure and remove infrequent procedures from the catalogue.",
+          "text": "Include the most-used procedure every time and remove rare procedures from support.",
           "correct": false,
           "why": "This removes capabilities still required by legitimate tasks."
         }
@@ -1005,17 +1005,17 @@
       "select": 1,
       "options": [
         {
-          "text": "Keep the fast path and request internal reasoning transcripts for exceptions.",
+          "text": "Keep the fast path and request detailed internal reasoning transcripts for complex exceptions.",
           "correct": false,
           "why": "Visible reasoning is not a correctness measurement."
         },
         {
-          "text": "Use deeper reasoning everywhere and reduce evidence until average latency matches.",
+          "text": "Use deeper reasoning for every case, reducing evidence until average latency matches the fast path.",
           "correct": false,
           "why": "This introduces an untested grounding trade-off."
         },
         {
-          "text": "Test routed routine/complex cases for routing errors, citations, completion latency and cost.",
+          "text": "Test routed routine and complex cases for misses, citations, completion latency and cost.",
           "correct": true,
           "why": "This tests the proposed complete system against requirements."
         },
@@ -1044,27 +1044,27 @@
       "select": 3,
       "options": [
         {
-          "text": "Discovery latency and tool-selection success by language across the full request path.",
+          "text": "Language-level discovery time and selection success across complete requests.",
           "correct": true,
           "why": "This tests the new discovery overhead and failures."
         },
         {
-          "text": "Current policy and critical tool descriptions remain available; deferred definitions load through supported discovery.",
+          "text": "Current policy and core tools stay available; deferred tools load through supported discovery.",
           "correct": true,
           "why": "Optimization must preserve required operating context."
         },
         {
-          "text": "Lower input tokens as sufficient evidence of improved production tail latency.",
+          "text": "Reduced input tokens as proof that the complete service has faster production tails.",
           "correct": false,
           "why": "Token reduction does not establish end-to-end tails."
         },
         {
-          "text": "Maximum cache duration, assuming every request inside that window hits.",
+          "text": "Longest cache duration as proof that all requests within that period will hit.",
           "correct": false,
           "why": "Lifetime does not guarantee identical cacheable prefixes."
         },
         {
-          "text": "Measured cache writes and reads by workload and configuration, including prefix and tool changes.",
+          "text": "Cache writes and reads by workload and version, including changed prefixes and tools.",
           "correct": true,
           "why": "This verifies actual reuse and invalidation effects."
         }
@@ -1125,22 +1125,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Retry tool calls when room state differs from the request.",
+          "text": "Retain current definitions and retry whenever resulting room state differs from the request.",
           "correct": false,
           "why": "Retries after wrong writes can compound the harm."
         },
         {
-          "text": "Merge the tools into a free-text endpoint that infers the transition.",
+          "text": "Merge the three tools into a free-text endpoint that infers the requested state transition.",
           "correct": false,
           "why": "Inference shifts ambiguity into a consequential backend action."
         },
         {
-          "text": "Clarify operation names, transitions and parameters; test selection across all three operations.",
+          "text": "Clarify names, inputs and state changes; test which tool is chosen for each action.",
           "correct": true,
           "why": "This repairs the semantic ambiguity before scaling discovery."
         },
         {
-          "text": "Defer all room tools and return more catalogue search matches.",
+          "text": "Defer all room tools and return more catalogue matches for the model to compare before acting.",
           "correct": false,
           "why": "Additional ambiguous results preserve the root problem."
         }
@@ -1163,27 +1163,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Use stronger, shorter-lived tokens to improve authorization assurance.",
+          "text": "Use stronger, shorter-lived tokens to increase confidence that requests are authorized.",
           "correct": false,
           "why": "Cryptographic validity does not establish audience or object access."
         },
         {
-          "text": "Rotate the downstream credential daily and audit cross-region access.",
+          "text": "Rotate the downstream credential daily and audit every access outside the user's region.",
           "correct": false,
           "why": "Rotation and detection do not enforce user access."
         },
         {
-          "text": "Authorize each supplier operation against the user's region and delegated rights.",
+          "text": "Check each supplier operation against the user's region and delegated rights.",
           "correct": true,
           "why": "User rights must constrain the privileged backend."
         },
         {
-          "text": "Require users to state their region in the prompt.",
+          "text": "Require users to state their region, comparing it with the requested supplier before access.",
           "correct": false,
           "why": "Untrusted request text does not establish regional authority."
         },
         {
-          "text": "Validate resource audience, issuer, expiry and required operation scopes before execution.",
+          "text": "Check token audience, issuer, expiry and required operation scopes before execution.",
           "correct": true,
           "why": "Audience validation prevents cross-resource token acceptance."
         }
@@ -1206,7 +1206,7 @@
       "select": 1,
       "options": [
         {
-          "text": "Delta: both gates pass at the lowest eligible cost.",
+          "text": "Delta: meets both service gates and has the lowest cost among the feasible choices.",
           "correct": true,
           "why": "Delta is the cheapest feasible configuration."
         },
@@ -1278,27 +1278,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Sample only successful requests and rely on tickets for failure details.",
+          "text": "Sample successful requests only, using customer tickets to supply evidence about failed responses.",
           "correct": false,
           "why": "Success-only sampling removes the relevant operational evidence."
         },
         {
-          "text": "Link redacted, approved failure samples to stage outcomes; assign a regional alert owner.",
+          "text": "Link approved redacted failure samples to stage outcomes; assign a regional alert owner.",
           "correct": true,
           "why": "Targeted evidence connects symptoms to accountable investigation."
         },
         {
-          "text": "Add gateway latency buckets and prioritize its average for these incidents.",
+          "text": "Add gateway latency buckets and prioritize the gateway average when investigating incomplete responses.",
           "correct": false,
           "why": "Gateway timing misses downstream completeness and regional outcomes."
         },
         {
-          "text": "Retain complete prompts and tool payloads indefinitely for reconstruction.",
+          "text": "Retain complete prompts and tool payloads indefinitely to reconstruct affected customer sessions.",
           "correct": false,
           "why": "This conflicts with the stated privacy constraint."
         },
         {
-          "text": "Propagate trace IDs and record configuration, region, outcomes and timings under access and retention controls.",
+          "text": "Correlate stage IDs, versions, region, outcome and timing under approved access and retention.",
           "correct": true,
           "why": "Correlation enables localized diagnosis without blanket transcripts."
         }
@@ -1321,7 +1321,7 @@
       "select": 1,
       "options": [
         {
-          "text": "Preserve rows, units and footnotes; filter using indexed product IDs and dates.",
+          "text": "Keep rows, units and footnotes together; index product IDs and dates for filtered retrieval.",
           "correct": true,
           "why": "This preserves meaning and selects the correct revision."
         },
@@ -1358,22 +1358,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Retrieve globally and ask generation to remove out-of-scope incidents.",
+          "text": "Retrieve globally and ask generation to discard out-of-scope incidents before answering.",
           "correct": false,
           "why": "Late filtering misses scope and data exposure constraints."
         },
         {
-          "text": "Predict a symptom category and substitute it for structured filters.",
+          "text": "Predict a symptom category and use it instead of the supplied date and severity filters.",
           "correct": false,
           "why": "Prediction must not replace authoritative query constraints."
         },
         {
-          "text": "Use exact symptom phrases within scope; treat no match as no relevant incident.",
+          "text": "Match symptoms exactly inside scope; treat absent phrase matches as no relevant incident.",
           "correct": false,
           "why": "Exact phrases miss the demonstrated paraphrase cases."
         },
         {
-          "text": "Apply authorized structured filters, then retrieve or rerank narratives within that set.",
+          "text": "Apply the authorized scope filters first, then match or rerank symptoms only within that set.",
           "correct": true,
           "why": "Hard scope precedes conceptual narrative relevance."
         }
@@ -1395,27 +1395,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Use one shared shell credential to normalize all interactive vendors.",
+          "text": "Use a shared shell credential to give all interactive vendors a uniform command interface.",
           "correct": false,
           "why": "Uniform execution does not provide bounded vendor authorization."
         },
         {
-          "text": "Expose interactive tools through MCP with schemas, server authorization and operation contracts.",
+          "text": "Use MCP for approved interactive tools, with explicit schemas, server checks and operation contracts.",
           "correct": true,
           "why": "MCP fits shared assistant-tool capability interfaces."
         },
         {
-          "text": "Replace the export with agents negotiating format and retries each night.",
+          "text": "Use agents for the nightly export, negotiating its format and retry behavior on each run.",
           "correct": false,
           "why": "Dynamic negotiation undermines the stable batch contract."
         },
         {
-          "text": "Have a large model choose protocols through prompt instructions.",
+          "text": "Route both paths through a large model and let prompt instructions determine protocol choice.",
           "correct": false,
           "why": "Prompts cannot supply absent integration contracts."
         },
         {
-          "text": "Retain the export's authenticated API and existing status/retry contract.",
+          "text": "Keep the export on its authenticated API, preserving status and retry behavior.",
           "correct": true,
           "why": "The export is an established deterministic integration."
         }
@@ -1438,22 +1438,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Defer everything, including discovery, and infer required definitions from the request.",
+          "text": "Defer every tool, including discovery, and infer needed definitions from the first user request.",
           "correct": false,
           "why": "Discovery must itself remain available."
         },
         {
-          "text": "Expose core tools, defer well-described rare tools and test discovery recall/session latency.",
+          "text": "Expose core tools, defer well-described rare tools and test discovery recall and session latency.",
           "correct": true,
           "why": "This balances common-path overhead and rare-tool discovery."
         },
         {
-          "text": "Expose only core tools and ask users to rephrase unsupported tasks.",
+          "text": "Expose core tools only and ask users to restate uncommon requests using those capabilities.",
           "correct": false,
           "why": "This removes legitimate rare-task coverage."
         },
         {
-          "text": "Keep all tools but only their names, inferring arguments and effects later.",
+          "text": "Keep every tool name in context and infer omitted argument structures and effects when needed.",
           "correct": false,
           "why": "Names alone make rare-tool selection and invocation unreliable."
         }
@@ -1476,27 +1476,27 @@
       "select": 3,
       "options": [
         {
-          "text": "Enforce team scope and approval-sensitive operations against the user's effective permissions.",
+          "text": "Enforce team case access and approval checks against the user's permissions.",
           "correct": true,
           "why": "This constrains privileged backend actions to user rights."
         },
         {
-          "text": "Use a separate downstream credential or suitable token exchange for sanctions access.",
+          "text": "Use separate sanctions credentials or a suitable exchange, not bearer-token forwarding.",
           "correct": true,
           "why": "This preserves token audience and trust boundaries."
         },
         {
-          "text": "Validate that the MCP token targets the compliance resource.",
+          "text": "Check that incoming MCP tokens target the compliance resource.",
           "correct": true,
           "why": "This establishes resource-specific token acceptance."
         },
         {
-          "text": "Require team names in prompts while retaining bearer-token forwarding.",
+          "text": "Require team names in prompts while retaining the existing token-forwarding path.",
           "correct": false,
           "why": "Prompt declarations cannot enforce identity or token boundaries."
         },
         {
-          "text": "Keep authorization unchanged and review detailed cross-team audit logs weekly.",
+          "text": "Keep current access rules and have security audit cross-team reads weekly.",
           "correct": false,
           "why": "Detection leaves the demonstrated access gaps active."
         }
@@ -1520,22 +1520,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Filter each revision separately, align sections and cite evidence for both versions.",
+          "text": "Retrieve the two revisions separately, align sections and cite the evidence from each.",
           "correct": true,
           "why": "Version-scoped evidence makes the comparison reproducible."
         },
         {
-          "text": "Retrieve more global matches and infer revision order from wording.",
+          "text": "Retrieve more global matches and infer revision order from their wording.",
           "correct": false,
           "why": "Similarity ranking cannot establish explicit revision scope."
         },
         {
-          "text": "Merge all revisions into one ingestion summary and compare from it.",
+          "text": "Merge revisions into one summary and answer comparisons from that text.",
           "correct": false,
           "why": "Consolidation hides the separate evidence needed for differences."
         },
         {
-          "text": "Index only the newest revision and infer older wording from model knowledge.",
+          "text": "Index only the newest manual and infer past wording from model knowledge.",
           "correct": false,
           "why": "Historical comparison requires historical evidence."
         }
@@ -1629,27 +1629,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Measure task success only among requests that discovered a tool.",
+          "text": "Calculate task success only among requests that found a tool, isolating catalogue-search performance.",
           "correct": false,
           "why": "This excludes the failing cases from evaluation."
         },
         {
-          "text": "Restore operator-facing descriptions and test discovery recall on held-out natural-language requests.",
+          "text": "Restore operator-facing descriptions; test discovery recall on held-out calibration requests.",
           "correct": true,
           "why": "This targets the observed catalog semantic regression."
         },
         {
-          "text": "Increase connection pools because faster search implies downstream failure.",
+          "text": "Increase connection pools because faster tool search suggests failures occur after tool selection.",
           "correct": false,
           "why": "Evidence indicates nonselection, not backend failure."
         },
         {
-          "text": "Compare full-task success and latency, including failed searches and fallback, with the previous catalogue.",
+          "text": "Compare task completion and total latency, including failed searches and fallback, with the old catalogue.",
           "correct": true,
           "why": "This evaluates total quality and speed together."
         },
         {
-          "text": "Put calibration history in every prompt and treat reading success as repaired discovery.",
+          "text": "Put calibration history in every prompt and treat successful reading as proof discovery is repaired.",
           "correct": false,
           "why": "This bypasses rather than tests rare-tool discovery."
         }
@@ -1672,22 +1672,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Grade confirmation clarity and dates; sample backend records after release.",
+          "text": "Grade confirmation clarity and requested dates, sampling actual appointments after rollout.",
           "correct": false,
           "why": "This postpones verification of the release obligation."
         },
         {
-          "text": "Check the scheduling call's date and accept its confirmation as proof.",
+          "text": "Check the scheduling call's date and treat the resulting confirmation as booking proof.",
           "correct": false,
           "why": "A call does not establish successful final state."
         },
         {
-          "text": "Verify appointment state, authorization and timing; compare the confirmation with that outcome.",
+          "text": "Check final appointment state, permissions and timing, then grade confirmation accuracy.",
           "correct": true,
           "why": "The outcome and communicated claim must agree."
         },
         {
-          "text": "Have several judges vote on whether the transcript depicts a successful booking.",
+          "text": "Use several judges to decide whether the transcript appears to show a successful booking.",
           "correct": false,
           "why": "Consensus cannot replace authoritative state verification."
         }
@@ -1709,27 +1709,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Sample strictly by traffic share and use global accuracy for readiness.",
+          "text": "Sample in proportion to traffic and use global accuracy to establish readiness for unusual payroll cases.",
           "correct": false,
           "why": "Rare critical slices can disappear in the average."
         },
         {
-          "text": "Combine deterministic total/source checks with calibrated expert review, retaining disagreements to refine rubrics.",
+          "text": "Check totals and source IDs in code; use expert disagreements to calibrate reviews and refine rubrics.",
           "correct": true,
           "why": "Methods match objective and subjective dimensions."
         },
         {
-          "text": "Stratify held-out ordinary and high-risk cases, defining expected behavior for missing or conflicting evidence.",
+          "text": "Hold out normal and risky cases, stating expected behavior for missing records and conflicting amendments.",
           "correct": true,
           "why": "Coverage reflects likely and consequential failure modes."
         },
         {
-          "text": "Replace expert labels with majority votes from identical judges.",
+          "text": "Scale annotation using identical judges and rely on majority votes instead of explicit expert criteria.",
           "correct": false,
           "why": "Agreement alone does not establish a calibrated rubric."
         },
         {
-          "text": "Reuse prompt-development examples as the held-out suite because experts approved them.",
+          "text": "Use prompt-development examples as the release holdout because experts already approved their labels.",
           "correct": false,
           "why": "Reusing development cases inflates generalization evidence."
         }
@@ -1752,17 +1752,17 @@
       "select": 1,
       "options": [
         {
-          "text": "Compare this week with last month, matching total message counts.",
+          "text": "Compare this week with last month, matching the number of messages across the two periods.",
           "correct": false,
           "why": "Time and case mix remain confounded."
         },
         {
-          "text": "Alternate strategies hourly and pool results to balance customer differences.",
+          "text": "Alternate strategies hourly and pool responses, assuming switching balances customer differences.",
           "correct": false,
           "why": "Related tickets can still cross contaminated treatments."
         },
         {
-          "text": "Randomize responses and let agents choose prompts during the trial.",
+          "text": "Randomize individual responses and let agents choose the prompt best suited to each customer.",
           "correct": false,
           "why": "Adaptive prompt choice changes the treatment."
         },
@@ -1790,22 +1790,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Use a second model and accept comparisons when both cite the same document.",
+          "text": "Have a second model verify the narrative and accept comparisons when both cite the same document.",
           "correct": false,
           "why": "Shared corrupted evidence can produce agreeing errors."
         },
         {
-          "text": "Increase reasoning budget before reviewing parsed evidence.",
+          "text": "Increase reasoning budget and compare existing-chunk answers before inspecting parsing or table metadata.",
           "correct": false,
           "why": "Reasoning cannot restore information already removed."
         },
         {
-          "text": "Compare source tables with parsed/indexed values and inspect surviving currency/unit metadata.",
+          "text": "Compare parsed and indexed values with source tables, checking currency and unit metadata.",
           "correct": true,
           "why": "This tests the earliest changed representation boundary."
         },
         {
-          "text": "Use larger embeddings to improve financial understanding.",
+          "text": "Use larger embeddings because expected-document retrieval may still lack financial semantic detail.",
           "correct": false,
           "why": "The reported lost metadata is a more direct hypothesis."
         }
@@ -1828,27 +1828,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Restore a stable prefix before variable content; compare cache writes and reads on equivalent workloads.",
+          "text": "Move variable content after the stable prefix; compare cache usage on matched workloads.",
           "correct": true,
           "why": "This tests lost reuse from prefix instability."
         },
         {
-          "text": "Halve answers and approve based only on output-token savings.",
+          "text": "Halve answers and approve when output-token cost falls, without examining input usage.",
           "correct": false,
           "why": "Output cost is not the demonstrated changed driver."
         },
         {
-          "text": "Replace repeated outputs with relevant passages and stable references; test citation and answer quality.",
+          "text": "Keep relevant passages and stable citations; retest evidence coverage and answer quality.",
           "correct": true,
           "why": "This targets repeated input while preserving evidence."
         },
         {
-          "text": "Replace evidence with readable summaries and remove source references.",
+          "text": "Use readable model summaries instead of full documents and remove original references.",
           "correct": false,
           "why": "Readability does not establish evidence preservation."
         },
         {
-          "text": "Retrieve more candidates to increase cache hits across timestamped requests.",
+          "text": "Add retrieval candidates to increase cache hits across related requests with different timestamps.",
           "correct": false,
           "why": "Candidates do not repair an unstable shared prefix."
         }
@@ -1871,7 +1871,7 @@
       "select": 1,
       "options": [
         {
-          "text": "Link versioned cases to delayed appeals; give policy owners category-specific thresholds within retention limits.",
+          "text": "Join appeals to versioned cases; assign category alerts to policy owners within retention limits.",
           "correct": true,
           "why": "This captures delayed harm with reproducible configuration context."
         },
@@ -1910,27 +1910,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Evaluate untouched new-template cases with prespecified slices and gates.",
+          "text": "Test untouched new-template cases against fixed slice and release gates.",
           "correct": true,
           "why": "Independent cases estimate generalization after optimization."
         },
         {
-          "text": "Add pilot cases to the benchmark and tune until its score improves.",
+          "text": "Add pilot cases to the benchmark and tune until the combined score improves.",
           "correct": false,
           "why": "Repeated optimization contaminates the release evidence."
         },
         {
-          "text": "Turn reviewed pilot failures into versioned, template-labeled development regressions.",
+          "text": "Use reviewed pilot failures in a development regression suite, keeping template and version labels.",
           "correct": true,
           "why": "Failure cases are valuable explicit regression targets."
         },
         {
-          "text": "Use agreement among judges on the tuned benchmark as final release evidence.",
+          "text": "Use judge agreement on the tuned benchmark as the final release gate.",
           "correct": false,
           "why": "Grader agreement does not remove case-selection leakage."
         },
         {
-          "text": "Discard the old benchmark because a high score makes its cases useless.",
+          "text": "Discard the old benchmark because its high score means it has no useful cases.",
           "correct": false,
           "why": "Old cases still protect previously supported behavior."
         }
@@ -1953,22 +1953,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Test labeled closure cases, trace filter errors and validate a targeted repair.",
+          "text": "Test benign and harmful cases, trace false positives and validate a targeted fix.",
           "correct": true,
           "why": "This localizes the changed component and preserves safety."
         },
         {
-          "text": "Prompt the model to answer benign questions despite upstream blocks.",
+          "text": "Prompt the model to answer benign account questions despite upstream block decisions.",
           "correct": false,
           "why": "The prompt cannot change the upstream execution gate."
         },
         {
-          "text": "Disable the filter for all closure questions and monitor complaints.",
+          "text": "Disable the filter for all closure questions and use complaints to assess safety.",
           "correct": false,
           "why": "This removes protection before a targeted safety evaluation."
         },
         {
-          "text": "Replace the generator before evaluating the new filter's decisions.",
+          "text": "Replace the generator before evaluating how the changed filter handles closure cases.",
           "correct": false,
           "why": "The prefilter acts before generation can help."
         }
@@ -1992,22 +1992,22 @@
       "select": 3,
       "options": [
         {
-          "text": "Cross-tenant access tests pass; any remaining prohibited retrieval blocks release.",
+          "text": "Cross-tenant access tests pass; remaining prohibited reads block release.",
           "correct": true,
           "why": "Security is an independent gate."
         },
         {
-          "text": "Prespecified critical-slice correctness passes on a fully recorded configuration.",
+          "text": "Correctness passes on the agreed critical slices, with each tested setup fully recorded.",
           "correct": true,
           "why": "Quality evidence must cover slices and be reproducible."
         },
         {
-          "text": "Regional end-to-end p95 passes under intended load, including retrieval and retries.",
+          "text": "Regional end-to-end p95 passes under load, including retrieval and retries.",
           "correct": true,
           "why": "The regional tail gate needs relevant measurements."
         },
         {
-          "text": "A weighted score offsets access failures with correctness gains.",
+          "text": "An engineering-approved weighted score offsets access failures with correctness gains.",
           "correct": false,
           "why": "The policy does not permit gate compensation."
         },
@@ -2035,12 +2035,12 @@
       "select": 1,
       "options": [
         {
-          "text": "$0.050 cached versus $0.400 uncached; reads are free.",
+          "text": "$0.050 cached versus $0.400 uncached; saving $0.350.",
           "correct": false,
           "why": "The supplied cache-read rate is nonzero."
         },
         {
-          "text": "$0.086 cached versus $0.040 uncached; ordinary input is charged once.",
+          "text": "$0.086 cached versus $0.040 uncached; adding $0.046.",
           "correct": false,
           "why": "Uncached pricing applies to all ten requests."
         },
@@ -2050,7 +2050,7 @@
           "why": ".02×2.5 + 9×.02×.2 = .086."
         },
         {
-          "text": "$0.040 cached versus $0.400 uncached; the first request uses ordinary pricing.",
+          "text": "$0.040 cached versus $0.400 uncached; saving $0.360.",
           "correct": false,
           "why": "The first request uses the stated cache-write rate."
         }
@@ -2138,27 +2138,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Add translated records to live prompts and measure overall reviewer acceptance.",
+          "text": "Add translated examples to the live prompt and assess them through overall reviewer acceptance.",
           "correct": false,
           "why": "Acceptance can reflect the stated overreliance."
         },
         {
-          "text": "Equalize positive recommendations by language and rerun global accuracy.",
+          "text": "Match positive-recommendation counts by language and use the existing overall accuracy metric.",
           "correct": false,
           "why": "Equal quotas do not diagnose either failure mode."
         },
         {
-          "text": "Audit acceptance and corrections of unsupported advice using source-linked cases and calibrated review criteria.",
+          "text": "Audit accepted and corrected unsupported advice using cited evidence and a calibrated rubric.",
           "correct": true,
           "why": "This tests human oversight effectiveness."
         },
         {
-          "text": "Compare explanation lengths by language as evidence of adequate consideration.",
+          "text": "Compare explanation length by language, using longer answers to indicate adequate consideration.",
           "correct": false,
           "why": "Length does not measure evidence or decision quality."
         },
         {
-          "text": "Measure errors and missing-evidence handling by language and translation provenance against independently adjudicated cases.",
+          "text": "Score language and translation slices against independent labels, including missing-evidence behavior.",
           "correct": true,
           "why": "This tests coverage and grounding disparities."
         }
@@ -2181,22 +2181,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Notify the analyst and execute unless they object promptly.",
+          "text": "Notify the analyst of the revised adjustment and execute after a short opportunity to object.",
           "correct": false,
           "why": "Silence does not establish approval of changed terms."
         },
         {
-          "text": "Reuse approval if a second model finds the recommendation label unchanged.",
+          "text": "Reuse approval when a second model finds the recommendation label unchanged despite new evidence.",
           "correct": false,
           "why": "Matching labels can hide material changed amounts."
         },
         {
-          "text": "Approve specific adjustment and evidence versions; review again after relevant changes.",
+          "text": "Bind approval to the exact adjustment and evidence version; obtain new review after relevant changes.",
           "correct": true,
           "why": "Approval must cover the operation that executes."
         },
         {
-          "text": "Reuse case approval within the same product category and log the new income.",
+          "text": "Reuse case approval within the same product category, logging the changed income for later review.",
           "correct": false,
           "why": "Product category is too coarse for consequential approval."
         }
@@ -2219,22 +2219,22 @@
       "select": 2,
       "options": [
         {
-          "text": "Map PHI through inference, tracing, storage and exports; verify agreements and safeguards for each service.",
+          "text": "Map where PHI flows across services and exports; check each required agreement and safeguard.",
           "correct": true,
           "why": "The entire PHI flow needs review."
         },
         {
-          "text": "Limit analytics and workspaces to approved minimum-necessary access and retention; validate controls first.",
+          "text": "Test approved access and retention for analytics and workspaces before any PHI pilot starts.",
           "correct": true,
           "why": "This closes the concrete uncontrolled copies."
         },
         {
-          "text": "Treat the inference BAA as coverage for supporting analytics and exports.",
+          "text": "Apply the inference BAA to analytics and engineer exports serving the same clinical purpose.",
           "correct": false,
           "why": "One provider agreement does not cover other processors."
         },
         {
-          "text": "Use draft-only operation as sufficient protection for downstream copies.",
+          "text": "Use draft-only model operation as sufficient protection for copies in analytics and exports.",
           "correct": false,
           "why": "Read-only inference still processes and discloses PHI."
         },
@@ -2271,12 +2271,12 @@
           "why": "Blind parity ignores relevant role and policy context."
         },
         {
-          "text": "Remove protected attributes and declare fairness satisfied.",
+          "text": "Exclude protected attributes and declare fairness once prompts no longer include them explicitly.",
           "correct": false,
           "why": "Proxies and historical bias can remain."
         },
         {
-          "text": "Agree role-specific fairness criteria with responsible owners, audit labels and evaluate alternatives.",
+          "text": "Agree role-specific fairness goals with legal and hiring; audit labels and alternatives.",
           "correct": true,
           "why": "This examines biased labels and relevant policy criteria."
         }
@@ -2315,7 +2315,7 @@
           "why": "Timing cannot establish authoritative submission state."
         },
         {
-          "text": "Keep stable submission IDs; reconcile status, show pending and escalate unresolved outcomes.",
+          "text": "Keep one submission ID; reconcile status, show pending and escalate if unresolved.",
           "correct": true,
           "why": "This prevents blind duplicate submission and preserves continuity."
         }
@@ -2338,27 +2338,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Hide uncertainty to speed reviews while retaining model recommendations.",
+          "text": "Hide uncertainty to speed reviewers while retaining the model's proposed fraud classification.",
           "correct": false,
           "why": "This weakens informed review and challenge."
         },
         {
-          "text": "Test evidence presentation, override authority and overload escalation under realistic review time limits.",
+          "text": "Test evidence presentation, override powers and overload escalation under realistic time limits.",
           "correct": true,
           "why": "This tests meaningful review rather than nominal approval."
         },
         {
-          "text": "Approve on recall and request extra staff after rollout.",
+          "text": "Approve the better-recall threshold and request staff after the larger queue becomes measurable.",
           "correct": false,
           "why": "Current capacity is already binding."
         },
         {
-          "text": "Automatically adopt model recommendations when review deadlines expire.",
+          "text": "Adopt overdue model recommendations automatically to prevent delays in fraud-case disposition.",
           "correct": false,
           "why": "Queue delay cannot grant consequential authority."
         },
         {
-          "text": "Evaluate fraud capture and false positives alongside capacity, queue age and urgent-case deadlines.",
+          "text": "Test fraud capture and false positives against review capacity, queue age and urgent deadlines.",
           "correct": true,
           "why": "Oversight must remain operationally feasible."
         }
@@ -2418,27 +2418,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Treat acceptance of a registration notice as sufficient evidence of understanding.",
+          "text": "Treat acceptance of a registration notice as sufficient evidence that residents understand the service.",
           "correct": false,
           "why": "Registration acknowledgement does not establish ongoing understanding."
         },
         {
-          "text": "Let high confidence scores identify provisional official determinations.",
+          "text": "Present high confidence scores as evidence that explanations are provisional official determinations.",
           "correct": false,
           "why": "Uncalibrated confidence does not establish authority."
         },
         {
-          "text": "Publish complete prompts and access-control rules to all residents.",
+          "text": "Publish internal prompts and access rules so residents can inspect each decision.",
           "correct": false,
           "why": "This exposes unnecessary internal security material."
         },
         {
-          "text": "Test understanding in representative journeys and adjust the interface and escalation behavior.",
+          "text": "Test what users understand in real journeys; change the interface and escalation route if needed.",
           "correct": true,
           "why": "This tests effectiveness rather than disclaimer presence."
         },
         {
-          "text": "Label assistance, cite guidance and show official determination or appeal routes.",
+          "text": "Label advice, cite policy and show official decision and appeal routes.",
           "correct": true,
           "why": "This clarifies the service's authority and recourse."
         }
@@ -2461,12 +2461,12 @@
       "select": 1,
       "options": [
         {
-          "text": "Accept the target and select an extensible orchestration framework.",
+          "text": "Accept the target and select a framework extensible to entry and warehouse agents.",
           "correct": false,
           "why": "Framework choice precedes essential requirements."
         },
         {
-          "text": "Map bottlenecks, baselines and substitution authority with affected teams before scoping release.",
+          "text": "Map bottlenecks, baselines and substitution authority with affected teams before scoping.",
           "correct": true,
           "why": "The value bottleneck and authority remain unestablished."
         },
@@ -2499,27 +2499,27 @@
       "select": 2,
       "options": [
         {
-          "text": "List all framework features and defer a recommendation until teams agree.",
+          "text": "Compare every framework feature and leave the recommendation open until implementers agree.",
           "correct": false,
           "why": "This avoids the required architectural decision."
         },
         {
-          "text": "Set measurable exception-volume and quality triggers, with an evidence owner.",
+          "text": "Set measurable revisit triggers for exception volume and quality, with an evidence owner.",
           "correct": true,
           "why": "This makes reconsideration accountable and evidence-driven."
         },
         {
-          "text": "Explain the workflow choice using coverage, deadline, risk and limitations against the agent alternative.",
+          "text": "Explain the choice through current coverage, deadline, risk and the agent alternative's limits.",
           "correct": true,
           "why": "This explains why the decision fits current constraints."
         },
         {
-          "text": "Promise an eventual agent migration when a newer model appears.",
+          "text": "Promise eventual agent adoption when a newer model becomes available to the business.",
           "correct": false,
           "why": "Model availability does not establish business need."
         },
         {
-          "text": "Declare the workflow permanent and stop tracking exception demand.",
+          "text": "Declare the workflow permanent so teams can stop tracking future exception demand.",
           "correct": false,
           "why": "This blocks justified lifecycle reconsideration."
         }
@@ -2542,22 +2542,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Agree completion/failure semantics, instrument end-to-end timing and assign contractual metric ownership.",
+          "text": "Agree what completion and failure mean, time the full path and name the SLA owner.",
           "correct": true,
           "why": "This aligns measurement with the agreed service outcome."
         },
         {
-          "text": "Relabel model time and leave partner SLA assessment to integrators.",
+          "text": "Relabel model time and leave contract assessment to integration vendors.",
           "correct": false,
           "why": "This leaves the end-to-end obligation unowned."
         },
         {
-          "text": "Shorten outputs to offset estimated average time in other stages.",
+          "text": "Shorten model output to offset an estimated average allowance for authentication and tools.",
           "correct": false,
           "why": "Estimated averages do not define the contractual tail."
         },
         {
-          "text": "Sum component p95s and declare compliance when individual targets pass.",
+          "text": "Sum independent component p95s and judge teams compliant when their own targets pass.",
           "correct": false,
           "why": "Summed marginal p95s are not an end-to-end distribution."
         }
@@ -2580,27 +2580,27 @@
       "select": 2,
       "options": [
         {
-          "text": "An unstructured archive of exploratory prompts for the receiving team to choose from.",
+          "text": "An archive of exploratory prompts from which receiving operators choose a reliable configuration.",
           "correct": false,
           "why": "This leaves evaluated configuration ambiguous."
         },
         {
-          "text": "An immediate feature-expansion plan so the team learns by adding capabilities.",
+          "text": "An immediate feature-expansion plan so the receiving team learns operation through development.",
           "correct": false,
           "why": "Expansion is not a substitute for operating readiness."
         },
         {
-          "text": "Demo recordings and slides from which operators can infer procedures.",
+          "text": "Demo recordings and slides from which receiving operators infer configuration and recovery steps.",
           "correct": false,
           "why": "A demo omits the described manual operations."
         },
         {
-          "text": "Tested incident/rollback runbooks, named responsibilities, alert routes and a joint failure rehearsal.",
+          "text": "Give tested incident and rollback steps, clear owners and alert paths; rehearse with the receiving team.",
           "correct": true,
           "why": "This establishes executable operating ownership."
         },
         {
-          "text": "Versioned deployment and refresh contracts with supported configurations, validation gates and testable failure behavior.",
+          "text": "Document supported versions, deployment and refresh gates, and behavior when each process fails.",
           "correct": true,
           "why": "This transfers reproducible implementation knowledge."
         }
@@ -2623,17 +2623,17 @@
       "select": 1,
       "options": [
         {
-          "text": "Edit live and defer finance review because a short edit is documentation.",
+          "text": "Edit the prompt live and have finance review later, classifying the short change as documentation.",
           "correct": false,
           "why": "Behavior changes still require validation."
         },
         {
-          "text": "Freeze policy changes until the next major model upgrade.",
+          "text": "Freeze policy changes until the next model upgrade because current regressions establish reliability.",
           "correct": false,
           "why": "This preserves outdated policy behavior unnecessarily."
         },
         {
-          "text": "Retrieve the new policy dynamically and remove finance approval because the prompt stays unchanged.",
+          "text": "Retrieve the policy dynamically and remove finance approval because the prompt remains unchanged.",
           "correct": false,
           "why": "A new evidence policy still changes behavior and authority."
         },
@@ -2666,17 +2666,17 @@
           "why": "This resolves the contradictory meaning of success."
         },
         {
-          "text": "Give each group its preferred dashboard and proceed with design.",
+          "text": "Provide separate dashboards so each group can monitor its preferred interpretation while design proceeds.",
           "correct": false,
           "why": "Separate dashboards preserve conflicting obligations."
         },
         {
-          "text": "Adopt two seconds for all interactions and select the largest fast-streaming model.",
+          "text": "Choose the two-second target for all interactions and estimate the largest fast-streaming model.",
           "correct": false,
           "why": "First token and useful completion remain confused."
         },
         {
-          "text": "Demonstrate ten-second answers and seek acceptance afterward.",
+          "text": "Demonstrate a ten-second completed answer and seek agreement on timing after the quality is visible.",
           "correct": false,
           "why": "A demonstration does not resolve escalation or contractual acceptance."
         }
@@ -2699,7 +2699,7 @@
       "select": 2,
       "options": [
         {
-          "text": "Copy the prompt and validate new rules through first-month satisfaction.",
+          "text": "Copy the existing prompt and use first-month satisfaction to validate the new unit's rules.",
           "correct": false,
           "why": "Unvalidated rules expose users before readiness evidence."
         },
@@ -2714,7 +2714,7 @@
           "why": "Reusable components can retain relevant evidence."
         },
         {
-          "text": "Agree new slice/capacity gates and expand gradually with rollback preserving the original service.",
+          "text": "Agree new slice and load gates; expand with rollback preserving the validated service.",
           "correct": true,
           "why": "This validates changed scope without destroying the baseline."
         },
@@ -2757,7 +2757,7 @@
           "why": "A disclaimer does not justify extrapolation."
         },
         {
-          "text": "Report scoped drafting gains and limitations; validate representative downstream outcomes before extrapolation.",
+          "text": "Report drafting gains and pilot limits; test wider claims against representative outcomes.",
           "correct": true,
           "why": "This states supported results and the missing evidence."
         }
@@ -2780,27 +2780,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Treat manual policy-update notices as sufficient coverage for indexing delays.",
+          "text": "Treat manual policy-update notices to users as sufficient protection against indexing delays.",
           "correct": false,
           "why": "Users still receive stale assistant evidence."
         },
         {
-          "text": "Document lineage and rollback/withdrawal so invalid updates do not displace the last validated evidence.",
+          "text": "Record lineage and rollback so invalid updates cannot displace the last validated evidence.",
           "correct": true,
           "why": "This makes updates reproducible and recoverable."
         },
         {
-          "text": "Assign freshness targets, validation and failed-refresh ownership with alerts and escalation.",
+          "text": "Assign freshness, validation and failed-refresh owners, with alert and escalation routes.",
           "correct": true,
           "why": "Freshness becomes an owned operating obligation."
         },
         {
-          "text": "Transfer model tuning to operations because future correctness failures must be model-related.",
+          "text": "Transfer model tuning to operations because a correct current index rules out future data faults.",
           "correct": false,
           "why": "Future source and indexing failures remain possible."
         },
         {
-          "text": "Survey accuracy quarterly without retaining source or index versions.",
+          "text": "Survey accuracy quarterly without source versions to focus on user outcomes over implementation.",
           "correct": false,
           "why": "The survey cannot diagnose or recover specific invalid updates."
         }
@@ -2823,22 +2823,22 @@
       "select": 1,
       "options": [
         {
-          "text": "Version coding guidance; enforce production restrictions through managed permissions and scoped credentials.",
+          "text": "Version shared coding guidance and use managed rules plus scoped credentials for production limits.",
           "correct": true,
           "why": "Instructions guide work; permissions enforce capability boundaries."
         },
         {
-          "text": "Acknowledge policy each session but keep unrestricted production credentials.",
+          "text": "Acknowledge policy at session start while retaining unrestricted credentials for approved production work.",
           "correct": false,
           "why": "Acknowledgement does not constrain the available authority."
         },
         {
-          "text": "Put prohibitions in repository instructions and let developers allow broad shell access.",
+          "text": "Put restrictions in repository instructions and allow developers to grant broad shell access locally.",
           "correct": false,
           "why": "Local permission can bypass the instructed prohibition."
         },
         {
-          "text": "Remove project guidance and encode style conventions as shell deny rules.",
+          "text": "Replace project guidance with shell deny rules so style and safety requirements use one mechanism.",
           "correct": false,
           "why": "Permission rules do not express coding conventions well."
         }
@@ -2899,27 +2899,27 @@
       "select": 2,
       "options": [
         {
-          "text": "Temporarily disable managed restrictions and inspect logs afterward.",
+          "text": "Disable managed restrictions until the diagnostic finishes and inspect logs for unwanted access.",
           "correct": false,
           "why": "Retrospective logs do not preserve the execution boundary."
         },
         {
-          "text": "Copy protected credentials into an allowed staging path.",
+          "text": "Copy protected credentials to a staging path the diagnostic can already read.",
           "correct": false,
           "why": "This defeats the protected data boundary."
         },
         {
-          "text": "Reproduce the minimal diagnostic with approved permissions and report the failing wrapper to its owner.",
+          "text": "Run the smallest permitted diagnostic and tell its owner which wrapper path caused the block.",
           "correct": true,
           "why": "This restores useful debugging with accountable repair."
         },
         {
-          "text": "Use an allow hook as an override for the managed deny.",
+          "text": "Use an allow hook to override the managed deny for this staging investigation.",
           "correct": false,
           "why": "Managed deny controls are not overridden by an allow hook."
         },
         {
-          "text": "Separate fixture diagnostics from credential access and retain only investigation capabilities.",
+          "text": "Separate fixture diagnosis from secret access and retain only the rights needed for the investigation.",
           "correct": true,
           "why": "This removes unnecessary protected access."
         }
@@ -3144,5 +3144,6 @@
     40,
     60
   ],
-  "wording_revision": "2026-10-18"
+  "wording_revision": "2026-10-18",
+  "choice_balance_revision": "2026-10-19"
 }
